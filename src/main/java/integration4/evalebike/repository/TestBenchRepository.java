@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public abstract class TestBenchRepository implements JpaRepository<TestBench, Integer> {
+public interface TestBenchRepository extends JpaRepository<TestBench, Integer> {
 }
