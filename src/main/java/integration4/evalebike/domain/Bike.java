@@ -1,13 +1,19 @@
 package integration4.evalebike.domain;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
 
+@Entity
+@Table(name="bike")
 public class Bike {
+    @Id
     private String bikeQR;
     private String brand;
     private String model;
     private String chassisNumber;
     private int productionYear;
+    @Enumerated(EnumType.STRING)
     private BikeSize bikeSize;
     private int mileage;
     private String gearType;
@@ -19,6 +25,8 @@ public class Bike {
     private float nominalEnginePower;
     private float engineTorque;
     private LocalDate lastTestDate;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "bike_owner_id")
     private BikeOwner owner;
 
     public Bike(String bikeQR, String brand, String model, String chassisNumber, int productionYear, BikeSize bikeSize, int mileage, String gearType, String engineType, String powerTrain, float accuCapacity, float maxSupport, float maxEnginePower, float nominalEnginePower, float engineTorque, LocalDate lastTestDate, BikeOwner owner) {
@@ -39,6 +47,10 @@ public class Bike {
         this.engineTorque = engineTorque;
         this.lastTestDate = lastTestDate;
         this.owner = owner;
+    }
+
+    public Bike() {
+
     }
 
     public String getBikeQR() {

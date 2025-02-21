@@ -1,6 +1,13 @@
 package integration4.evalebike.domain;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name="user")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
     private String email;
@@ -11,6 +18,10 @@ public class User {
         this.name = name;
         this.email = email;
         this.password = password;
+    }
+
+    public User() {
+
     }
 
     public Integer getId() {

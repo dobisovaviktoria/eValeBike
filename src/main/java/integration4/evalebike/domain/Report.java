@@ -1,11 +1,20 @@
 package integration4.evalebike.domain;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
 
+@Entity
+@Table(name="report")
 public class Report {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer reportId;
     private String reportName;
     private String bikeQR;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "test_result_id", referencedColumnName = "id", nullable = false)
     private TestResult testResult;
     private LocalDate date;
 
@@ -15,6 +24,10 @@ public class Report {
         this.bikeQR = bikeQR;
         this.testResult = testResult;
         this.date = date;
+    }
+
+    public Report() {
+
     }
 
     public Integer getReportId() {

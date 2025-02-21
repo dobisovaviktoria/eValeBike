@@ -1,11 +1,19 @@
 package integration4.evalebike.domain;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
 
+@Entity
+@Table(name="test_bench")
 public class TestBench {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer testBenchId;
     private String testBenchName;
     private String location;
+    @Enumerated(EnumType.STRING)
     private Status status;
     private LocalDate lastCalibrationDate;
 
@@ -15,6 +23,10 @@ public class TestBench {
         this.location = location;
         this.status = status;
         this.lastCalibrationDate = lastCalibrationDate;
+    }
+
+    public TestBench() {
+
     }
 
     public Integer getTestBenchId() {

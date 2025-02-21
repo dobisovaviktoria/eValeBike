@@ -1,6 +1,13 @@
 package integration4.evalebike.domain;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name="test_result")
 public class TestResult {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     private float batteryVoltage;
     private float batteryCurrent;
     private float batteryCapacity;
@@ -41,6 +48,10 @@ public class TestResult {
         this.verticalInclinationSensor = verticalInclinationSensor;
         this.loadPower = loadPower;
         this.statusPlug = statusPlug;
+    }
+
+    public TestResult() {
+
     }
 
     public float getBatteryVoltage() {
@@ -193,5 +204,13 @@ public class TestResult {
 
     public void setStatusPlug(boolean statusPlug) {
         this.statusPlug = statusPlug;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }
