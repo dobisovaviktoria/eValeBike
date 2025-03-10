@@ -9,13 +9,8 @@
 <div>
     <h1>Admin Management Dashboard</h1>
 
-    <!-- Add New Admin Button -->
-
-
-    <!--    I have an option to create technician or admin, I do not know how to name the button-->
-
     <!-- Admin Table -->
-    <table border="1">
+    <table >
         <thead>
         <tr>
             <th>ID</th>
@@ -38,10 +33,8 @@
             <td th:text="${admin.companyName}"></td>
             <td th:text="${admin.status}"></td>
             <td>
-                <!-- Edit Button -->
-                <a th:href="@{/admin/edit/{id}(id=${admin.id})}">Edit</a>
-<!--                when we click on the button, we should be able to activate/ deactivate
-                    and choose the role or delete the whole row-->
+                    <button>Edit</button>
+
             </td>
         </tr>
         </tbody>
