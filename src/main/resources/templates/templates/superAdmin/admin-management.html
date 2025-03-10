@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Management Dashboard</title>
+</head>
+<body>
+<div>
+    <h1>Admin Management Dashboard</h1>
+
+    <!-- Add New Admin Button -->
+    <a href="/templates/templates/superAdmin/add-admin.html">Add a new </a>
+<!--    I have an option to create technician or admin, I do not know how to name the button-->
+
+    <!-- Admin Table -->
+    <table border="1">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Company Name</th>
+            <th>Status</th>
+            <th>Actions</th>
+<!--            for edit button-->
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Loop through each admin -->
+        <tr th:each="admin : ${admins}">
+            <td th:text="${admin.id}"></td>
+            <td th:text="${admin.name}"></td>
+            <td th:text="${admin.email}"></td>
+            <td th:text="${admin.role}"></td>
+            <td th:text="${admin.companyName}"></td>
+            <td th:text="${admin.status}"></td>
+            <td>
+                <!-- Edit Button -->
+                <a th:href="@{/admin/edit/{id}(id=${admin.id})}">Edit</a>
+<!--                when we click on the button, we should be able to activate/ deactivate
+                    and choose the role or delete the whole row-->
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
