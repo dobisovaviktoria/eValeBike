@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create New Admin</title>
+</head>
+<body>
+<div>
+  <h1>Create</h1>
+
+  <form id="add-admin-form">
+    <div>
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" required />
+    </div>
+    <div>
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required />
+    </div>
+    <div>
+      <label for="companyName">Company Name:</label>
+      <input type="text" id="companyName" name="companyName" />
+    </div>
+<!--    Status should be added here -->
+    <div>
+      <button type="submit">Create</button>
+    </div>
+  </form>
+
+  <button id="back-to-superAdmin-dashboard-btn">Back to Dashboard</button>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/js/superAdmin/add-admin.js"></script>
+
+</body>
+</html>
