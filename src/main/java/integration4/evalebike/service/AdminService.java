@@ -24,7 +24,11 @@ public class AdminService {
         return adminRepository.findById(id);
     }
 
-    public Administrator saveAdmin(Administrator admin) {
+    public Administrator saveAdmin(final String name, final String email, final String companyName) {
+        final Administrator admin = new Administrator();
+        admin.setName(name);
+        admin.setEmail(email);
+        admin.setCompanyName(companyName);
         return adminRepository.save(admin);
 
     }

@@ -1,5 +1,5 @@
 
-// Add a new admin
+// Add a new admin from admin-management page
 document.addEventListener("DOMContentLoaded", () => {
     const addAdminBtn = document.querySelector("#add-admin-btn");
 
@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     try {
         // Fetch admin data from API
-        const response = await fetch("/api/superAdmins");
+        const response = await fetch("/api/superAdmin");
         if (!response.ok) throw new Error("Failed to fetch admins");
 
         const admins = await response.json();
@@ -34,14 +34,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         admins.forEach(admin => {
             const row = document.createElement("tr");
             row.dataset.id = admin.id;
-            //please note that I am using dataset here
+        //please note that I am using dataset here
             row.innerHTML = `
                 <td>${admin.id}</td>
                 <td>${admin.name}</td>
                 <td>${admin.email}</td>
                 <td>${admin.companyName}</td>
-<!--                <td>${admin.status}</td>-->
-<!--still need to decide on status-->
                 <td>
                     <button class="delete-btn" data-id="${admin.id}">Delete</button>
                 </td>
@@ -75,7 +73,7 @@ function attachDeleteEventListeners() {
             if (!confirmDelete) return;
 
             try {
-                const response = await fetch(`/api/superAdmins/admins/${adminId}`, {
+                const response = await fetch(`/api/superAdmin/admins/${adminId}`, {
                     method: "DELETE",
                     headers: {
                         "Accept": "application/json"

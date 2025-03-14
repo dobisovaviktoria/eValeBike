@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         try {
             // Send the POST request with fetch
-            const response = await fetch('/api/superAdmins', {
+            const response = await fetch('/api/superAdmin', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json', // Send JSON data
