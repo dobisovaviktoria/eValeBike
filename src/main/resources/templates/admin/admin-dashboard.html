@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+</head>
+<body>
+<div style="padding: 20px;">
+  <h2>Admin Dashboard</h2>
+
+  <!-- Technician Profiles Management -->
+  <div style="margin-bottom: 20px;">
+    <h3>Technician Profiles Management</h3>
+    <table border="1" style="width: 100%; border-collapse: collapse;">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody id="technician-table-body">
+      <!-- Rows will be populated dynamically by JavaScript -->
+      </tbody>
+    </table>
+    <button id="add-technician-btn">Add New Technician</button>
+  </div>
+</div>
+
+<script src="/js/admin-dashboard.js" type="module"></script>
+</body>
+</html>
