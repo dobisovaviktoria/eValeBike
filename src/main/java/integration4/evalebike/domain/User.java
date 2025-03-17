@@ -13,6 +13,8 @@ public abstract class User {
     private String email;
     private String password;
     private String companyName;
+    @Transient
+    private Role role;
 
     public User(Integer id, String name, String email, String password) {
         this.id = id;

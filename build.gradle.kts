@@ -33,6 +33,8 @@ dependencies {
     implementation("com.google.zxing:core:3.5.0")
     implementation("com.google.zxing:javase:3.5.0")
     implementation("org.webjars.npm:html5-qrcode:2.3.8")
+    implementation ("org.springframework.boot:spring-boot-starter-security")
+    implementation ("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
 
 }
 
