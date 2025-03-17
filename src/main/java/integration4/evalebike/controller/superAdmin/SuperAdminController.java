@@ -15,7 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 @Controller
-@RequestMapping("/superAdmin")
+@RequestMapping("/super-admin")
 public class SuperAdminController {
     private final SuperAdminService superAdminService;
     private final AdminService adminService;
@@ -32,7 +32,7 @@ public class SuperAdminController {
         return modelAndView;
     }
 
-    @GetMapping("/add")
+    @GetMapping("/admins/add")
     public ModelAndView add() {
         return new ModelAndView("superAdmin/add-admin");
     }

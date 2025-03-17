@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         try {
             // Send the POST request with fetch
-            const response = await fetch('/api/superAdmin', {
+            const response = await fetch('/api/super-admin', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json', // Send JSON data
@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 // If the admin is created successfully (201 Created)
                 const admin = await response.json(); // Get the created admin from the response
                 alert(`Congrats, your admin was created. It has ID #${admin.id}`);
-                window.location.href = "/superAdmin/admins"; // Redirect to the admin management page
+                window.location.href = "/super-admin/admins"; // Redirect to the admin management page
             } else {
                 // If something goes wrong
                 alert('Something went wrong. Please try again.');
@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (backToDashboardBtn) {
         backToDashboardBtn.addEventListener("click", function () {
             console.log("Back to dashboard button clicked!");
-            window.location.href = "/superAdmin/admins";
+            window.location.href = "/super-admin/admins";
         });
     }
 });

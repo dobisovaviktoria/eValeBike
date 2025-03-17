@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             try {
                 alert("Redirecting to Add Admin Page...");
-                window.location.href = "/superAdmin/add";
+                window.location.href = "/super-admin/admins/add";
             } catch (error) {
                 console.error("Error navigating:", error);
                 alert("Something went wrong while redirecting.");
@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     try {
         // Fetch admin data from API
-        const response = await fetch("/api/superAdmin");
+        const response = await fetch("/api/super-admin");
         if (!response.ok) throw new Error("Failed to fetch admins");
 
         const admins = await response.json();
@@ -73,7 +73,7 @@ function attachDeleteEventListeners() {
             if (!confirmDelete) return;
 
             try {
-                const response = await fetch(`/api/superAdmin/admins/${adminId}`, {
+                const response = await fetch(`/api/super-admin/admins/${adminId}`, {
                     method: "DELETE",
                     headers: {
                         "Accept": "application/json"

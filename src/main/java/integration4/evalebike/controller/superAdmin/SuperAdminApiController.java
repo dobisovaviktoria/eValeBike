@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/superAdmin")
+@RequestMapping("/api/super-admin")
 public class SuperAdminApiController {
     private SuperAdminService superAdminService;
     private AdminService adminService;
@@ -28,7 +28,7 @@ public class SuperAdminApiController {
 
     //  A list of administrator
     @GetMapping()
-    public ResponseEntity<List<AdministratorDto>> getAllAdmin() {
+    public ResponseEntity<List<AdministratorDto>> getAllAdmins() {
         final List<AdministratorDto> administratorDtos = adminService.getAllAdmins()
                 .stream().map(adminMapper :: toAdminDto)
                 .toList();
@@ -52,11 +52,4 @@ public class SuperAdminApiController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-
-    //Updating admin details
-    @PutMapping("/admins/{adminId}")
-    public ResponseEntity<SuperAdmin> updateSuperAdmin(@PathVariable Integer adminId, @RequestBody SuperAdmin superAdminDetails) {
-        SuperAdmin updateSuperAdmin= superAdminService.updateSuperAdmin(adminId, superAdminDetails);
-        return ResponseEntity.ok(updateSuperAdmin);
-    }
 }

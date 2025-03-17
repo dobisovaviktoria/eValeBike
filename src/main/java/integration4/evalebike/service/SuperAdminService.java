@@ -1,18 +1,20 @@
 package integration4.evalebike.service;
-
 import integration4.evalebike.domain.SuperAdmin;
+import integration4.evalebike.exceptions.NotFoundException;
 import integration4.evalebike.repository.SuperAdminRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
+@Transactional
 public class SuperAdminService {
-
-    @Autowired
     private SuperAdminRepository superAdminRepository;
+
+    public SuperAdminService(SuperAdminRepository superAdminRepository) {
+        this.superAdminRepository = superAdminRepository;
+    }
 
     // Get all admins
     public List<SuperAdmin> getAllSuperAdmins() {
@@ -20,9 +22,9 @@ public class SuperAdminService {
     }
 
     // Get admin by ID
-    public Optional<SuperAdmin> getSuperAdminById(Integer id) {
-        return superAdminRepository.findById(id);
-    }
+    public SuperAdmin getSuperAdminById(final Integer id) {
+            return superAdminRepository.findById(id).orElseThrow(()-> NotFoundException.admin(id));
+        }
 
     // Save a new admin
     public SuperAdmin saveSuperAdmin(SuperAdmin superAdminadmin) {

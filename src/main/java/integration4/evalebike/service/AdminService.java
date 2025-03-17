@@ -1,8 +1,10 @@
 package integration4.evalebike.service;
 
 import integration4.evalebike.domain.Administrator;
+import integration4.evalebike.exceptions.NotFoundException;
 import integration4.evalebike.repository.AdminRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,9 +22,10 @@ public class AdminService {
         return adminRepository.findAll();
     }
 
-    public Optional<Administrator> getAdminById(Integer id) {
-        return adminRepository.findById(id);
+    public Administrator getAdminById(final Integer id) {
+        return adminRepository.findById(id).orElseThrow(()->NotFoundException.admin(id));
     }
+
 
     public Administrator saveAdmin(final String name, final String email, final String companyName) {
         final Administrator admin = new Administrator();
