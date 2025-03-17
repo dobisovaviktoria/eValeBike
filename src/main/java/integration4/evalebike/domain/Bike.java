@@ -8,6 +8,7 @@ import java.time.LocalDate;
 @Table(name = "bike")
 public class Bike {
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String bikeQR;
     private String brand;
     private String model;
@@ -25,11 +26,8 @@ public class Bike {
     private float nominalEnginePower;
     private float engineTorque;
     private LocalDate lastTestDate;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "bike_owner_id")
-    private BikeOwner owner;
 
-    public Bike(String bikeQR, String brand, String model, String chassisNumber, int productionYear, BikeSize bikeSize, int mileage, String gearType, String engineType, String powerTrain, float accuCapacity, float maxSupport, float maxEnginePower, float nominalEnginePower, float engineTorque, LocalDate lastTestDate, BikeOwner owner) {
+    public Bike(String bikeQR, String brand, String model, String chassisNumber, int productionYear, BikeSize bikeSize, int mileage, String gearType, String engineType, String powerTrain, float accuCapacity, float maxSupport, float maxEnginePower, float nominalEnginePower, float engineTorque, LocalDate lastTestDate) {
         this.bikeQR = bikeQR;
         this.brand = brand;
         this.model = model;
@@ -46,11 +44,28 @@ public class Bike {
         this.nominalEnginePower = nominalEnginePower;
         this.engineTorque = engineTorque;
         this.lastTestDate = lastTestDate;
-        this.owner = owner;
     }
 
     public Bike() {
 
+    }
+
+    public Bike(String brand, String model, String chassisNumber, int productionYear, BikeSize bikeSize, int mileage, String gearType, String engineType, String powerTrain, float accuCapacity, float maxSupport, float maxEnginePower, float nominalEnginePower, float engineTorque, LocalDate lastTestDate) {
+        this.brand = brand;
+        this.model = model;
+        this.chassisNumber = chassisNumber;
+        this.productionYear = productionYear;
+        this.bikeSize = bikeSize;
+        this.mileage = mileage;
+        this.gearType = gearType;
+        this.engineType = engineType;
+        this.powerTrain = powerTrain;
+        this.accuCapacity = accuCapacity;
+        this.maxSupport = maxSupport;
+        this.maxEnginePower = maxEnginePower;
+        this.nominalEnginePower = nominalEnginePower;
+        this.engineTorque = engineTorque;
+        this.lastTestDate = lastTestDate;
     }
 
     public String getBikeQR() {
@@ -91,14 +106,6 @@ public class Bike {
 
     public void setLastTestDate(LocalDate lastTestDate) {
         this.lastTestDate = lastTestDate;
-    }
-
-    public BikeOwner getOwner() {
-        return owner;
-    }
-
-    public void setOwner(BikeOwner owner) {
-        this.owner = owner;
     }
 
     public String getChassisNumber() {
