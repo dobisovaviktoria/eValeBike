@@ -11,7 +11,9 @@
     <li sec:authorize="hasAnyRole('TECHNICIAN', 'ADMIN', 'SUPER_ADMIN')"><a th:href="@{/technician/bike-owners}">Bike Owner Dashboard</a></li>
     <li sec:authorize="hasAnyRole('ADMIN', 'SUPER_ADMIN')"><a th:href="@{/admin/technicians}">Technician Dashboard</a></li>
     <li sec:authorize="hasRole('SUPER_ADMIN')"><a th:href="@{/super-admin/admins}">Admin Dashboard</a></li>
-    <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
+    <form th:action="@{/logout}" method="post">
+      <button type="submit" class="btn btn-link" sec:authorize="isAuthenticated()">Logout</button>
+    </form>
     <li sec:authorize="isAnonymous()"><a th:href="@{/login}">Login</a></li>
   </ul>
 </nav>

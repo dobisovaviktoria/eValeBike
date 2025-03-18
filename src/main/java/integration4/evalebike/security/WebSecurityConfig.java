@@ -24,6 +24,13 @@ public class WebSecurityConfig {
                 .formLogin(login -> {
                     login.loginPage("/login").defaultSuccessUrl("/technician/bike-owners").permitAll();
                 })
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login?logout")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                        .permitAll()
+                )
                 .build();
     }
 
