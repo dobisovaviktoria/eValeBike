@@ -12,7 +12,6 @@ public abstract class User {
     private String name;
     private String email;
     private String password;
-    private String companyName;
     @Enumerated(EnumType.STRING)
     private Role role;
 
