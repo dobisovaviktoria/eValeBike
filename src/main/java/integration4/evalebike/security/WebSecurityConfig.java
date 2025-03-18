@@ -15,10 +15,10 @@ public class WebSecurityConfig {
         return security
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/login", "/home").permitAll()
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/admin/**").hasAnyRole("ADMIN", "SUPER_ADMIN")
                         .requestMatchers("/superAdmin/**").hasRole("SUPER_ADMIN")
-                        .requestMatchers("/technician/**").hasRole("TECHNICIAN")
-                        .requestMatchers("/bikeOwner/**").hasRole("BIKE_OWNER")
+                        .requestMatchers("/technician/**").hasAnyRole("TECHNICIAN", "ADMIN", "SUPER_ADMIN")
+                        .requestMatchers("/bikeOwner/**").hasAnyRole("BIKE_OWNER", "TECHNICIAN", "ADMIN", "SUPER_ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(login -> {
