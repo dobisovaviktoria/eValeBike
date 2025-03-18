@@ -79,14 +79,6 @@ public abstract class User {
         this.password = password;
     }
 
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
     public Role getRole() {
         return role;
     }
