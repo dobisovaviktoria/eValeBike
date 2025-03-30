@@ -1,0 +1,43 @@
+ application/octet-stream
+
+###
+# curl -X POST https://testbench.raoul.dev/api/testDto
+#     -H "X-Api-Key: 9e8dffd7-f6e1-45b4-b4aa-69fd257ca200"
+#     -H "Content-Type: application/json"
+#     -d '{"type":"STRESS","batteryCapacity":200.5,"maxSupport":340,"enginePowerMax":600,"enginePowerNominal":250,"engineTorque":85}'
+POST https://testbench.raoul.dev/api/test
+X-Api-Key: 9e8dffd7-f6e1-45b4-b4aa-69fd257ca200
+Content-Type: application/json
+
+{
+  "type": "STRESS",
+  "batteryCapacity": 200.5,
+  "maxSupport": 340,
+  "enginePowerMax": 600,
+  "enginePowerNominal": 250,
+  "engineTorque": 85
+}
+
+###
+### Get testDto status
+# curl -X GET https://testbench.raoul.dev/api/test/e0d7e8bb-9461-43e5-814f-572fa05f84f5
+#     -H "X-Api-Key: 9e8dffd7-f6e1-45b4-b4aa-69fd257ca200"
+GET https://testbench.raoul.dev/api/test/e0d7e8bb-9461-43e5-814f-572fa05f84f5
+X-Api-Key: 9e8dffd7-f6e1-45b4-b4aa-69fd257ca200
+
+###
+# curl -X GET https://testbench.raoul.dev/api/test/ef4fdad4-fccd-43b0-99e8-d30a39c65f26
+#    -H "X-Api-Key: 9e8dffd7-f6e1-45b4-b4aa-69fd257ca200"
+GET https://testbench.raoul.dev/api/test/ef4fdad4-fccd-43b0-99e8-d30a39c65f26
+X-Api-Key: 9e8dffd7-f6e1-45b4-b4aa-69fd257ca200
+
+###
+
+
+
+### Get testDto report
+GET http://127.0.0.1:8080/api/test/e0d7e8bb-9461-43e5-814f-572fa05f84f5/report
+Content-Type: application/json
+
+//GET http://127.0.0.1:8080/api/tests/b09910ee-dbe2-4365-b9ff-80b588cfc19e/raw-report
+

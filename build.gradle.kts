@@ -29,6 +29,9 @@ dependencies {
     implementation("org.webjars:bootstrap:5.3.3")
     implementation ("org.mapstruct:mapstruct:1.6.3")
     annotationProcessor ("org.mapstruct:mapstruct-processor:1.6.3")
+    implementation ("org.springframework.boot:spring-boot-starter-webflux")
+
+    implementation ("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
 
 }
 
