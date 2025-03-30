@@ -22,6 +22,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation ("org.springframework.boot:spring-boot-starter-security")
     runtimeOnly ("org.postgresql:postgresql:42.7.5")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
@@ -32,6 +33,8 @@ dependencies {
     implementation("com.google.zxing:core:3.5.0")
     implementation("com.google.zxing:javase:3.5.0")
     implementation("org.webjars.npm:html5-qrcode:2.3.8")
+    implementation ("org.springframework.boot:spring-boot-starter-security")
+    implementation ("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
 
 }
 
