@@ -1,15 +1,20 @@
 package integration4.evalebike.controller;
 
 import integration4.evalebike.controller.viewModel.ReportsViewModel;
+import integration4.evalebike.controller.viewModel.TestReportEntriesViewModel;
+import integration4.evalebike.domain.TestReportEntry;
 import integration4.evalebike.service.TestBenchService;
 import integration4.evalebike.service.TestReportService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/technician")
@@ -44,4 +49,15 @@ public class TestReportController {
         modelAndView.addObject("reports", ReportsViewModel.from(testReportService.getAll()));
         return modelAndView;
     }
+
+    @GetMapping("/report/entries/{id}")
+    public ModelAndView showTestReportEntries(@PathVariable String id) {
+        List<TestReportEntry> entries = testReportService.getEntriesByTestReportId(id);
+        TestReportEntriesViewModel viewModel = TestReportEntriesViewModel.from(entries);
+        ModelAndView modelAndView = new ModelAndView("technician/test-report-entries");
+        modelAndView.addObject("entries", viewModel);
+        return modelAndView;
+    }
+
+
 }

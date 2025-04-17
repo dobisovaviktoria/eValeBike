@@ -46,7 +46,9 @@
           </thead>
           <tbody>
           <tr th:each="report : ${reports.reportViewModels()}">
-            <td th:text="${report.id}"></td>
+            <td>
+              <a th:href="@{/technician/report/entries/{id}(id=${report.id})}" th:text="${report.id}"></a>
+            </td>
             <td th:text="${report.expiryDate}"></td>
             <td th:text="${report.state}"></td>
             <td th:text="${report.type}"></td>
