@@ -4,8 +4,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-
-import java.time.LocalDateTime;
 //this class is just to have connection between bike and test.
 //I didnt want to save these together with test report,
 // as it would invoke error for DTOs, at least I assumed.
