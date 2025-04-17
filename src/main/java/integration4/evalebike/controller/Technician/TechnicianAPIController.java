@@ -5,6 +5,8 @@ import integration4.evalebike.controller.testBench.dto.TestRequestDTO;
 import integration4.evalebike.controller.testBench.dto.TestResponseDTO;
 import integration4.evalebike.domain.Bike;
 import integration4.evalebike.domain.BikeOwner;
+import integration4.evalebike.domain.TestEvent;
+import integration4.evalebike.repository.TestEventRepository;
 import integration4.evalebike.service.BikeOwnerService;
 import integration4.evalebike.service.BikeService;
 import integration4.evalebike.service.TestBenchService;
@@ -28,13 +30,15 @@ public class TechnicianAPIController {
     private final BikeMapper bikeMapper;
     private final BikeOwnerMapper bikeOwnerMapper;
     private final TestBenchService  testBenchService;
+    private final TestEventRepository testEventRepository;
 
-    public TechnicianAPIController(BikeService bikeService, BikeOwnerService bikeOwnerService, BikeMapper bikeMapper, BikeOwnerMapper bikeOwnerMapper, TestBenchService testBenchService) {
+    public TechnicianAPIController(BikeService bikeService, BikeOwnerService bikeOwnerService, BikeMapper bikeMapper, BikeOwnerMapper bikeOwnerMapper, TestBenchService testBenchService, TestEventRepository testEventRepository) {
         this.bikeService = bikeService;
         this.bikeOwnerService = bikeOwnerService;
         this.bikeMapper = bikeMapper;
         this.bikeOwnerMapper = bikeOwnerMapper;
         this.testBenchService = testBenchService;
+        this.testEventRepository = testEventRepository;
     }
 
     @PostMapping("/bikes")
@@ -57,23 +61,34 @@ public class TechnicianAPIController {
     @PostMapping("/start/{bikeQR}")
     public Mono<String> startTest(@PathVariable String bikeQR, @RequestParam("testType") String testType, Principal principal) {
         System.out.println("Received bikeQR: " + bikeQR + ", testType: " + testType);
+
         String technicianUsername = principal != null ? principal.getName() : "anonymous";
 
         return Mono.justOrEmpty(bikeService.findById(bikeQR))
                 .switchIfEmpty(Mono.error(new RuntimeException("Bike not found with QR: " + bikeQR)))
                 .doOnNext(bike -> System.out.println("Found bike: " + bike))
-                .map(bike -> {
-                    return new TestRequestDTO(
-                            testType.toUpperCase(),
-                            bike.getAccuCapacity(),
-                            bike.getMaxSupport(),
-                            bike.getMaxEnginePower(),
-                            bike.getNominalEnginePower(),
-                            bike.getEngineTorque()
-                    );
-                })
+                .map(bike -> new TestRequestDTO(
+                        testType.toUpperCase(),
+                        bike.getAccuCapacity(),
+                        bike.getMaxSupport(),
+                        bike.getMaxEnginePower(),
+                        bike.getNominalEnginePower(),
+                        bike.getEngineTorque()
+                ))
                 .flatMap(testRequestDTO -> testBenchService.startTest(testRequestDTO, technicianUsername))
-                .map(response -> "redirect:/technician/loading?testId=" + response.getId())
+                .flatMap(response -> {
+                    String testId = response.getId();
+                    System.out.println("Creating TestEvent with bikeQR: " + bikeQR + ", testId: " + testId + ", technicianUsername: " + technicianUsername);
+
+                    // Create TestEvent
+                    TestEvent testEvent = new TestEvent(bikeQR, testId, technicianUsername);
+                    return Mono.fromCallable(() -> {
+                                TestEvent savedEvent = testEventRepository.save(testEvent);
+                                System.out.println("Saved TestEvent: " + savedEvent);
+                                return savedEvent;
+                            })
+                            .thenReturn("redirect:/technician/loading?testId=" + testId);
+                })
                 .onErrorResume(e -> {
                     System.err.println("Error starting test: " + e.getMessage());
                     e.printStackTrace();
@@ -84,10 +99,9 @@ public class TechnicianAPIController {
                         errorMessage = "Invalid test parameters";
                     }
                     String encodedError = URLEncoder.encode(errorMessage, StandardCharsets.UTF_8);
-                    return Mono.just("redirect:/technician/bike-dashboard?error=" + encodedError);
+                    return Mono.just("redirect:/technician/bikes?error=" + encodedError);
                 });
     }
-
     @GetMapping("/status/{testId}")
     @ResponseBody
     public Mono<TestResponseDTO> getTestStatus(@PathVariable String testId) {
