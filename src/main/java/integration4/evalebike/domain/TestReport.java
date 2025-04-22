@@ -31,8 +31,12 @@ public class TestReport {
     @Column(name = "engine_torque")
     private double engineTorque;
 
-    @OneToMany(mappedBy = "testReport", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "testReport", fetch = FetchType.LAZY)
     private List<TestReportEntry> reportEntries;
+//    @ManyToOne(mappedBy ="")
+    private String bikeQR;
+
+    private  Integer techinianId;
 
     // Default constructor for JPA
     public TestReport() {}
