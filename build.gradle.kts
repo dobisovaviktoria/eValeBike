@@ -31,6 +31,9 @@ dependencies {
     implementation("org.webjars.npm:bootstrap-icons:1.11.1")
     implementation ("org.mapstruct:mapstruct:1.6.3")
     annotationProcessor ("org.mapstruct:mapstruct-processor:1.6.3")
+    implementation ("org.springframework.boot:spring-boot-starter-webflux")
+
+    implementation ("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
     implementation("com.google.zxing:core:3.5.0")
     implementation("com.google.zxing:javase:3.5.0")
     implementation("org.webjars.npm:html5-qrcode:2.3.8")
