@@ -33,10 +33,10 @@ public class TestReport {
 
     @OneToMany(mappedBy = "testReport", fetch = FetchType.LAZY)
     private List<TestReportEntry> reportEntries;
-//    @ManyToOne(mappedBy ="")
+
     private String bikeQR;
 
-    private  Integer techinianId;
+    private  String techinianName;
 
     // Default constructor for JPA
     public TestReport() {}
@@ -78,4 +78,12 @@ public class TestReport {
     public void setEngineTorque(double engineTorque) { this.engineTorque = engineTorque; }
     public List<TestReportEntry> getReportEntries() { return reportEntries; }
     public void setReportEntries(List<TestReportEntry> reportEntries) { this.reportEntries = reportEntries; }
+
+    public String getBikeQR() {return bikeQR;}
+
+    public void setBikeQR(String bikeQR) {this.bikeQR = bikeQR;}
+
+    public String getTechinianName() {return techinianName;}
+
+    public void setTechinianName(String techinianName) {this.techinianName = techinianName;}
 }

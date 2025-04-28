@@ -103,111 +103,26 @@ public class TestBenchService {
                 .doOnError(e -> logger.error("Error fetching test result for testId {}: {}", testId, e.getMessage()));
     }
 
-//    public Mono<TestReportDTO> getTestReportById(String testId) {
-//        logger.info("Fetching report for testId: {}", testId);
-//        return testBenchClient.get()
-//                .uri("/api/test/{id}/report", testId)
-//                .header("X-Api-Key", apiKey)
-//                .retrieve()
-//                .onStatus(HttpStatusCode::isError, response ->
-//                        response.bodyToMono(String.class)
-//                                .doOnNext(errorBody -> logger.error("Report fetch error for testId {}: {} - {}", testId, response.statusCode(), errorBody))
-//                                .flatMap(errorBody -> Mono.error(new RuntimeException("Failed to fetch test report: " + errorBody))))
-//                .bodyToMono(String.class)
-//                .doOnNext(csvData -> logger.info("Received CSV data for testId {}: {}", testId, csvData.substring(0, Math.min(csvData.length(), 100)) + "..."))
-//                .flatMap(csvData -> {
-//                    List<TestReportEntryDTO> reportEntries;
-//                    try {
-//                        reportEntries = parseCsvToReportEntries(csvData);
-//                        logger.info("Parsed {} report entries for testId {}", reportEntries.size(), testId);
-//                    } catch (Exception e) {
-//                        logger.error("Failed to parse CSV for testId {}: {}", testId, e.getMessage());
-//                        return Mono.error(new RuntimeException("Failed to parse CSV data", e));
-//                    }
-//                    return getTestResultById(testId)
-//                            .map(testResponse -> {
-//                                if (testResponse.getId() == null) {
-//                                    logger.error("TestResponse ID is null for testId: {}", testId);
-//                                    throw new RuntimeException("TestResponse ID is null");
-//                                }
-//                                if (!"COMPLETED".equalsIgnoreCase(testResponse.getState())) {
-//                                    logger.warn("Test not completed for testId {}: state = {}", testId, testResponse.getState());
-//                                    throw new RuntimeException("Test is not completed yet");
-//                                }
-//                                TestReport testReport = new TestReport(
-//                                        testResponse.getId(),
-//                                        testResponse.getExpiryDate(),
-//                                        testResponse.getState(),
-//                                        testResponse.getType(),
-//                                        testResponse.getBatteryCapacity(),
-//                                        testResponse.getMaxSupport(),
-//                                        testResponse.getEnginePowerMax(),
-//                                        testResponse.getEnginePowerNominal(),
-//                                        testResponse.getEngineTorque(),
-//                                        null
-//                                );
-//                                List<TestReportEntry> entries = reportEntries.stream()
-//                                        .map(dto -> new TestReportEntry(
-//                                                testReport,
-//                                                dto.timestamp(),
-//                                                dto.batteryVoltage(),
-//                                                dto.batteryCurrent(),
-//                                                dto.batteryCapacity(),
-//                                                dto.batteryTemperatureCelsius(),
-//                                                dto.chargeStatus(),
-//                                                dto.assistanceLevel(),
-//                                                dto.torqueCrankNm(),
-//                                                dto.bikeWheelSpeedKmh(),
-//                                                dto.cadanceRpm(),
-//                                                dto.engineRpm(),
-//                                                dto.enginePowerWatt(),
-//                                                dto.wheelPowerWatt(),
-//                                                dto.rollTorque(),
-//                                                dto.loadcellN(),
-//                                                dto.rolHz(),
-//                                                dto.horizontalInclination(),
-//                                                dto.verticalInclination(),
-//                                                dto.loadPower(),
-//                                                dto.statusPlug()
-//                                        ))
-//                                        .collect(Collectors.toList());
-//                                testReport.setReportEntries(entries);
-//                                try {
-//                                    TestReport savedReport = testReportRepository.save(testReport);
-//                                    logger.info("Saved TestReport with ID: {} for testId {}", savedReport.getId(), testId);
-//                                    return new TestReportDTO(
-//                                            testResponse.getId(),
-//                                            testResponse.getExpiryDate(),
-//                                            testResponse.getState(),
-//                                            testResponse.getType(),
-//                                            testResponse.getBatteryCapacity(),
-//                                            testResponse.getMaxSupport(),
-//                                            testResponse.getEnginePowerMax(),
-//                                            testResponse.getEnginePowerNominal(),
-//                                            testResponse.getEngineTorque(),
-//                                            reportEntries
-//                                    );
-//                                } catch (Exception e) {
-//                                    logger.error("Failed to save TestReport for testId {}: {}", testId, e.getMessage());
-//                                    throw new RuntimeException("Failed to save TestReport", e);
-//                                }
-//                            });
-//                })
-//                .doOnError(e -> logger.error("Error fetching report for testId {}: {}", testId, e.getMessage()));
-//    }
-
 
     //to get the whole test report (including test entries)
+
+
     public Mono<TestReportDTO> getTestReportById(String testId) {
         logger.info("Fetching report for testId: {}", testId);
 
         return fetchCsvReport(testId)
                 .flatMap(csv -> parseCsvToEntries(csv, testId))
-                .flatMap(entries -> fetchAndValidateTest(testId)
-                        .flatMap(test -> saveTestReport(test, entries))
-                )
+                .flatMap(entries -> {
+                    TestReportEntryDTO summarizedEntry = summarizeEntries(entries);  // <-- summarize here
+                    return fetchAndValidateTest(testId)
+                            .flatMap(test -> saveTestReport(test, List.of(summarizedEntry))); // <-- save only summarized
+                })
                 .doOnError(e -> logger.error("Error fetching report for testId {}: {}", testId, e.getMessage()));
     }
+
+
+
+
     private Mono<String> fetchCsvReport(String testId) {
         return testBenchClient.get()
                 .uri("/api/test/{id}/report", testId)
@@ -344,4 +259,66 @@ public class TestBenchService {
                 })
                 .collect(Collectors.toList());
     }
+
+    private TestReportEntryDTO summarizeEntries(List<TestReportEntryDTO> entries) {
+        if (entries == null || entries.isEmpty()) {
+            throw new IllegalArgumentException("Entries list is empty or null");
+        }
+
+        int count = entries.size();
+
+        double avgBatteryVoltage = round(entries.stream().mapToDouble(TestReportEntryDTO::batteryVoltage).average().orElse(0));
+        double avgBatteryCurrent = round(entries.stream().mapToDouble(TestReportEntryDTO::batteryCurrent).average().orElse(0));
+        double avgBatteryCapacity = round(entries.stream().mapToDouble(TestReportEntryDTO::batteryCapacity).average().orElse(0));
+        double avgBatteryTemp = round(entries.stream().mapToDouble(TestReportEntryDTO::batteryTemperatureCelsius).average().orElse(0));
+        int avgChargeStatus = (int) Math.round(entries.stream().mapToInt(TestReportEntryDTO::chargeStatus).average().orElse(0));
+        int avgAssistanceLevel = (int) Math.round(entries.stream().mapToInt(TestReportEntryDTO::assistanceLevel).average().orElse(0));
+        double avgTorqueCrank = round(entries.stream().mapToDouble(TestReportEntryDTO::torqueCrankNm).average().orElse(0));
+        double avgBikeWheelSpeed = round(entries.stream().mapToDouble(TestReportEntryDTO::bikeWheelSpeedKmh).average().orElse(0));
+        int avgCadenceRpm = (int) Math.round(entries.stream().mapToInt(TestReportEntryDTO::cadanceRpm).average().orElse(0));
+        int avgEngineRpm = (int) Math.round(entries.stream().mapToInt(TestReportEntryDTO::engineRpm).average().orElse(0));
+        double avgEnginePowerWatt = round(entries.stream().mapToDouble(TestReportEntryDTO::enginePowerWatt).average().orElse(0));
+        double avgWheelPowerWatt = round(entries.stream().mapToDouble(TestReportEntryDTO::wheelPowerWatt).average().orElse(0));
+        double avgRollTorque = round(entries.stream().mapToDouble(TestReportEntryDTO::rollTorque).average().orElse(0));
+        double avgLoadcellN = round(entries.stream().mapToDouble(TestReportEntryDTO::loadcellN).average().orElse(0));
+        double avgRolHz = round(entries.stream().mapToDouble(TestReportEntryDTO::rolHz).average().orElse(0));
+        double avgHorizontalInclination = round(entries.stream().mapToDouble(TestReportEntryDTO::horizontalInclination).average().orElse(0));
+        double avgVerticalInclination = round(entries.stream().mapToDouble(TestReportEntryDTO::verticalInclination).average().orElse(0));
+        double avgLoadPower = round(entries.stream().mapToDouble(TestReportEntryDTO::loadPower).average().orElse(0));
+
+        boolean statusPlug = entries.stream().map(TestReportEntryDTO::statusPlug)
+                .filter(Boolean::booleanValue)
+                .count() > count / 2;  // majority wins
+
+        LocalDateTime timestamp = entries.get(0).timestamp();
+
+        return new TestReportEntryDTO(
+                timestamp,
+                avgBatteryVoltage,
+                avgBatteryCurrent,
+                avgBatteryCapacity,
+                avgBatteryTemp,
+                avgChargeStatus,
+                avgAssistanceLevel,
+                avgTorqueCrank,
+                avgBikeWheelSpeed,
+                avgCadenceRpm,
+                avgEngineRpm,
+                avgEnginePowerWatt,
+                avgWheelPowerWatt,
+                avgRollTorque,
+                avgLoadcellN,
+                avgRolHz,
+                avgHorizontalInclination,
+                avgVerticalInclination,
+                avgLoadPower,
+                statusPlug
+        );
+    }
+
+    // Round to 2 decimal places
+    private double round(double value) {
+        return Math.round(value * 100.0) / 100.0;
+    }
+
 }
