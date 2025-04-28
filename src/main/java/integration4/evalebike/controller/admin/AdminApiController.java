@@ -1,17 +1,21 @@
 package integration4.evalebike.controller.admin;
 
 import integration4.evalebike.controller.admin.dto.TechnicianMapper;
+import integration4.evalebike.controller.admin.dto.TestBenchMapper;
 import integration4.evalebike.controller.admin.dto.request.TechnicianRequestDTO;
 import integration4.evalebike.controller.admin.dto.response.TechnicianResponseDTO;
+import integration4.evalebike.controller.admin.dto.response.TestBenchResponseDTO;
 import integration4.evalebike.domain.Activity;
 import integration4.evalebike.domain.RecentActivity;
 import integration4.evalebike.domain.Technician;
 import integration4.evalebike.security.CustomUserDetails;
 import integration4.evalebike.service.RecentActivityService;
 import integration4.evalebike.service.TechnicianService;
+import integration4.evalebike.service.TestBenchService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -23,11 +27,15 @@ import java.util.stream.Collectors;
 public class AdminApiController {
     private final TechnicianService technicianService;
     private final TechnicianMapper technicianMapper;
+    private final TestBenchService testBenchService;
+    private final TestBenchMapper testBenchMapper;
     private final RecentActivityService recentActivityService;
 
-    public AdminApiController(TechnicianService technicianService, TechnicianMapper technicianMapper, RecentActivityService recentActivityService) {
+    public AdminApiController(TechnicianService technicianService, TechnicianMapper technicianMapper, TestBenchService testBenchService, TestBenchMapper testBenchMapper, RecentActivityService recentActivityService) {
         this.technicianService = technicianService;
         this.technicianMapper = technicianMapper;
+        this.testBenchService = testBenchService;
+        this.testBenchMapper = testBenchMapper;
         this.recentActivityService = recentActivityService;
     }
 
@@ -56,6 +64,17 @@ public class AdminApiController {
     public ResponseEntity<TechnicianResponseDTO> getTechnicianById(@PathVariable Integer id) {
         Technician technician = technicianService.getTechnicianById(id);
         return ResponseEntity.ok(technicianMapper.toDto(technician));
+    }
+
+    // Retrieve all test benches
+    @GetMapping("/test-benches")
+    @Transactional(readOnly = true)
+    public ResponseEntity<List<TestBenchResponseDTO>> getAllTestBenches() {
+        List<TestBenchResponseDTO> testBenches = testBenchService.getAllTestBenches()
+                .stream()
+                .map(testBenchMapper::toDto)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(testBenches);
     }
 
     // Update an existing technician
