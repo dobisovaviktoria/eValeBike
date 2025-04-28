@@ -10,13 +10,13 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Transactional
 @Service
 public class BikeService {
     private final BikeRepository bikeRepository;
 
-    @Autowired
     public BikeService(BikeRepository bikeRepository) {
         this.bikeRepository = bikeRepository;
     }
@@ -30,12 +30,18 @@ public class BikeService {
     }
 
     public Bike addBike(String brand, String model, String chassisNumber, int productionYear, BikeSize bikeSize,
-                        int mileage, String gearType, String engineType, String powerTrain, float accuCapacity, float maxSupport,
-                        float maxEnginePower, float nominalEnginePower, float engineTorque, LocalDate lastTestDate) throws Exception {
+                        int mileage, String gearType, String engineType,
+                        String powerTrain,
+                        double accuCapacity, double maxSupport,
+                        double maxEnginePower, double nominalEnginePower, double engineTorque, LocalDate lastTestDate) throws Exception {
 
         Bike bike = new Bike(brand, model, chassisNumber, productionYear, bikeSize, mileage, gearType, engineType, powerTrain,
                 accuCapacity, maxSupport, maxEnginePower, nominalEnginePower, engineTorque, lastTestDate);
 
         return bikeRepository.save(bike);
+    }
+
+    public Optional<Bike> findById(String bikeQR) {
+        return bikeRepository.findById(bikeQR);
     }
 }

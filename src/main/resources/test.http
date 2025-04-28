@@ -1,0 +1,37 @@
+ application/octet-stream
+
+###
+# curl -X POST https://testbench.raoul.dev/api/testDto
+#     -H "X-Api-Key: 9e8dffd7-f6e1-45b4-b4aa-69fd257ca200"
+#     -H "Content-Type: application/json"
+#     -d '{"type":"STRESS","batteryCapacity":200.5,"maxSupport":340,"enginePowerMax":600,"enginePowerNominal":250,"engineTorque":85}'
+POST https://testbench.raoul.dev/api/test
+X-Api-Key: 9e8dffd7-f6e1-45b4-b4aa-69fd257ca200
+Content-Type: application/json
+
+{
+  "type": "STRESS",
+  "batteryCapacity": 200.5,
+  "maxSupport": 340,
+  "enginePowerMax": 600,
+  "enginePowerNominal": 250,
+  "engineTorque": 85
+}
+
+###
+### Get  status
+# curl -X GET https://testbench.raoul.dev/api/test/9eb9dd74-4fd8-4d0a-8d42-1bec0375010f
+#     -H "X-Api-Key: 9e8dffd7-f6e1-45b4-b4aa-69fd257ca200"
+GET https://testbench.raoul.dev/api/test/9eb9dd74-4fd8-4d0a-8d42-1bec0375010f
+X-Api-Key: 9e8dffd7-f6e1-45b4-b4aa-69fd257ca200
+###
+
+
+### Get  report
+
+GET http://127.0.0.1:8080/api/test/9eb9dd74-4fd8-4d0a-8d42-1bec0375010f/report
+Content-Type: application/json
+Cookie: JSESSIONID=49AF404CC3C5663FC0A3EAB20298ED58
+
+//GET http://127.0.0.1:8080/api/tests/b09910ee-dbe2-4365-b9ff-80b588cfc19e/raw-report
+

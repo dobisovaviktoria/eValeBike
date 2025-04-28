@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 public class BikeController {
     private final BikeService bikeService;
 
-    @Autowired
     public BikeController(BikeService bikeService) {
         this.bikeService = bikeService;
     }
