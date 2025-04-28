@@ -42,12 +42,14 @@
             <th>Engine Power Max (W)</th>
             <th>Engine Power Nominal (W)</th>
             <th>Engine Torque (Nm)</th>
+            <th>Bike QR</th>
+            <th>Technician Name</th>
           </tr>
           </thead>
           <tbody>
           <tr th:each="report : ${reports.reportViewModels()}">
             <td>
-              <a th:href="@{/technician/report/entries/{id}(id=${report.id})}" th:text="${report.id}"></a>
+              <a th:href="@{/technician/report/{testId}(testId=${report.id()})}" th:text="${report.id}"></a>
             </td>
             <td th:text="${report.expiryDate}"></td>
             <td th:text="${report.state}"></td>
@@ -57,6 +59,9 @@
             <td th:text="${report.enginePowerMax}"></td>
             <td th:text="${report.enginePowerNominal}"></td>
             <td th:text="${report.engineTorque}"></td>
+            <td th:text="${report.bikeQR()}"></td>
+            <td th:text="${report.technicianName()}"></td>
+
           </tr>
           </tbody>
         </table>

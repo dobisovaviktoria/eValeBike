@@ -1,6 +1,4 @@
-package integration4.evalebike.controller.testBench.dto;
-
-import java.time.LocalDateTime;
+package integration4.evalebike.controller.technician.dto;
 
 import java.util.List;
 
@@ -14,5 +12,9 @@ public record TestReportDTO(
         double enginePowerMax,
         double enginePowerNominal,
         double engineTorque,
-        List<TestReportEntryDTO> reportEntries
+        List<TestReportEntryDTO> reportEntries,
+        String bikeQR,
+        String technicianName
 ) {}
+
+//We do summarize for all the test entries in the service,which will result one report entry.

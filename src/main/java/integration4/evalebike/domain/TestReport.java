@@ -31,12 +31,12 @@ public class TestReport {
     @Column(name = "engine_torque")
     private double engineTorque;
 
-    @OneToMany(mappedBy = "testReport", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "testReport", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private List<TestReportEntry> reportEntries;
-
+    @Column(name = "bike_QR")
     private String bikeQR;
-
-    private  String techinianName;
+    @Column(name = "technician_username")
+    private  String technicianName;
 
     // Default constructor for JPA
     public TestReport() {}
@@ -76,14 +76,14 @@ public class TestReport {
     public void setEnginePowerNominal(double enginePowerNominal) { this.enginePowerNominal = enginePowerNominal; }
     public double getEngineTorque() { return engineTorque; }
     public void setEngineTorque(double engineTorque) { this.engineTorque = engineTorque; }
-    public List<TestReportEntry> getReportEntries() { return reportEntries; }
+    public List<TestReportEntry>  getReportEntries() { return reportEntries; }
     public void setReportEntries(List<TestReportEntry> reportEntries) { this.reportEntries = reportEntries; }
 
     public String getBikeQR() {return bikeQR;}
 
     public void setBikeQR(String bikeQR) {this.bikeQR = bikeQR;}
 
-    public String getTechinianName() {return techinianName;}
+    public String getTechnicianName() {return technicianName;}
 
-    public void setTechinianName(String techinianName) {this.techinianName = techinianName;}
+    public void setTechnicianName(String technianName) {this.technicianName = technianName;}
 }

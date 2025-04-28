@@ -1,17 +1,15 @@
 package integration4.evalebike.controller.technician;
 
 import integration4.evalebike.controller.technician.dto.BikeDto;
-import integration4.evalebike.controller.testBench.dto.TestReportDTO;
-import integration4.evalebike.controller.testBench.dto.TestResponseDTO;
+import integration4.evalebike.controller.technician.dto.TestResponseDTO;
+import integration4.evalebike.controller.viewModel.ReportsViewModel;
 import integration4.evalebike.domain.Bike;
 import integration4.evalebike.domain.BikeOwner;
-import integration4.evalebike.service.BikeOwnerService;
-import integration4.evalebike.service.BikeService;
-import integration4.evalebike.service.QrCodeService;
-import integration4.evalebike.service.TestBenchService;
+import integration4.evalebike.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -23,11 +21,14 @@ public class TechnicianController {
     private final BikeService bikeService;
     private final QrCodeService qrCodeService;
     private final TestBenchService testBenchService;
-    public TechnicianController(BikeOwnerService bikeOwnerService, BikeService bikeService, QrCodeService qrCodeService, TestBenchService testBenchService) {
+    private final TestReportService testReportService;
+
+    public TechnicianController(BikeOwnerService bikeOwnerService, BikeService bikeService, QrCodeService qrCodeService, TestBenchService testBenchService, TestReportService testReportService) {
         this.bikeOwnerService = bikeOwnerService;
         this.bikeService = bikeService;
         this.qrCodeService = qrCodeService;
         this.testBenchService = testBenchService;
+        this.testReportService = testReportService;
     }
 
     // Show all bikes owned by a specific bike owner
@@ -87,7 +88,7 @@ public class TechnicianController {
     }
 
     @GetMapping("bikes/test-types/{bikeQR}")
-    public String testTypes(@PathVariable String bikeQR,Model model) {
+    public String testTypes(@PathVariable String bikeQR, Model model) {
         Bike bike = bikeService.getBikeByQR(bikeQR);
         model.addAttribute("bike", bike);
         return "technician/test-types";
@@ -101,18 +102,51 @@ public class TechnicianController {
 
     @GetMapping("/test-status/{testId}")
     public Mono<TestResponseDTO> getTestResultById(@PathVariable String testId) {
-        return testBenchService.getTestResultById(testId);
+        return testBenchService.getTestStatusById(testId);
     }
 
-    @GetMapping("/test-result/{testId}")
-    public String getTestResult(@PathVariable String testId, Model model) {
-        TestReportDTO report = testBenchService.getTestReportById(testId).block(); // Blocking for simplicity
-        if (report == null) {
-            return "redirect:/technician/bike-dashboard?error=No+report+found+for+test+ID+" + testId;
-        }
-        model.addAttribute("report", report);
-        return "report";
+
+//Run the test>> get the report
+    @GetMapping("/report")
+    public Mono<String> showReport(@RequestParam("testId") String testId, Model model) {
+        return testBenchService.getTestReportById(testId)
+                .map(report -> {
+                    model.addAttribute("report", report);
+                    return "technician/test-report-details";
+                })
+                .onErrorResume(e -> {
+                    model.addAttribute("error", e.getMessage());
+                    return Mono.just("technician/bike-dashboard");
+                });
+    }
+//from test-report-dashboard
+    @GetMapping("/report/{testId}")
+    public Mono<String> showReportByTestId(@PathVariable("testId") String testId, Model model) {
+        return testBenchService.getTestReportById(testId)
+                .map(report -> {
+                    model.addAttribute("report", report);
+                    return "technician/test-report-details";
+                })
+                .onErrorResume(e -> {
+                    model.addAttribute("error", e.getMessage());
+                    return Mono.just("technician/test-report-dashboard");
+                });
     }
 
+    //this shows a list of test report
+    @GetMapping("/test-report-dashboard")
+    public ModelAndView showReportDashboard(Model model) {
+        final ModelAndView modelAndView = new ModelAndView("technician/test-report-dashboard");
+        modelAndView.addObject("reports", ReportsViewModel.from(testReportService.getAllReports()));
+        return modelAndView;
+    }
 }
+
+
+
+
+
+
+
+
 

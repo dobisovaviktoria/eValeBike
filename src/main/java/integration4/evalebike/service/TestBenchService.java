@@ -1,10 +1,10 @@
 
 package integration4.evalebike.service;
 
-import integration4.evalebike.controller.testBench.dto.TestReportDTO;
-import integration4.evalebike.controller.testBench.dto.TestReportEntryDTO;
-import integration4.evalebike.controller.testBench.dto.TestRequestDTO;
-import integration4.evalebike.controller.testBench.dto.TestResponseDTO;
+import integration4.evalebike.controller.technician.dto.TestReportDTO;
+import integration4.evalebike.controller.technician.dto.TestReportEntryDTO;
+import integration4.evalebike.controller.technician.dto.TestRequestDTO;
+import integration4.evalebike.controller.technician.dto.TestResponseDTO;
 import integration4.evalebike.domain.TestReport;
 import integration4.evalebike.domain.TestReportEntry;
 import integration4.evalebike.repository.TestReportRepository;
@@ -40,7 +40,7 @@ public class TestBenchService {
         this.testReportRepository = testReportRepository;
     }
 
-    public Mono<TestResponseDTO> startTest(TestRequestDTO request, String technicianUsername) {
+    public Mono<TestResponseDTO> processTest(TestRequestDTO request, String technicianUsername, String bikeQR) {
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("type", request.getTestType());
         requestBody.put("batteryCapacity", request.getBatteryCapacity());
@@ -90,7 +90,7 @@ public class TestBenchService {
                 .onErrorResume(TimeoutException.class, e -> Mono.error(new RuntimeException("Test timed out")));
     }
 //this is to check the status of the test
-    public Mono<TestResponseDTO> getTestResultById(String testId) {
+    public Mono<TestResponseDTO> getTestStatusById(String testId) {
         return testBenchClient.get()
                 .uri("/api/test/{id}", testId)
                 .retrieve()
@@ -106,24 +106,52 @@ public class TestBenchService {
 
     //to get the whole test report (including test entries)
 
-
     public Mono<TestReportDTO> getTestReportById(String testId) {
         logger.info("Fetching report for testId: {}", testId);
 
-        return fetchCsvReport(testId)
-                .flatMap(csv -> parseCsvToEntries(csv, testId))
-                .flatMap(entries -> {
-                    TestReportEntryDTO summarizedEntry = summarizeEntries(entries);  // <-- summarize here
-                    return fetchAndValidateTest(testId)
-                            .flatMap(test -> saveTestReport(test, List.of(summarizedEntry))); // <-- save only summarized
+        return Mono.fromCallable(() -> testReportRepository.findById(testId))
+                .flatMap(optionalReport -> {
+                    if (optionalReport.isEmpty()) {
+                        logger.error("No partial TestReport found for testId: {}", testId);
+                        return Mono.error(new RuntimeException("No partial TestReport found for testId: " + testId));
+                    }
+                    TestReport partialReport = optionalReport.get();
+                    String bikeQR = partialReport.getBikeQR();
+                    String technicianUsername = partialReport.getTechnicianName();
+                    return fetchCsvReport(testId)
+                            .flatMap(csv -> parseCsvToEntries(csv, testId))
+                            .flatMap(entries -> {
+                                if (entries.isEmpty()) {
+                                    logger.warn("No entries parsed for testId: {}", testId);
+                                    return Mono.error(new RuntimeException("No entries found for testId: " + testId));
+                                }
+                                return fetchAndValidateTest(testId)
+                                        .flatMap(test -> saveTestReport(test, entries, bikeQR, technicianUsername))
+                                        .map(testReportDTO -> {
+                                            TestReportEntryDTO summarizedEntry = summarizeEntries(entries);
+                                            return new TestReportDTO(
+                                                    testReportDTO.id(),
+                                                    testReportDTO.expiryDate(),
+                                                    testReportDTO.state(),
+                                                    testReportDTO.type(),
+                                                    testReportDTO.batteryCapacity(),
+                                                    testReportDTO.maxSupport(),
+                                                    testReportDTO.enginePowerMax(),
+                                                    testReportDTO.enginePowerNominal(),
+                                                    testReportDTO.engineTorque(),
+                                                    List.of(summarizedEntry), // Return only summarized entry
+                                                    testReportDTO.bikeQR(),
+                                                    testReportDTO.technicianName()
+                                            );
+                                        });
+                            });
                 })
                 .doOnError(e -> logger.error("Error fetching report for testId {}: {}", testId, e.getMessage()));
     }
 
 
 
-
-    private Mono<String> fetchCsvReport(String testId) {
+    public Mono<String> fetchCsvReport(String testId) {
         return testBenchClient.get()
                 .uri("/api/test/{id}/report", testId)
                 .retrieve()
@@ -135,7 +163,7 @@ public class TestBenchService {
                 .doOnNext(csv -> logger.info("Received CSV for {}: {}", testId, csv.substring(0, Math.min(csv.length(), 100)) + "..."));
     }
 
-    private Mono<List<TestReportEntryDTO>> parseCsvToEntries(String csvData, String testId) {
+    public Mono<List<TestReportEntryDTO>> parseCsvToEntries(String csvData, String testId) {
         try {
             List<TestReportEntryDTO> entries = parseCsvToReportEntries(csvData);
             logger.info("Parsed {} report entries for testId {}", entries.size(), testId);
@@ -146,8 +174,8 @@ public class TestBenchService {
         }
     }
 
-    private Mono<TestResponseDTO> fetchAndValidateTest(String testId) {
-        return getTestResultById(testId)
+    public Mono<TestResponseDTO> fetchAndValidateTest(String testId) {
+        return getTestStatusById(testId)
                 .flatMap(response -> {
                     if (response.getId() == null) {
                         logger.error("Null test ID for {}", testId);
@@ -161,7 +189,7 @@ public class TestBenchService {
                 });
     }
 
-    private Mono<TestReportDTO> saveTestReport(TestResponseDTO test, List<TestReportEntryDTO> entryDTOs) {
+    public Mono<TestReportDTO> saveTestReport(TestResponseDTO test, List<TestReportEntryDTO> entryDTOs, String bikeQR, String technicianUsername) {
         TestReport testReport = new TestReport(
                 test.getId(),
                 test.getExpiryDate(),
@@ -174,6 +202,8 @@ public class TestBenchService {
                 test.getEngineTorque(),
                 null
         );
+        testReport.setBikeQR(bikeQR);
+        testReport.setTechnicianName(technicianUsername);
 
         List<TestReportEntry> entries = entryDTOs.stream()
                 .map(dto -> new TestReportEntry(
@@ -216,7 +246,9 @@ public class TestBenchService {
                     test.getEnginePowerMax(),
                     test.getEnginePowerNominal(),
                     test.getEngineTorque(),
-                    entryDTOs
+                    entryDTOs,
+                    saved.getBikeQR(),
+                    saved.getTechnicianName()
             ));
         } catch (Exception e) {
             logger.error("Failed to save report for testId {}: {}", test.getId(), e.getMessage());
@@ -224,7 +256,7 @@ public class TestBenchService {
         }
     }
 
-    private List<TestReportEntryDTO> parseCsvToReportEntries(String csvData) {
+    public List<TestReportEntryDTO> parseCsvToReportEntries(String csvData) {
         String[] lines = csvData.trim().split("\n");
         return java.util.Arrays.stream(lines)
                 .skip(1)
@@ -260,7 +292,7 @@ public class TestBenchService {
                 .collect(Collectors.toList());
     }
 
-    private TestReportEntryDTO summarizeEntries(List<TestReportEntryDTO> entries) {
+    public TestReportEntryDTO summarizeEntries(List<TestReportEntryDTO> entries) {
         if (entries == null || entries.isEmpty()) {
             throw new IllegalArgumentException("Entries list is empty or null");
         }

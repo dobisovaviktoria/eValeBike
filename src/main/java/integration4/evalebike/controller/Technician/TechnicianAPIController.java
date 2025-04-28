@@ -1,12 +1,12 @@
 package integration4.evalebike.controller.technician;
 
 import integration4.evalebike.controller.technician.dto.*;
-import integration4.evalebike.controller.testBench.dto.TestRequestDTO;
-import integration4.evalebike.controller.testBench.dto.TestResponseDTO;
+import integration4.evalebike.controller.technician.dto.TestRequestDTO;
+import integration4.evalebike.controller.technician.dto.TestResponseDTO;
 import integration4.evalebike.domain.Bike;
 import integration4.evalebike.domain.BikeOwner;
-import integration4.evalebike.domain.TestEvent;
-import integration4.evalebike.repository.TestEventRepository;
+import integration4.evalebike.domain.TestReport;
+import integration4.evalebike.repository.TestReportRepository;
 import integration4.evalebike.service.BikeOwnerService;
 import integration4.evalebike.service.BikeService;
 import integration4.evalebike.service.TestBenchService;
@@ -30,15 +30,17 @@ public class TechnicianAPIController {
     private final BikeMapper bikeMapper;
     private final BikeOwnerMapper bikeOwnerMapper;
     private final TestBenchService  testBenchService;
-    private final TestEventRepository testEventRepository;
+    private final TestReportRepository testReportRepository;
 
-    public TechnicianAPIController(BikeService bikeService, BikeOwnerService bikeOwnerService, BikeMapper bikeMapper, BikeOwnerMapper bikeOwnerMapper, TestBenchService testBenchService, TestEventRepository testEventRepository) {
+    public TechnicianAPIController(BikeService bikeService, BikeOwnerService bikeOwnerService, BikeMapper bikeMapper,
+                                   BikeOwnerMapper bikeOwnerMapper, TestBenchService testBenchService,
+                                    TestReportRepository testReportRepository) {
         this.bikeService = bikeService;
         this.bikeOwnerService = bikeOwnerService;
         this.bikeMapper = bikeMapper;
         this.bikeOwnerMapper = bikeOwnerMapper;
         this.testBenchService = testBenchService;
-        this.testEventRepository = testEventRepository;
+        this.testReportRepository = testReportRepository;
     }
 
     @PostMapping("/bikes")
@@ -75,20 +77,22 @@ public class TechnicianAPIController {
                         bike.getNominalEnginePower(),
                         bike.getEngineTorque()
                 ))
-                .flatMap(testRequestDTO -> testBenchService.startTest(testRequestDTO, technicianUsername))
-                .flatMap(response -> {
-                    String testId = response.getId();
-                    System.out.println("Creating TestEvent with bikeQR: " + bikeQR + ", testId: " + testId + ", technicianUsername: " + technicianUsername);
-
-                    // Create TestEvent
-                    TestEvent testEvent = new TestEvent(bikeQR, testId, technicianUsername);
-                    return Mono.fromCallable(() -> {
-                                TestEvent savedEvent = testEventRepository.save(testEvent);
-                                System.out.println("Saved TestEvent: " + savedEvent);
-                                return savedEvent;
-                            })
-                            .thenReturn("redirect:/technician/loading?testId=" + testId);
-                })
+                .flatMap(testRequestDTO -> testBenchService.processTest(testRequestDTO, technicianUsername, bikeQR)
+                        .flatMap(response -> {
+                            // Save partial TestReport
+                            TestReport partialReport = new TestReport();
+                            partialReport.setId(response.getId());
+                            partialReport.setBikeQR(bikeQR);
+                            partialReport.setTechnicianName(technicianUsername);
+                            try {
+                                testReportRepository.save(partialReport);
+                                System.out.println("Saved partial TestReport for testId: " + response.getId());
+                            } catch (Exception e) {
+                                System.err.println("Failed to save partial TestReport: " + e.getMessage());
+                                return Mono.error(new RuntimeException("Failed to save partial TestReport", e));
+                            }
+                            return Mono.just("redirect:/technician/loading?testId=" + response.getId());
+                        }))
                 .onErrorResume(e -> {
                     System.err.println("Error starting test: " + e.getMessage());
                     e.printStackTrace();
@@ -105,7 +109,7 @@ public class TechnicianAPIController {
     @GetMapping("/status/{testId}")
     @ResponseBody
     public Mono<TestResponseDTO> getTestStatus(@PathVariable String testId) {
-        return testBenchService.getTestResultById(testId);
+        return testBenchService.getTestStatusById(testId);
     }
 
 }
