@@ -1,10 +1,10 @@
 package integration4.evalebike.service;
 
 import integration4.evalebike.domain.Technician;
-import integration4.evalebike.domain.TestBench;
 import integration4.evalebike.exception.NotFoundException;
 import integration4.evalebike.repository.TechnicianRepository;
 import integration4.evalebike.repository.TestBenchRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -45,6 +45,7 @@ public class TechnicianService {
         return technicianRepository.save(technician);
     }
 
+    @Transactional
     public void deleteTechnician(Integer id) {
         Technician technician = technicianRepository.findById(id)
                 .orElseThrow(() -> NotFoundException.forTechnician(id));

@@ -49,14 +49,14 @@ document.addEventListener("DOMContentLoaded", () => {
             button.addEventListener("click", async (e) => {
                 e.preventDefault();
 
-                const technicianId = e.target.dataset.id; // Get technician ID from the button
+                const technicianId = e.currentTarget.dataset.id; // Get technician ID from the button
                 if (!technicianId) {
                     alert("Technician ID not found.");
                     return;
                 }
 
                 try {
-                    // Send DELETE request to the backend
+                    // Send a DELETE request to the backend
                     const response = await fetch(`/api/admin/technicians/${technicianId}`, {
                         method: "DELETE",
                         headers: {

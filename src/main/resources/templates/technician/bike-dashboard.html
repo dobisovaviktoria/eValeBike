@@ -73,10 +73,12 @@
                     <td th:text="${bike.engineTorque}"></td>
                     <td th:text="${bike.lastTestDate}"></td>
                     <td>
-                        <a th:href="@{/technician/pre-check/{bikeQR}(bikeQR=${bike.bikeQR})}"
-                           class="btn btn-primary btn-sm">
-                            <i class="fa-solid fa-list-check"></i> Pre-test Check
-                        </a>
+                        <div sec:authorize="hasRole('TECHNICIAN')">
+                            <a th:href="@{/technician/pre-check/{bikeQR}(bikeQR=${bike.bikeQR})}"
+                               class="btn btn-primary btn-sm">
+                                <i class="fa-solid fa-list-check"></i> Pre-test Check
+                            </a>
+                        </div>
                     </td>
                     <td>
                         <button class="btn btn-outline-danger remove-bike-button" th:attr="data-bike-id=${bike.bikeQR}">

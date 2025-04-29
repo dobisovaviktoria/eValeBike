@@ -149,13 +149,6 @@ WHERE NOT EXISTS (SELECT 1
                     AND bike_qr = '223e4567-e89b-12d3-a456-426614174002');
 
 INSERT INTO bike_owner_bike (bike_owner_id, bike_qr)
-SELECT 2, '323e4567-e89b-12d3-a456-426614174003'
-WHERE NOT EXISTS (SELECT 1
-                  FROM bike_owner_bike
-                  WHERE bike_owner_id = 2
-                    AND bike_qr = '323e4567-e89b-12d3-a456-426614174003');
-
-INSERT INTO bike_owner_bike (bike_owner_id, bike_qr)
 SELECT 6, '423e4567-e89b-12d3-a456-426614174004'
 WHERE NOT EXISTS (SELECT 1
                   FROM bike_owner_bike

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="/js/admin/admin-dashboard.js" type="module" defer></script>
+    <script src="/js/admin/technician-dashboard.js" type="module" defer></script>
     <script src="/js/recent-history.js" type="module" defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="/css/global.css">
@@ -26,7 +26,7 @@
     <div class="row mb-4">
         <div class="col-md-4">
             <div class="card stat-card">
-                <div class="stat-number" th:text="${#lists.size(technicians)}">0</div>
+                <div class="stat-number" th:text="${technicians != null ? technicians.technicians.size() : 0}">0</div>
                 <div class="stat-label">Total Technicians</div>
                 <small>In System</small>
             </div>
@@ -59,14 +59,14 @@
                         <table class="table">
                             <thead>
                             <tr>
-                                <th>Test Bench ID</th>
+                                <th>Test Bench Name</th>
                                 <th>Status</th>
                                 <th>Current Technician</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr th:each="bench : ${testBenches}">
-                                <td th:text="${bench.testBenchId}"></td>
+                                <td th:text="${bench.testBenchName}"></td>
                                 <td>
                                         <span th:class="${bench.status.equals(T(integration4.evalebike.domain.Status).ACTIVE) ? 'badge bg-success' : 'badge bg-secondary'}"
                                               th:text="${bench.status}">
@@ -81,45 +81,45 @@
             </div>
         </div>
 
-    <!-- Technician Table Column -->
-    <div class="table-column">
-      <div class="table-container">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <h5>Technician Profiles</h5>
+        <!-- Technician Table Column -->
+        <div class="table-column">
+            <div class="table-container">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5>Technician Profiles</h5>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Technician</th>
+                            <th>Email</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody id="technician-table-body">
+                        <!-- JavaScript seeding -->
+                        </tbody>
+                    </table>
+                </div>
+                <nav aria-label="Page navigation" class="mt-3">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1">Previous</a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+                <button id="add-technician-btn" class="btn btn-primary btn-block">
+                    <i class="fas fa-user-plus"></i> Add Technician
+                </button>
+            </div>
         </div>
-        <div class="table-responsive">
-          <table class="table table-striped">
-            <thead>
-            <tr>
-              <th>Technician</th>
-              <th>Email</th>
-              <th></th>
-            </tr>
-            </thead>
-            <tbody id="technician-table-body">
-            <!-- JavaScript seeding -->
-            </tbody>
-          </table>
-        </div>
-        <nav aria-label="Page navigation" class="mt-3">
-          <ul class="pagination justify-content-center">
-            <li class="page-item disabled">
-              <a class="page-link" href="#" tabindex="-1">Previous</a>
-            </li>
-            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-              <a class="page-link" href="#">Next</a>
-            </li>
-          </ul>
-        </nav>
-        <button id="add-technician-btn" class="btn btn-primary btn-block">
-          <i class="fas fa-user-plus"></i> Add Technician
-        </button>
-      </div>
     </div>
-  </div>
 </div>
 </body>
 </html>

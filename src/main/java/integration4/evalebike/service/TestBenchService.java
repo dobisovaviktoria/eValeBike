@@ -14,6 +14,7 @@ import io.netty.handler.timeout.TimeoutException;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -356,7 +357,8 @@ public class TestBenchService {
     }
 
     public List<TestBench> getAllTestBenches() {
-        return testBenchRepository.findAll();
+        return testBenchRepository.findAll(Sort.by(Sort.Direction.ASC, "testBenchName")
+        );
     }
 
     @Transactional
