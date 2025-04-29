@@ -73,20 +73,23 @@
                     <td th:text="${bike.engineTorque}"></td>
                     <td th:text="${bike.lastTestDate}"></td>
                     <td>
-                        <a th:href="@{/technician/pre-check/{bikeQR}(bikeQR=${bike.bikeQR})}" class="btn btn-primary btn-sm">
+                        <a th:href="@{/technician/pre-check/{bikeQR}(bikeQR=${bike.bikeQR})}"
+                           class="btn btn-primary btn-sm">
                             <i class="fa-solid fa-list-check"></i> Pre-test Check
                         </a>
                     </td>
-                    <td><button class="btn btn-outline-danger remove-bike-button" th:attr="data-bike-id=${bike.bikeQR}"><i class="fa-solid fa-trash"></i></button></td>
+                    <td>
+                        <button class="btn btn-outline-danger remove-bike-button" th:attr="data-bike-id=${bike.bikeQR}">
+                            <i class="fa-solid fa-trash"></i></button>
+                    </td>
                 </tr>
                 </tbody>
             </table>
             <a th:href="@{/technician/bikes/add}" class="btn btn-primary btn-block mb-2">
-                <i class="fa-solid fa-plus"></i>  Add New Bike
+                <i class="fa-solid fa-plus"></i> Add New Bike
             </a>
         </div>
     </div>
 </div>
 </body>
 </html>
-
