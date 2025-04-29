@@ -53,10 +53,6 @@ SELECT 1, '555-1234', '1990-05-20'
 WHERE NOT EXISTS (SELECT 1 FROM bike_owner WHERE id = 1);
 
 INSERT INTO bike_owner (id, phone_number, birth_date)
-SELECT 2, '555-5678', '1985-08-15'
-WHERE NOT EXISTS (SELECT 1 FROM bike_owner WHERE id = 2);
-
-INSERT INTO bike_owner (id, phone_number, birth_date)
 SELECT 6, '555-7890', '1992-07-22'
 WHERE NOT EXISTS (SELECT 1 FROM bike_owner WHERE id = 6);
 
@@ -138,29 +134,29 @@ SELECT '423e4567-e89b-12d3-a456-426614174004',
 WHERE NOT EXISTS (SELECT 1 FROM bike WHERE bikeqr = '423e4567-e89b-12d3-a456-426614174004');
 
 -- Assign multiple bikes to owners
-INSERT INTO bike_owner_bike (bike_owner_id, bike_qr, chassis_number)
-SELECT 1, '123e4567-e89b-12d3-a456-426614174001', 'CHASSIS123'
+INSERT INTO bike_owner_bike (bike_owner_id, bike_qr)
+SELECT 1, '123e4567-e89b-12d3-a456-426614174001'
 WHERE NOT EXISTS (SELECT 1
                   FROM bike_owner_bike
                   WHERE bike_owner_id = 1
                     AND bike_qr = '123e4567-e89b-12d3-a456-426614174001');
 
-INSERT INTO bike_owner_bike (bike_owner_id, bike_qr, chassis_number)
-SELECT 1, '223e4567-e89b-12d3-a456-426614174002', 'CHASSIS121'
+INSERT INTO bike_owner_bike (bike_owner_id, bike_qr)
+SELECT 1, '223e4567-e89b-12d3-a456-426614174002'
 WHERE NOT EXISTS (SELECT 1
                   FROM bike_owner_bike
                   WHERE bike_owner_id = 1
                     AND bike_qr = '223e4567-e89b-12d3-a456-426614174002');
 
-INSERT INTO bike_owner_bike (bike_owner_id, bike_qr, chassis_number)
-SELECT 2, '323e4567-e89b-12d3-a456-426614174003', 'CHASSIS125'
+INSERT INTO bike_owner_bike (bike_owner_id, bike_qr)
+SELECT 2, '323e4567-e89b-12d3-a456-426614174003'
 WHERE NOT EXISTS (SELECT 1
                   FROM bike_owner_bike
                   WHERE bike_owner_id = 2
                     AND bike_qr = '323e4567-e89b-12d3-a456-426614174003');
 
-INSERT INTO bike_owner_bike (bike_owner_id, bike_qr, chassis_number)
-SELECT 6, '423e4567-e89b-12d3-a456-426614174004', 'CHASSIS126'
+INSERT INTO bike_owner_bike (bike_owner_id, bike_qr)
+SELECT 6, '423e4567-e89b-12d3-a456-426614174004'
 WHERE NOT EXISTS (SELECT 1
                   FROM bike_owner_bike
                   WHERE bike_owner_id = 6

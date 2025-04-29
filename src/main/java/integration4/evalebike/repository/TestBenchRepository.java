@@ -10,4 +10,6 @@ import java.util.List;
 @Repository
 public interface TestBenchRepository extends JpaRepository<TestBench, Integer> {
     List<TestBench> findByTechnicianIdAndStatus(Integer technicianId, Status status);
+
+    void deleteByTechnicianId(Integer technicianId);
 }
