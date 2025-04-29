@@ -33,6 +33,7 @@ public class TestReport {
 
     @OneToMany(mappedBy = "testReport", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private List<TestReportEntry> reportEntries;
+
     @Column(name = "bike_QR")
     private String bikeQR;
     @Column(name = "technician_username")

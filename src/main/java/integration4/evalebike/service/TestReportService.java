@@ -11,26 +11,27 @@ import java.util.List;
 @Service
 @Transactional
 public class TestReportService {
-    private final TestReportRepository repo;
+    private final TestReportRepository testReportRepository;
     private final TestReportEntryRepository repoTestReportEntry;
 
-    public TestReportService(TestReportRepository repo, TestReportEntryRepository repoTestReportEntry) {
-        this.repo = repo;
+    public TestReportService(TestReportRepository testReportRepository, TestReportEntryRepository repoTestReportEntry) {
+        this.testReportRepository = testReportRepository;
         this.repoTestReportEntry = repoTestReportEntry;
     }
 
-    public List<TestReport> getAllReports(){
-        return repo.findAll();
+    public List<TestReport> getAllReports() {
+        return testReportRepository.findAll();
     }
 
 
     public TestReport getTestReportById(String testId) {
-       var optionalReport = repo.findByIdWithEntries(testId);
-        if (optionalReport.isEmpty()) {
+        var testReport = testReportRepository.findByIdWithEntries(testId);
+        if (testReport.isEmpty()) {
             throw new RuntimeException("No TestReport found for testId: " + testId);
         }
-        return optionalReport.get();
+        return testReport.get();
     }
+
 
 }
 

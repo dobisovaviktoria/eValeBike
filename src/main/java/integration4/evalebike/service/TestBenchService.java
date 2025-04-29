@@ -128,7 +128,6 @@ public class TestBenchService {
                                 return fetchAndValidateTest(testId)
                                         .flatMap(test -> saveTestReport(test, entries, bikeQR, technicianUsername))
                                         .map(testReportDTO -> {
-                                            TestReportEntryDTO summarizedEntry = summarizeEntries(entries);
                                             return new TestReportDTO(
                                                     testReportDTO.id(),
                                                     testReportDTO.expiryDate(),
@@ -139,7 +138,7 @@ public class TestBenchService {
                                                     testReportDTO.enginePowerMax(),
                                                     testReportDTO.enginePowerNominal(),
                                                     testReportDTO.engineTorque(),
-                                                    List.of(summarizedEntry), // Return only summarized entry
+                                                    entries,
                                                     testReportDTO.bikeQR(),
                                                     testReportDTO.technicianName()
                                             );
@@ -292,65 +291,5 @@ public class TestBenchService {
                 .collect(Collectors.toList());
     }
 
-    public TestReportEntryDTO summarizeEntries(List<TestReportEntryDTO> entries) {
-        if (entries == null || entries.isEmpty()) {
-            throw new IllegalArgumentException("Entries list is empty or null");
-        }
-
-        int count = entries.size();
-
-        double avgBatteryVoltage = round(entries.stream().mapToDouble(TestReportEntryDTO::batteryVoltage).average().orElse(0));
-        double avgBatteryCurrent = round(entries.stream().mapToDouble(TestReportEntryDTO::batteryCurrent).average().orElse(0));
-        double avgBatteryCapacity = round(entries.stream().mapToDouble(TestReportEntryDTO::batteryCapacity).average().orElse(0));
-        double avgBatteryTemp = round(entries.stream().mapToDouble(TestReportEntryDTO::batteryTemperatureCelsius).average().orElse(0));
-        int avgChargeStatus = (int) Math.round(entries.stream().mapToInt(TestReportEntryDTO::chargeStatus).average().orElse(0));
-        int avgAssistanceLevel = (int) Math.round(entries.stream().mapToInt(TestReportEntryDTO::assistanceLevel).average().orElse(0));
-        double avgTorqueCrank = round(entries.stream().mapToDouble(TestReportEntryDTO::torqueCrankNm).average().orElse(0));
-        double avgBikeWheelSpeed = round(entries.stream().mapToDouble(TestReportEntryDTO::bikeWheelSpeedKmh).average().orElse(0));
-        int avgCadenceRpm = (int) Math.round(entries.stream().mapToInt(TestReportEntryDTO::cadanceRpm).average().orElse(0));
-        int avgEngineRpm = (int) Math.round(entries.stream().mapToInt(TestReportEntryDTO::engineRpm).average().orElse(0));
-        double avgEnginePowerWatt = round(entries.stream().mapToDouble(TestReportEntryDTO::enginePowerWatt).average().orElse(0));
-        double avgWheelPowerWatt = round(entries.stream().mapToDouble(TestReportEntryDTO::wheelPowerWatt).average().orElse(0));
-        double avgRollTorque = round(entries.stream().mapToDouble(TestReportEntryDTO::rollTorque).average().orElse(0));
-        double avgLoadcellN = round(entries.stream().mapToDouble(TestReportEntryDTO::loadcellN).average().orElse(0));
-        double avgRolHz = round(entries.stream().mapToDouble(TestReportEntryDTO::rolHz).average().orElse(0));
-        double avgHorizontalInclination = round(entries.stream().mapToDouble(TestReportEntryDTO::horizontalInclination).average().orElse(0));
-        double avgVerticalInclination = round(entries.stream().mapToDouble(TestReportEntryDTO::verticalInclination).average().orElse(0));
-        double avgLoadPower = round(entries.stream().mapToDouble(TestReportEntryDTO::loadPower).average().orElse(0));
-
-        boolean statusPlug = entries.stream().map(TestReportEntryDTO::statusPlug)
-                .filter(Boolean::booleanValue)
-                .count() > count / 2;  // majority wins
-
-        LocalDateTime timestamp = entries.get(0).timestamp();
-
-        return new TestReportEntryDTO(
-                timestamp,
-                avgBatteryVoltage,
-                avgBatteryCurrent,
-                avgBatteryCapacity,
-                avgBatteryTemp,
-                avgChargeStatus,
-                avgAssistanceLevel,
-                avgTorqueCrank,
-                avgBikeWheelSpeed,
-                avgCadenceRpm,
-                avgEngineRpm,
-                avgEnginePowerWatt,
-                avgWheelPowerWatt,
-                avgRollTorque,
-                avgLoadcellN,
-                avgRolHz,
-                avgHorizontalInclination,
-                avgVerticalInclination,
-                avgLoadPower,
-                statusPlug
-        );
-    }
-
-    // Round to 2 decimal places
-    private double round(double value) {
-        return Math.round(value * 100.0) / 100.0;
-    }
 
 }

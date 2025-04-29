@@ -2,9 +2,13 @@ package integration4.evalebike.controller.technician;
 
 import integration4.evalebike.controller.technician.dto.BikeDto;
 import integration4.evalebike.controller.technician.dto.TestResponseDTO;
+import integration4.evalebike.controller.viewModel.ReportViewModel;
 import integration4.evalebike.controller.viewModel.ReportsViewModel;
+import integration4.evalebike.controller.viewModel.TestReportEntryViewModel;
 import integration4.evalebike.domain.Bike;
 import integration4.evalebike.domain.BikeOwner;
+import integration4.evalebike.domain.TestReport;
+import integration4.evalebike.domain.TestReportEntry;
 import integration4.evalebike.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -105,33 +110,22 @@ public class TechnicianController {
         return testBenchService.getTestStatusById(testId);
     }
 
-
-//Run the test>> get the report
-    @GetMapping("/report")
-    public Mono<String> showReport(@RequestParam("testId") String testId, Model model) {
-        return testBenchService.getTestReportById(testId)
-                .map(report -> {
-                    model.addAttribute("report", report);
-                    return "technician/test-report-details";
-                })
-                .onErrorResume(e -> {
-                    model.addAttribute("error", e.getMessage());
-                    return Mono.just("technician/bike-dashboard");
-                });
-    }
-//from test-report-dashboard
     @GetMapping("/report/{testId}")
     public Mono<String> showReportByTestId(@PathVariable("testId") String testId, Model model) {
-        return testBenchService.getTestReportById(testId)
-                .map(report -> {
-                    model.addAttribute("report", report);
-                    return "technician/test-report-details";
-                })
-                .onErrorResume(e -> {
-                    model.addAttribute("error", e.getMessage());
-                    return Mono.just("technician/test-report-dashboard");
-                });
+        TestReport report = testReportService.getTestReportById(testId);
+        ReportViewModel reportVm = ReportViewModel.from(report);
+
+        List<TestReportEntry> entries = report.getReportEntries();
+        TestReportEntryViewModel summaryVm = entries != null && !entries.isEmpty()
+                ? TestReportEntryViewModel.summarize(entries)
+                : null;
+
+        model.addAttribute("report", reportVm);
+        model.addAttribute("summary", summaryVm);
+
+        return Mono.just("technician/test-report-details");
     }
+
 
     //this shows a list of test report
     @GetMapping("/test-report-dashboard")
