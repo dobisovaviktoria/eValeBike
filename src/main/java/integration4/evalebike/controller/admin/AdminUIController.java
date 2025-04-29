@@ -24,7 +24,7 @@ public class AdminUIController {
     @GetMapping()
     @Transactional(readOnly = true)
     public ModelAndView index() {
-        final ModelAndView modelAndView = new ModelAndView("admin/admin-dashboard");
+        final ModelAndView modelAndView = new ModelAndView("admin/technician-dashboard");
         modelAndView.addObject("technicians", TechniciansViewModel.fromTechnician(technicianService.getAll()));
         modelAndView.addObject("testBenches", testBenchService.getAllTestBenches());
         return modelAndView;

@@ -5,14 +5,20 @@ import integration4.evalebike.controller.admin.dto.TestBenchMapper;
 import integration4.evalebike.controller.admin.dto.request.TechnicianRequestDTO;
 import integration4.evalebike.controller.admin.dto.response.TechnicianResponseDTO;
 import integration4.evalebike.controller.admin.dto.response.TestBenchResponseDTO;
+import integration4.evalebike.domain.Activity;
+import integration4.evalebike.domain.RecentActivity;
 import integration4.evalebike.domain.Technician;
+import integration4.evalebike.security.CustomUserDetails;
+import integration4.evalebike.service.RecentActivityService;
 import integration4.evalebike.service.TechnicianService;
 import integration4.evalebike.service.TestBenchService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,19 +29,21 @@ public class AdminApiController {
     private final TechnicianMapper technicianMapper;
     private final TestBenchService testBenchService;
     private final TestBenchMapper testBenchMapper;
+    private final RecentActivityService recentActivityService;
 
-
-    public AdminApiController(TechnicianService technicianService, TechnicianMapper technicianMapper, TestBenchService testBenchService, TestBenchMapper testBenchMapper) {
+    public AdminApiController(TechnicianService technicianService, TechnicianMapper technicianMapper, TestBenchService testBenchService, TestBenchMapper testBenchMapper, RecentActivityService recentActivityService) {
         this.technicianService = technicianService;
         this.technicianMapper = technicianMapper;
         this.testBenchService = testBenchService;
         this.testBenchMapper = testBenchMapper;
+        this.recentActivityService = recentActivityService;
     }
 
     // Create a new technician
     @PostMapping()
-    public ResponseEntity<TechnicianResponseDTO> createTechnician(@RequestBody final TechnicianRequestDTO technicianDTO) {
-        final Technician savedTechnician = technicianService.saveTechnician(technicianDTO.name(), technicianDTO.email(), technicianDTO.password());
+    public ResponseEntity<TechnicianResponseDTO> createTechnician(@RequestBody final TechnicianRequestDTO technicianDTO, @AuthenticationPrincipal final CustomUserDetails userDetails) {
+        final Technician savedTechnician = technicianService.saveTechnician(technicianDTO.name(), technicianDTO.email());
+        recentActivityService.save(new RecentActivity(Activity.CREATED_USER, "Technician " + technicianDTO.name() + " created", LocalDateTime.now(), userDetails.getUserId()));
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(technicianMapper.toDto(savedTechnician));
@@ -71,16 +79,18 @@ public class AdminApiController {
 
     // Update an existing technician
     @PatchMapping("/{id}")
-    public ResponseEntity<TechnicianResponseDTO> updateTechnician(@PathVariable Integer id, @RequestBody TechnicianRequestDTO technicianDTO) {
+    public ResponseEntity<TechnicianResponseDTO> updateTechnician(@PathVariable Integer id, @RequestBody TechnicianRequestDTO technicianDTO, @AuthenticationPrincipal final CustomUserDetails userDetails) {
         Technician updatedTechnician = technicianMapper.toEntity(technicianDTO);
         Technician savedTechnician = technicianService.updateTechnician(id, updatedTechnician);
+        recentActivityService.save(new RecentActivity(Activity.UPDATED_USER, "Updated information about " + technicianDTO.name(), LocalDateTime.now(), userDetails.getUserId()));
         return ResponseEntity.ok(technicianMapper.toDto(savedTechnician));
     }
 
     // Delete a technician
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTechnician(@PathVariable Integer id) {
+    public ResponseEntity<Void> deleteTechnician(@PathVariable Integer id, @AuthenticationPrincipal final CustomUserDetails userDetails) {
         technicianService.deleteTechnician(id);
+        recentActivityService.save(new RecentActivity(Activity.DELETED_USER, "Deleted technician with id: " + id, LocalDateTime.now(), userDetails.getUserId()));
         return ResponseEntity.noContent().build();
     }
 }
