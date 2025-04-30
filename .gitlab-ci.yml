@@ -36,9 +36,10 @@ test_job:
   script:
     - apt-get update && apt-get install -y postgresql-client
     - |
+      export PGPASSWORD=$POSTGRES_PASSWORD
       until psql -h db -U $POSTGRES_USER -d $POSTGRES_DB -c '\q'; do
-        echo "Waiting for PostgreSQL to be ready...";
-        sleep 5;
+        echo "Waiting for PostgreSQL to be ready..."
+        sleep 5
       done
     - gradle test
   artifacts:
