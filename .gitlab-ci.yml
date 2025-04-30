@@ -35,12 +35,15 @@ test_job:
   stage: test
   script:
     - echo "Waiting for PostgreSQL to be ready..."
-    - |
-      until psql -h db -U user -d eValeBike -c '\q'; do
-        echo "Waiting for PostgreSQL to be ready...";
-        sleep 5;
-      done
+    - apt-get update && apt-get install -y postgresql-client
+    - until pg_isready -h db -p 5432; do echo "Waiting for db..."; sleep 5; done
     - gradle test
+  artifacts:
+    when: always
+    reports:
+      junit: build/test-results/test/TEST-*.xml
+    paths:
+      - build/test-results/test/
 
 deploy_job:
   stage: deploy
