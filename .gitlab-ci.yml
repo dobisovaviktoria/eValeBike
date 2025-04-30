@@ -36,8 +36,8 @@ test_job:
   script:
     - echo "Waiting for PostgreSQL to be ready..."
     - |
-      while ! docker ps --filter "name=db" --filter "status=running" --format "{{.Status}}"; do
-        echo "Waiting for db container to be ready...";
+      until psql -h db -U user -d eValeBike -c '\q'; do
+        echo "Waiting for PostgreSQL to be ready...";
         sleep 5;
       done
     - gradle test
