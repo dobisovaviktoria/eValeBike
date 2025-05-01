@@ -2,22 +2,31 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test Report Summary</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Test Report Detail</title>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="/css/dashboard.css">
 </head>
 <body>
-<div class="container mt-3">
-    <h2 class="text-center">Test Report Details</h2>
+<div th:insert="~{fragments/menu.html}"></div>
 
-    <!-- Test Info Section -->
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h2 class="dashboard-title">Test Report Details</h2>
+        <div class="user-info">
+            <span>Welcome, <strong>Technician</strong>!</span>
+            <div class="user-avatar">T</div>
+        </div>
+    </div>
+
+    <!-- Test Details Section -->
     <div class="card shadow-sm mt-4">
-        <div class="card-header bg-light fw-semibold">
+        <div class="card-header bg-primary text-white">
             Test Info
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered table-hover table-striped align-middle">
+                <table class="table table-bordered table-striped">
                     <tbody>
                     <tr>
                         <th>Bike QR</th><td th:text="${report.bikeQR}">-</td>
@@ -29,9 +38,7 @@
                     </tr>
                     <tr>
                         <th>Expiry Date</th>
-                        <td>
-                            <span th:text="${#strings.replace(#strings.substring(report.expiryDate, 0, 19), 'T', ' ')}">-</span>
-                        </td>
+                        <td><span th:text="${#strings.replace(#strings.substring(report.expiryDate, 0, 19), 'T', ' ')}">-</span></td>
                         <th>Battery Capacity</th><td th:text="${report.batteryCapacity}">-</td>
                     </tr>
                     <tr>
@@ -48,14 +55,14 @@
         </div>
     </div>
 
-    <!-- Report Summary Section (Placed inside a Card) -->
+    <!-- Report Summary Section -->
     <div class="card shadow-sm mt-4">
-        <div class="card-header bg-light fw-semibold">
+        <div class="card-header bg-primary text-white">
             Report Summary
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered table-hover table-striped align-middle">
+                <table class="table table-bordered table-striped">
                     <tbody>
                     <tr>
                         <th>Avg Battery Voltage</th><td th:text="${summary.batteryVoltage}">-</td>
@@ -104,7 +111,7 @@
     </div>
 
     <div class="text-center mt-4">
-        <a th:href="@{/technician/test-report-dashboard}" class="btn btn-secondary">Back to Test Report Dashboard</a>
+        <a th:href="@{/technician/test-report-dashboard}" class="btn btn-primary">Back to Test Report Dashboard</a>
     </div>
 </div>
 
