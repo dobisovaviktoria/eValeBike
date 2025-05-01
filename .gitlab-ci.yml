@@ -25,7 +25,6 @@ stages:
 before_script:
   - echo "Starting CI/CD pipeline..."
   - export GRADLE_USER_HOME=`pwd`/.gradle
-  - docker info || (echo "Docker not available" && exit 1)  # Ensure Docker is running
 
 build_job:
   stage: build
