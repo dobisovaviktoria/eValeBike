@@ -3,7 +3,7 @@ image: gradle:8-jdk21
 services:
   - name: postgres:17.2-alpine
     alias: db
-  - name: docker:dind #docker in docker; building docker images
+  - docker: dind #docker in docker; building docker images
 
 variables:
   POSTGRES_DB: eValeBike
