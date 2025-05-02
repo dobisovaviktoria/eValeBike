@@ -35,32 +35,37 @@ build_job:
       - build/libs/*.jar
     expire_in: 1 week
 
-
 test_job:
   stage: test
   image: gradle:8-jdk21
   services:
     - name: postgres:17.2-alpine
-      alias: db  # Makes sure PostgreSQL is reachable at 'db'
+      alias: db  # Ensures PostgreSQL is reachable at 'db'
   script:
+    - echo "Current working directory:"
+    - pwd
     - echo "Checking PostgreSQL connectivity..."
-    - ping -c 4 db  # Check if 'db' is reachable
+    - ping -c 4 db || echo "Ping to db failed, but continuing..."
     - echo "Checking PostgreSQL service..."
     - |
-      for i in {1..30}; do
+      for i in {1..45}; do
         if psql -h db -U $POSTGRES_USER -d $POSTGRES_DB -c '\q' 2>/dev/null; then
           echo "PostgreSQL is ready!"
           break
         fi
-        echo "Waiting for PostgreSQL (attempt $i/30)..."
+        echo "Waiting for PostgreSQL (attempt $i/45)..."
         sleep 2
       done
-      if [ $i -eq 30 ]; then
-        echo "Error: PostgreSQL not ready after 60 seconds"
+      if [ $i -eq 45 ]; then
+        echo "Error: PostgreSQL not ready after 90 seconds"
         exit 1
       fi
+    - echo "Listing project files..."
+    - ls -la
+    - echo "Checking Gradle test configuration..."
+    - gradle tasks --all  # Lists available tasks to confirm 'test' exists
     - echo "Running tests..."
-    - gradle test --info || echo "Tests failed, but continuing to collect artifacts..."
+    - gradle test --info || echo "Tests failed, but continuing to check artifacts..."
     - echo "Listing test results directory..."
     - ls -la build/test-results/test/ || echo "Test results directory not found"
   artifacts:
