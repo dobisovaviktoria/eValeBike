@@ -27,11 +27,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 const row = document.createElement("tr");
                 row.dataset.id = technician.id; // Store technician ID in the row
                 row.innerHTML = `
-                    <td>${technician.id}</td>
                     <td>${technician.name}</td>
                     <td>${technician.email}</td>
                     <td>
-                        <button class="delete-btn" data-id="${technician.id}">Delete</button>
+                        <button class="btn btn-outline-danger delete-btn" data-id="${technician.id}"><i class="fa-solid fa-trash"></i></button>
                     </td>
                 `;
                 technicianTableBody.appendChild(row);
@@ -50,18 +49,14 @@ document.addEventListener("DOMContentLoaded", () => {
             button.addEventListener("click", async (e) => {
                 e.preventDefault();
 
-                const technicianId = e.target.dataset.id; // Get technician ID from the button
+                const technicianId = e.currentTarget.dataset.id; // Get technician ID from the button
                 if (!technicianId) {
                     alert("Technician ID not found.");
                     return;
                 }
 
-                // Confirm deletion
-                const confirmDelete = confirm("Are you sure you want to delete this technician?");
-                if (!confirmDelete) return;
-
                 try {
-                    // Send DELETE request to the backend
+                    // Send a DELETE request to the backend
                     const response = await fetch(`/api/admin/technicians/${technicianId}`, {
                         method: "DELETE",
                         headers: {
@@ -70,7 +65,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     });
 
                     if (response.ok) {
-                        alert(`Technician with ID ${technicianId} deleted successfully.`);
                         loadTechnicians(); // Refresh the table
                     } else {
                         alert("Failed to delete technician.");

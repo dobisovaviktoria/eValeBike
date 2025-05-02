@@ -3,6 +3,8 @@ package integration4.evalebike.service;
 import integration4.evalebike.domain.Technician;
 import integration4.evalebike.exception.NotFoundException;
 import integration4.evalebike.repository.TechnicianRepository;
+import integration4.evalebike.repository.TestBenchRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,9 +12,11 @@ import java.util.List;
 @Service
 public class TechnicianService {
     private final TechnicianRepository technicianRepository;
+    private final TestBenchRepository testBenchRepository;
 
-    public TechnicianService(TechnicianRepository technicianRepository) {
+    public TechnicianService(TechnicianRepository technicianRepository, TestBenchRepository testBenchRepository) {
         this.technicianRepository = technicianRepository;
+        this.testBenchRepository = testBenchRepository;
     }
 
     public List<Technician> getAll() {
@@ -24,11 +28,10 @@ public class TechnicianService {
                 .orElseThrow(() -> NotFoundException.forTechnician(id));
     }
 
-    public Technician saveTechnician(final String name, final String email, final String password) {
+    public Technician saveTechnician(final String name, final String email) {
         Technician technician = new Technician();
         technician.setName(name);
         technician.setEmail(email);
-        technician.setPassword(password);
         return technicianRepository.save(technician);
     }
 
@@ -42,9 +45,11 @@ public class TechnicianService {
         return technicianRepository.save(technician);
     }
 
+    @Transactional
     public void deleteTechnician(Integer id) {
         Technician technician = technicianRepository.findById(id)
                 .orElseThrow(() -> NotFoundException.forTechnician(id));
+        testBenchRepository.deleteByTechnicianId(id);
         technicianRepository.delete(technician);
     }
 }

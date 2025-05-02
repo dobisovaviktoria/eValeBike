@@ -1,9 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js}"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}">
+    <script src="/js/recent-history.js" type="module" defer></script>
+    <script src="/js/technician/bike-owner-dashboard.js" type="module" defer></script>
     <link rel="stylesheet" href="/css/global.css">
     <link rel="stylesheet" href="/css/dashboard.css">
     <title>Bike Owner's Dashboard</title>
@@ -14,7 +17,7 @@
     <div class="dashboard-header">
         <h2 class="dashboard-title">Bike Owner's Dashboard</h2>
         <div class="user-info">
-            <span>Welcome, <strong>Technician</strong>!</span>
+            <span>Welcome, <strong><span sec:authentication="name"></span></strong>!</span>
             <div class="user-avatar">T</div>
         </div>
     </div>
@@ -43,38 +46,17 @@
         </div>
     </div>
 
-    <div class="main-content-row">
+    <div class="row">
         <!-- Recent Activity Column -->
-        <div class="activity-column">
-            <div class="card">
-                <div class="card-header">
-                    Recent Activity
-                </div>
-                <div class="card-body">
-                    <div class="activity-item">
-                        <div class="activity-info">
-                            <div class="activity-title">New Bike Owner Added</div>
-                            <div class="activity-desc">Bike owner "Mike" was added to the dashboard.</div>
-                        </div>
-                        <div class="activity-time">10:30 AM</div>
+        <div class="col-md-5">
+            <div class="activity-column">
+                <div class="card">
+                    <div class="card-header">
+                        Recent Activity
                     </div>
-                    <div class="activity-item">
-                        <div class="activity-info">
-                            <div class="activity-title">Full Test Conducted</div>
-                            <div class="activity-desc">Full test for the bike owner "John Doe" was conducted</div>
-                        </div>
-                        <div class="activity-time">10:27 AM</div>
+                    <div class="card-body">
+                        <!-- JavaScript will dynamically inject activity items here -->
                     </div>
-                    <div class="activity-item">
-                        <div class="activity-info">
-                            <div class="activity-title">Bike Maintenance Completed</div>
-                            <div class="activity-desc">Tune-up for bike #B-2456 finished</div>
-                        </div>
-                        <div class="activity-time">9:45 AM</div>
-                    </div>
-                    <a href="#" class="btn-view mt-2">
-                        View More <i class="fas fa-chevron-right"></i>
-                    </a>
                 </div>
             </div>
         </div>
@@ -94,10 +76,11 @@
                             <th>Phone Number</th>
                             <th>Birth Date</th>
                             <th>Actions</th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="owner : ${bikeOwners}">
+                        <tr th:each="owner : ${bikeOwners}" th:id="'owner-' + ${owner.id}">
                             <td th:text="${owner.name}"></td>
                             <td th:text="${owner.email}"></td>
                             <td th:text="${owner.phoneNumber}"></td>
@@ -105,6 +88,7 @@
                             <td>
                                 <a th:href="@{/technician/bikes/owner/{id}(id=${owner.id})}" class="btn btn-primary">All Bikes</a>
                             </td>
+                            <td><button class="btn btn-outline-danger remove-bikeOwners-button" th:attr="data-bikeOwner-id=${owner.id}"><i class="fa-solid fa-trash"></i></button></td>
                         </tr>
                         </tbody>
                     </table>
@@ -122,14 +106,12 @@
                         </li>
                     </ul>
                 </nav>
-                <a th:href="@{/technician/bike-owners/add}" class="btn btn-primary">
-                    <i class="fas fa-plus"></i> Add Bike Owner
-                </a>
+                <button id="add-bikeowner-btn" class="btn btn-primary">
+                    <i class="fas fa-user-plus"></i> Add Bike Owner
+                </button>
             </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
 </body>
 </html>
