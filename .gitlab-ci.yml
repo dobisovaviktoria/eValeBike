@@ -39,27 +39,24 @@ test_job:
   stage: test
   image: gradle:8-jdk21
   services:
+    - name: docker:20.10.24-dind
+      alias: docker  # Matches DOCKER_HOST
     - name: postgres:17.2-alpine
-      alias: db  # Ensures PostgreSQL is reachable at 'db'
+      alias: db  # Keep for non-Testcontainers tests
+  before_script:
+    - echo "Installing Docker client..."
+    - apt-get update && apt-get install -y docker.io || echo "Docker install failed, continuing..."
   script:
-    - echo "Current working directory:"
-    - pwd
-    - echo "Listing project files:"
-    - ls -la
-    - echo "Checking PostgreSQL connectivity (optional):"
+    - echo "Checking Docker service..."
+    - docker info || echo "Docker info failed, continuing..."
+    - echo "Checking PostgreSQL connectivity..."
     - ping -c 4 db || echo "Ping to db failed, continuing..."
-    - echo "Checking PostgreSQL service (optional):"
+    - echo "Checking PostgreSQL service..."
     - psql -h db -U $POSTGRES_USER -d $POSTGRES_DB -c '\q' 2>/dev/null && echo "PostgreSQL is ready!" || echo "PostgreSQL check failed, continuing..."
-    - echo "Checking Gradle test task:"
-    - gradle tasks --all || echo "Gradle tasks failed, continuing..."
-    - echo "Running tests:"
-    - gradle test --info || echo "Tests failed, checking for artifacts..."
-    - echo "Creating test results directory if missing:"
-    - mkdir -p build/test-results/test/  # Ensure directory exists
-    - echo "Listing test results directory:"
-    - ls -la build/test-results/test/ || echo "Test results directory empty or not found"
-    - echo "Creating dummy artifact if no test results:"
-    - echo "No test results" > build/test-results/test/dummy.txt
+    - echo "Running tests..."
+    - gradle test --info
+    - echo "Listing test results directory..."
+    - ls -la build/test-results/test/
   artifacts:
     when: always
     reports:
