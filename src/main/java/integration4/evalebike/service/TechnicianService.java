@@ -1,6 +1,5 @@
 package integration4.evalebike.service;
 
-import integration4.evalebike.domain.Role;
 import integration4.evalebike.domain.Technician;
 import integration4.evalebike.exception.NotFoundException;
 import integration4.evalebike.repository.TechnicianRepository;
@@ -33,14 +32,11 @@ public class TechnicianService {
     }
 
     public Technician saveTechnician(final String name, final String email) {
-        String rawPassword = passwordUtility.generateRandomPassword(12);
+        String rawPassword = passwordUtility.generateRandomPassword(8);
         String hashedPassword = passwordUtility.hashPassword(rawPassword);
 
-        Technician technician = new Technician();
-        technician.setName(name);
-        technician.setEmail(email);
+        Technician technician = new Technician(name, email);
         technician.setPassword(hashedPassword);
-        technician.setRole(Role.TECHNICIAN);
         passwordUtility.sendPasswordEmail(email, rawPassword);
         return technicianRepository.save(technician);
     }
