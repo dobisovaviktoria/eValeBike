@@ -78,6 +78,7 @@ sast_job:
     - if [ ! -d "dependency-check" ]; then apt-get update && apt-get install -y wget unzip && wget https://github.com/jeremylong/DependencyCheck/releases/download/v10.0.4/dependency-check-10.0.4-release.zip && unzip dependency-check-10.0.4-release.zip; fi
     - chmod +x dependency-check/bin/dependency-check.sh
 
+
   script:
     - echo "Creating output directory..."
     - export OUTPUT_DIR="$(pwd)/build/reports/dependency-check"
