@@ -28,12 +28,20 @@ before_script:
 
 build_job:
   stage: build
+  image: gradle:8-jdk21
   script:
-    - gradle clean build --exclude-task test
+    # Build eValeBike application
+    - echo "Building eValeBike application..."
+    - gradle build -x test --info -Dorg.gradle.jvmargs=-Xmx2g
+    # List artifacts for verification
+    - echo "Listing build artifacts..."
+    - ls -la build/libs/
+    - ls -la build/classes/java/main/
   artifacts:
+    when: always
     paths:
       - build/libs/*.jar
-    expire_in: 1 week
+      - build/classes/java/main/
 
 test_job:
   stage: test
