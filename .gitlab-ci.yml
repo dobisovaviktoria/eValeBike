@@ -84,8 +84,10 @@ sast_job:
     - chmod +x dependency-check/bin/dependency-check.sh || echo "Failed to make Dependency-Check executable, continuing..."
   script:
     # Make directory for dependcy Check results
+    - echo "Checking build directory..."
+    - ls -ld build/ || echo "build/ directory not found"
     - echo "Making directory for dependency check results"
-    - mkdir p build/reports/dependency-check/ || echo "Failed to create dependency check directory, continuing..."
+    - mkdir -p build/reports/dependency-check/ || echo "Failed to create dependency check directory, continuing..."
     - echo "Verifying output directory..."
     - ls -ld ./build/reports/dependency-check/ || echo "Output directory not found"
     - echo "Checking write permissions..."
