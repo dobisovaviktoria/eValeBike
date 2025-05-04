@@ -86,10 +86,10 @@ sast_job:
     - echo "Verifying output directory..."
     - ls -ld "$OUTPUT_DIR"
     - "[ -z \"$NVD_API_KEY\" ] && { echo \"ERROR: NVD_API_KEY is not set. Please set it in GitLab CI/CD variables.\"; exit 1; }"
-    - export nvdApiKey="$NVD_API_KEY"
-    - echo "Running OWASP Dependency-Check SAST analysis..."
+    - echo "NVD_API_KEY is set (value masked for security)"
     - export JAVA_OPTS="-Xmx6g -Xms1g"
-    - timeout 5m ./dependency-check/bin/dependency-check.sh --project "eValeBike" --scan "$(pwd)/build/libs/*.jar" --format XML --out "$OUTPUT_DIR" --failOnCVSS 0 --data /cache/dependency-check --enableExperimental > sast.log 2>&1 || true
+    - echo "Running OWASP Dependency-Check SAST analysis..."
+    - timeout 5m ./dependency-check/bin/dependency-check.sh --project "eValeBike" --scan "$(pwd)/build/libs/*.jar" --format XML --out "$OUTPUT_DIR" --failOnCVSS 0 --data /cache/dependency-check --enableExperimental --nvdApiKey "$NVD_API_KEY" > sast.log 2>&1 || true
     - echo "Dependency-Check output (last 20 lines):"
     - tail -n 20 sast.log || echo "Failed to read sast.log"
     - echo "Listing SAST reports..."
