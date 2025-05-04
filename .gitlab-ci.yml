@@ -81,9 +81,6 @@ sast_job:
         apt-get update && apt-get install -y wget unzip
         wget https://github.com/jeremylong/DependencyCheck/releases/download/v9.0.9/dependency-check-9.0.9-release.zip
         unzip dependency-check-9.0.9-release.zip -d .
-        # Ensure to check the extracted folder name (for debugging)
-        ls -la
-        # Now move the folder if it exists
         mv dependency-check-9.0.9 dependency-check || echo "dependency-check-9.0.9 folder not found, skipping move"
       fi
 
@@ -91,9 +88,6 @@ sast_job:
 
     - mkdir -p build/reports/dependency-check
     - ls -ld build/reports/dependency-check  # Verifying directory creation
-
-    - '[ -z "$NVD_API_KEY" ] && { echo "ERROR: NVD_API_KEY is not set. Please set it in GitLab CI/CD variables."; exit 1; }'
-    - echo "NVD_API_KEY is set (masked)"
 
     - echo "Running OWASP Dependency-Check SAST analysis..."
     - >
@@ -103,8 +97,6 @@ sast_job:
       --format XML
       --out build/reports/dependency-check
       --failOnCVSS 0
-      --nvdApiKey "$NVD_API_KEY"
-      --nvdApiDelay 2000
       --log build/reports/dependency-check/dependency-check.log
 
     - echo "Output directory contents:"
