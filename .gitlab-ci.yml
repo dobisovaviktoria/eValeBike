@@ -86,11 +86,11 @@ sast_job:
 
     - chmod +x dependency-check/bin/dependency-check.sh
 
-    - echo "Creating output directory: build/reports/dependency-check"
-    - mkdir -p "build/reports/dependency-check"
+    - mkdir -p build/reports/dependency-check
+    - echo "Created output directory: build/reports/dependency-check"
 
     - echo "Verifying output directory..."
-    - ls -ld "build/reports/dependency-check"
+    - ls -ld build/reports/dependency-check
 
     - '[ -z "$NVD_API_KEY" ] && { echo "ERROR: NVD_API_KEY is not set. Please set it in GitLab CI/CD variables."; exit 1; }'
     - echo "NVD_API_KEY is set (masked)"
@@ -107,10 +107,10 @@ sast_job:
       --log build/reports/dependency-check/dependency-check.log
 
     - echo "Output directory contents:"
-    - find "build/reports/dependency-check"
+    - find build/reports/dependency-check
 
     - echo "Dependency-Check log (tail):"
-    - tail -n 50 "build/reports/dependency-check/dependency-check.log" || echo "No log found"
+    - tail -n 50 build/reports/dependency-check/dependency-check.log || echo "No log found"
 
   artifacts:
     paths:
