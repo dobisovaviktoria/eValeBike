@@ -80,6 +80,9 @@ sast_job:
     - unzip dependency-check-10.0.4-release.zip || echo "Failed to unzip Dependency-Check, continuing..."
     - chmod +x dependency-check/bin/dependency-check.sh || echo "Failed to make Dependency-Check executable, continuing..."
   script:
+    # Make directory for dependcy Check results
+    - echo "Making directory for dependency check results"
+    - mkdir p build/reports/dependency-check/ || echo "Failed to create dependency check directory, continuing..."
     # Run OWASP Dependency-Check SAST analysis
     - echo "Running OWASP Dependency-Check SAST analysis..."
     - ./dependency-check/bin/dependency-check.sh --project "eValeBike" --scan build/libs/*.jar --format XML --format HTML --out build/reports/dependency-check/ --failOnCVSS 0 --data /cache/dependency-check > sast.log 2>&1 || true
