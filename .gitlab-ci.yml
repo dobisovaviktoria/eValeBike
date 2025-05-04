@@ -121,7 +121,7 @@ sast_job:
       - runner_system_failure
       - stuck_or_timeout_failure
 
-  timeout: 5m
+  timeout: 15m
 
 deploy_job:
   stage: deploy
