@@ -85,7 +85,7 @@ sast_job:
     - chown -R $(whoami) "$OUTPUT_DIR"
     - echo "Verifying output directory..."
     - ls -ld "$OUTPUT_DIR"
-    - test -z "$NVD_API_KEY" && echo "ERROR: NVD_API_KEY is not set. Please set it in GitLab CI/CD variables." && exit 1
+    - "[ -z \"$NVD_API_KEY\" ] && { echo \"ERROR: NVD_API_KEY is not set. Please set it in GitLab CI/CD variables.\"; exit 1; }"
     - export nvdApiKey="$NVD_API_KEY"
     - echo "Running OWASP Dependency-Check SAST analysis..."
     - export JAVA_OPTS="-Xmx6g -Xms1g"
