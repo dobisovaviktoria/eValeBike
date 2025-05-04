@@ -97,7 +97,7 @@ sast_job:
       --format XML
       --out build/reports/dependency-check
       --failOnCVSS 0
-      --no-update
+      --noupdate
       --log build/reports/dependency-check/dependency-check.log
 
     - echo "Output directory contents:"
