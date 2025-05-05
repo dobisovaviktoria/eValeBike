@@ -53,6 +53,132 @@ SELECT 6,
        'APPROVED'
 WHERE NOT EXISTS (SELECT 1 FROM app_user WHERE id = 6);
 
+INSERT INTO app_user (id, name, email, password, role, user_status)
+SELECT 7,
+       'Nathan',
+       'nathan@example.com',
+       '$2a$10$kU6clDpBtcQAiul4xa9GP.Liy2GmP3QCPXHeZNjBSLj240YukGx7K',
+       'TECHNICIAN',
+       'APPROVED'
+WHERE NOT EXISTS (SELECT 1 FROM app_user WHERE id = 7);
+
+INSERT INTO app_user (id, name, email, password, role, user_status)
+SELECT 8,
+       'Nathaniel',
+       'nathaniel@example.com',
+       '$2a$10$kU6clDpBtcQAiul4xa9GP.Liy2GmP3QCPXHeZNjBSLj240YukGx7K',
+       'BIKE_OWNER',
+       'APPROVED'
+WHERE NOT EXISTS (SELECT 1 FROM app_user WHERE id = 8);
+
+INSERT INTO app_user (id, name, email, password, role, user_status)
+SELECT 9,
+       'Jean',
+       'jean@example.com',
+       '$2a$10$kU6clDpBtcQAiul4xa9GP.Liy2GmP3QCPXHeZNjBSLj240YukGx7K',
+       'BIKE_OWNER',
+       'APPROVED'
+WHERE NOT EXISTS (SELECT 1 FROM app_user WHERE id = 9);
+
+INSERT INTO app_user (id, name, email, password, role, user_status)
+SELECT 10,
+       'Jeremy',
+       'jeremy@example.com',
+       '$2a$10$kU6clDpBtcQAiul4xa9GP.Liy2GmP3QCPXHeZNjBSLj240YukGx7K',
+       'BIKE_OWNER',
+       'APPROVED'
+WHERE NOT EXISTS (SELECT 1 FROM app_user WHERE id = 10);
+
+INSERT INTO app_user (id, name, email, password, role, user_status)
+SELECT 11,
+       'Kevin',
+       'kevine@example.com',
+       '$2a$10$kU6clDpBtcQAiul4xa9GP.Liy2GmP3QCPXHeZNjBSLj240YukGx7K',
+       'BIKE_OWNER',
+       'APPROVED'
+WHERE NOT EXISTS (SELECT 1 FROM app_user WHERE id = 11);
+
+INSERT INTO app_user (id, name, email, password, role, user_status)
+SELECT 12,
+       'Andrew',
+       'andrew@example.com',
+       '$2a$10$kU6clDpBtcQAiul4xa9GP.Liy2GmP3QCPXHeZNjBSLj240YukGx7K',
+       'TECHNICIAN',
+       'APPROVED'
+WHERE NOT EXISTS (SELECT 1 FROM app_user WHERE id = 12);
+
+INSERT INTO app_user (id, name, email, password, role, user_status)
+SELECT 13,
+       'Nicky',
+       'nicky@example.com',
+       '$2a$10$kU6clDpBtcQAiul4xa9GP.Liy2GmP3QCPXHeZNjBSLj240YukGx7K',
+       'TECHNICIAN',
+       'APPROVED'
+WHERE NOT EXISTS (SELECT 1 FROM app_user WHERE id = 13);
+
+INSERT INTO app_user (id, name, email, password, role, user_status)
+SELECT 14,
+       'Aaron',
+       'aaron@example.com',
+       '$2a$10$kU6clDpBtcQAiul4xa9GP.Liy2GmP3QCPXHeZNjBSLj240YukGx7K',
+       'TECHNICIAN',
+       'APPROVED'
+WHERE NOT EXISTS (SELECT 1 FROM app_user WHERE id = 14);
+
+INSERT INTO app_user (id, name, email, password, role, user_status)
+SELECT 15,
+       'Riko',
+       'riko@example.com',
+       '$2a$10$kU6clDpBtcQAiul4xa9GP.Liy2GmP3QCPXHeZNjBSLj240YukGx7K',
+       'TECHNICIAN',
+       'APPROVED'
+WHERE NOT EXISTS (SELECT 1 FROM app_user WHERE id = 15);
+
+INSERT INTO app_user (id, name, email, password, role, user_status)
+SELECT 16,
+       'Nora',
+       'nora@example.com',
+       '$2a$10$kU6clDpBtcQAiul4xa9GP.Liy2GmP3QCPXHeZNjBSLj240YukGx7K',
+       'ADMIN',
+       'APPROVED'
+WHERE NOT EXISTS (SELECT 1 FROM app_user WHERE id = 16);
+
+INSERT INTO app_user (id, name, email, password, role, user_status)
+SELECT 17,
+       'Waymack',
+       'waymack@example.com',
+       '$2a$10$kU6clDpBtcQAiul4xa9GP.Liy2GmP3QCPXHeZNjBSLj240YukGx7K',
+       'TECHNICIAN',
+       'APPROVED'
+WHERE NOT EXISTS (SELECT 1 FROM app_user WHERE id = 17);
+
+INSERT INTO app_user (id, name, email, password, role, user_status)
+SELECT 18,
+       'Sara',
+       'sara@example.com',
+       '$2a$10$kU6clDpBtcQAiul4xa9GP.Liy2GmP3QCPXHeZNjBSLj240YukGx7K',
+       'BIKE_OWNER',
+       'APPROVED'
+WHERE NOT EXISTS (SELECT 1 FROM app_user WHERE id = 18);
+
+INSERT INTO app_user (id, name, email, password, role, user_status)
+SELECT 19,
+       'Abby',
+       'abby@example.com',
+       '$2a$10$kU6clDpBtcQAiul4xa9GP.Liy2GmP3QCPXHeZNjBSLj240YukGx7K',
+       'TECHNICIAN',
+       'APPROVED'
+WHERE NOT EXISTS (SELECT 1 FROM app_user WHERE id = 19);
+
+INSERT INTO app_user (id, name, email, password, role, user_status)
+SELECT 20,
+       'Lila',
+       'lila@example.com',
+       '$2a$10$kU6clDpBtcQAiul4xa9GP.Liy2GmP3QCPXHeZNjBSLj240YukGx7K',
+       'BIKE_OWNER',
+       'APPROVED'
+WHERE NOT EXISTS (SELECT 1 FROM app_user WHERE id = 20);
+
 -- Insert into the bike_owner table
 INSERT INTO bike_owner (id, phone_number, birth_date)
 SELECT 1, '555-1234', '1990-05-20'
@@ -61,6 +187,30 @@ WHERE NOT EXISTS (SELECT 1 FROM bike_owner WHERE id = 1);
 INSERT INTO bike_owner (id, phone_number, birth_date)
 SELECT 6, '555-7890', '1992-07-22'
 WHERE NOT EXISTS (SELECT 1 FROM bike_owner WHERE id = 6);
+
+INSERT INTO bike_owner (id, phone_number, birth_date)
+SELECT 8, '555-1234', '1990-05-20'
+WHERE NOT EXISTS (SELECT 1 FROM bike_owner WHERE id = 8);
+
+INSERT INTO bike_owner (id, phone_number, birth_date)
+SELECT 9, '555-1234', '1990-05-20'
+WHERE NOT EXISTS (SELECT 1 FROM bike_owner WHERE id = 9);
+
+INSERT INTO bike_owner (id, phone_number, birth_date)
+SELECT 10, '555-1234', '1990-05-20'
+WHERE NOT EXISTS (SELECT 1 FROM bike_owner WHERE id = 10);
+
+INSERT INTO bike_owner (id, phone_number, birth_date)
+SELECT 11, '555-1234', '1990-05-20'
+WHERE NOT EXISTS (SELECT 1 FROM bike_owner WHERE id = 11);
+
+INSERT INTO bike_owner (id, phone_number, birth_date)
+SELECT 18, '555-1234', '1990-05-20'
+WHERE NOT EXISTS (SELECT 1 FROM bike_owner WHERE id = 18);
+
+INSERT INTO bike_owner (id, phone_number, birth_date)
+SELECT 20, '555-1234', '1990-05-20'
+WHERE NOT EXISTS (SELECT 1 FROM bike_owner WHERE id = 20);
 
 -- Insert bikes
 INSERT INTO bike (bikeqr, brand, model, production_year, bike_size, mileage, gear_type, engine_type, power_train,
@@ -166,10 +316,42 @@ INSERT INTO technician (id)
 SELECT 2
 WHERE NOT EXISTS (SELECT 1 FROM technician WHERE id = 2);
 
+INSERT INTO technician (id)
+SELECT 7
+WHERE NOT EXISTS (SELECT 1 FROM technician WHERE id = 7);
+
+INSERT INTO technician (id)
+SELECT 12
+WHERE NOT EXISTS (SELECT 1 FROM technician WHERE id = 12);
+
+INSERT INTO technician (id)
+SELECT 13
+WHERE NOT EXISTS (SELECT 1 FROM technician WHERE id = 13);
+
+INSERT INTO technician (id)
+SELECT 14
+WHERE NOT EXISTS (SELECT 1 FROM technician WHERE id = 14);
+
+INSERT INTO technician (id)
+SELECT 15
+WHERE NOT EXISTS (SELECT 1 FROM technician WHERE id = 15);
+
+INSERT INTO technician (id)
+SELECT 17
+WHERE NOT EXISTS (SELECT 1 FROM technician WHERE id = 17);
+
+INSERT INTO technician (id)
+SELECT 19
+WHERE NOT EXISTS (SELECT 1 FROM technician WHERE id = 19);
+
 -- Insert into the administrator table if the id doesn't already exist
 INSERT INTO administrator (id, company_name)
 SELECT 3, 'E-Bike Corp'
 WHERE NOT EXISTS (SELECT 1 FROM administrator WHERE id = 3);
+
+INSERT INTO administrator (id, company_name)
+SELECT 16, 'E-Nursing'
+WHERE NOT EXISTS (SELECT 1 FROM administrator WHERE id = 16);
 
 -- Insert into the super_admin table if the id doesn't already exist
 INSERT INTO super_admin (id)
