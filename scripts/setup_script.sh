@@ -4,13 +4,13 @@
 #Author: abir.belhadj@student.kdg.be
 #Description: Install Docker, Nginx, Certbot, sets firewall
 
-set -euo pipefai
+set -euo pipefail
 
 log() {
   echo -e "\n ->  \033[1;32m$1\033[0m\n"
 }l
 
-log “Updating sustem… “
+log "Updating sustem…"
 sudo dnf -y update
 
 log "Installing EPEL..."
