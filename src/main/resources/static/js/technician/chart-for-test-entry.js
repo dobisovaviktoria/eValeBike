@@ -36,6 +36,45 @@ async function fetchData(normalized) {
         return [];
     }
 }
+const metricTogglesContainer = document.getElementById("metricToggles");
+
+// Initialize checkboxes for each metric
+function renderMetricCheckboxes() {
+    metricTogglesContainer.innerHTML = ""; // Clear any existing checkboxes
+
+    metricDefinitions.forEach(metric => {
+        const wrapper = document.createElement("div");
+        wrapper.className = "form-check form-check-inline";
+
+        const checkbox = document.createElement("input");
+        checkbox.className = "form-check-input";
+        checkbox.type = "checkbox";
+        checkbox.id = `chk-${metric.field}`;
+        checkbox.checked = true;
+        checkbox.dataset.field = metric.field;
+
+        const label = document.createElement("label");
+        label.className = "form-check-label";
+        label.htmlFor = checkbox.id;
+        label.textContent = metric.label;
+
+        wrapper.appendChild(checkbox);
+        wrapper.appendChild(label);
+        metricTogglesContainer.appendChild(wrapper);
+
+        // Add listener to update selectedFields and refresh chart
+        checkbox.addEventListener("change", () => {
+            if (checkbox.checked) {
+                if (!selectedFields.includes(metric.field)) {
+                    selectedFields.push(metric.field);
+                }
+            } else {
+                selectedFields = selectedFields.filter(f => f !== metric.field);
+            }
+            updateChart();
+        });
+    });
+}
 
 // Create and render chart
 function createChart(data, selectedFields) {
@@ -44,7 +83,14 @@ function createChart(data, selectedFields) {
         return;
     }
 
-    const labels = data.map(e => new Date(e.timestamp).toLocaleTimeString());
+    const startTime = new Date(data[0].timestamp).getTime();
+    const labels = data.map(e => {
+        const secondsElapsed = Math.round((new Date(e.timestamp).getTime() - startTime) / 1000);
+        if (secondsElapsed < 60) return `${secondsElapsed}s`;
+        const minutes = Math.floor(secondsElapsed / 60);
+        const seconds = secondsElapsed % 60;
+        return seconds === 0 ? `${minutes}m` : `${minutes}m ${seconds}s`;
+    });
 
     const datasets = metricDefinitions
         .filter(metric => selectedFields.includes(metric.field))
@@ -93,7 +139,7 @@ function createChart(data, selectedFields) {
             left = !left; // Alternate between left and right axes
         });
         scales = {
-            x: { title: { display: true, text: "Timestamp" } },
+            x: { title: { display: true, text: "Elapsed Time" } },
             ...yAxes
         };
     }
@@ -181,5 +227,5 @@ document.getElementById("toggleNormalizationBtn").addEventListener("click", () =
         : "Show Normalized Data";
     updateChart();
 });
-
+renderMetricCheckboxes()
 updateChart()
