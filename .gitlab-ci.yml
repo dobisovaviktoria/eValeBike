@@ -29,15 +29,6 @@ before_script:
   - echo "Starting CI/CD pipeline..."
   - export GRADLE_USER_HOME=`pwd`/.gradle
 
-SAST:
-  stage: sast
-  artifacts:
-    paths:
-      - gl-sast-report.json
-    reports:
-      sast: gl-sast-report.json
-    expire_in: 1 week
-
 build_job:
   stage: build
   script:
@@ -77,6 +68,15 @@ test_job:
     paths:
       - build/test-results/test/
 
+sast:
+  extends: .sast
+  stage: sast
+  artifacts:
+    paths:
+      - gl-sast-report.json
+    reports:
+      sast: gl-sast-report.json
+    expire_in: 1 week
 
 destroy_job:
   stage: destroy
