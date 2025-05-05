@@ -34,7 +34,7 @@ public class TechnicianAPIController {
     private final BikeOwnerService bikeOwnerService;
     private final BikeMapper bikeMapper;
     private final BikeOwnerMapper bikeOwnerMapper;
-    private final TestBenchService  testBenchService;
+    private final TestBenchService testBenchService;
     private final TestReportRepository testReportRepository;
     private static final Logger logger = LoggerFactory.getLogger(TechnicianAPIController.class);
     private final RecentActivityService recentActivityService;
@@ -57,7 +57,7 @@ public class TechnicianAPIController {
     @GetMapping("/bikeOwners")
     public ResponseEntity<List<BikeOwnerDto>> getAllAdmins() {
         final List<BikeOwnerDto> bikeOwners = bikeOwnerService.getAll()
-                .stream().map(bikeOwnerMapper :: toBikeOwnerDto)
+                .stream().map(bikeOwnerMapper::toBikeOwnerDto)
                 .toList();
         return ResponseEntity.ok(bikeOwners);
     }
@@ -96,7 +96,7 @@ public class TechnicianAPIController {
     }
 
     @PostMapping("/start/{bikeQR}")
-    public Mono<String> startTest(@PathVariable String bikeQR, @RequestParam("testType") String testType, Principal principal,  @AuthenticationPrincipal final CustomUserDetails userDetails) {
+    public Mono<String> startTest(@PathVariable String bikeQR, @RequestParam("testType") String testType, Principal principal, @AuthenticationPrincipal final CustomUserDetails userDetails) {
 
         recentActivityService.save(new RecentActivity(Activity.INITIALIZED_TEST, "Test started successfully.", LocalDateTime.now(), userDetails.getUserId()));
         String technicianUsername = principal != null ? principal.getName() : "anonymous";
@@ -177,9 +177,6 @@ public class TechnicianAPIController {
     public List<NormalizedTestReportEntryDTO> getNormalizedTestReportEntries(@PathVariable String testId) {
         return testReportEntryService.getNormalizedEntriesByReportId(testId);
     }
-
-
-
 
 
 }
