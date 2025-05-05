@@ -33,6 +33,7 @@ build_job:
   artifacts:
     paths:
       - build/libs/*.jar
+      - build/libs/
     expire_in: 1 week
 
 test_job:
@@ -66,28 +67,29 @@ test_job:
 
 sast_job:
   stage: sast
-  image: gradle:8-jdk21
+  image: gradle:8-jdk21-jammy
   dependencies:
     - build_job
+
+  before_script:
+    - apt-get update && apt-get install -y wget unzip || echo "Tools already installed"
+
   script:
-    - echo "Checking current working directory..."
     - pwd
-    - echo "Checking for build_job artifacts..."
-    - ls -la build/libs/ || echo "No JAR files found"
+    - echo "Checking for artifacts from build_job..."
+    - find . -type f
+    - ls -la build/libs/ || echo "No JAR files found in build/libs"
 
     - echo "Setting up OWASP Dependency-Check..."
     - |
       if [ ! -d "dependency-check" ]; then
-        apt-get update && apt-get install -y wget unzip
         wget https://github.com/jeremylong/DependencyCheck/releases/download/v9.0.9/dependency-check-9.0.9-release.zip
         unzip dependency-check-9.0.9-release.zip -d .
         mv dependency-check-9.0.9 dependency-check || echo "dependency-check-9.0.9 folder not found, skipping move"
       fi
-
     - chmod +x dependency-check/bin/dependency-check.sh
 
     - mkdir -p build/reports/dependency-check
-    - ls -ld build/reports/dependency-check  # Verifying directory creation
 
     - echo "Running OWASP Dependency-Check SAST analysis..."
     - >
@@ -111,6 +113,7 @@ sast_job:
       - build/reports/dependency-check/
     when: always
     expire_in: 1 week
+
   cache:
     key: dependency-check-cache-non_protected
     paths:
