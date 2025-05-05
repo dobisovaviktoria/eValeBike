@@ -107,3 +107,4 @@ deploy_job:
     - echo "Deploying to Azure VM..."
     - ssh team4@4.180.13.98 'bash -s' < scripts/setup_script.sh
 
+
