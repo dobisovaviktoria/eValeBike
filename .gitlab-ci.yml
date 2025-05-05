@@ -108,3 +108,4 @@ deploy_job:
     - ssh team4@4.180.13.98 'bash -s' < scripts/setup_script.sh
 
 
+
