@@ -14,10 +14,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
-// Load the admin table using ajax
-document.addEventListener("DOMContentLoaded", async () => {
-    const adminTableBody = document.getElementById("admin-table-body");
-
+    async function loadAdminData() {
+        try {
+            const response = await fetch("/api/super-admin/admins");
+            if (!response.ok) throw new Error("Failed to load admins");
             adminData = await response.json();
             renderTable();
             renderPagination();
@@ -41,19 +41,23 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <td>${admin.email}</td>
                 <td>${admin.companyName}</td>
                 <td>
-                    <button class="btn btn-outline-danger delete-btn" data-id="${admin.id}">
+                    <button class="btn btn-sm btn-outline-primary edit-btn me-2" data-id="${admin.id}">
+                        <i class="fa-solid fa-pen"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger delete-btn" data-id="${admin.id}">
                         <i class="fa-solid fa-trash"></i>
                     </button>
                 </td>
             `;
             adminTableBody.appendChild(row);
         });
+
         attachDeleteEventListeners();
+        attachEditEventListeners();
     }
 
     function renderPagination() {
         paginationContainer.innerHTML = "";
-
         const totalPages = Math.ceil(adminData.length / adminsPerPage);
 
         const createPageItem = (label, page, disabled = false, active = false) => {
@@ -79,79 +83,79 @@ document.addEventListener("DOMContentLoaded", async () => {
         };
 
         paginationContainer.appendChild(createPageItem("Previous", currentPage - 1, currentPage === 1));
-
         for (let i = 1; i <= totalPages; i++) {
             paginationContainer.appendChild(createPageItem(i, i, false, currentPage === i));
         }
-
         paginationContainer.appendChild(createPageItem("Next", currentPage + 1, currentPage === totalPages));
     }
-
-    loadAdminData();
 
     function attachDeleteEventListeners() {
         document.querySelectorAll(".delete-btn").forEach(button => {
             button.addEventListener("click", async (e) => {
                 e.preventDefault();
-
                 const btn = e.currentTarget;
-                const adminRow = btn.closest("tr");
                 const adminId = btn.dataset.id;
 
-                if (!adminId || !adminRow) {
-                    alert("Admin ID or row not found.");
-                    return;
-                }
+                if (!adminId) return alert("No admin ID found.");
 
                 try {
                     const response = await fetch(`/api/super-admin/admins/${adminId}`, {
                         method: "DELETE",
-                        headers: {
-                            "Accept": "application/json"
-                        }
+                        headers: { "Accept": "application/json" }
                     });
 
                     if (response.ok) {
-                        loadAdminData();
+                        await loadAdminData();
                     } else {
                         alert("Failed to delete admin.");
                     }
                 } catch (error) {
-                    console.error("Error deleting admin:", error);
+                    console.error("Delete error:", error);
                     alert("An error occurred while deleting.");
                 }
             });
         });
     }
+
+    function attachEditEventListeners() {
+        document.querySelectorAll(".edit-btn").forEach(button => {
+            button.addEventListener("click", (e) => {
+                e.preventDefault();
+                const btn = e.currentTarget;
+                const adminId = btn.dataset.id;
+                if (!adminId) return alert("No admin ID found.");
+                window.location.href = `/super-admin/admins/edit/${adminId}`;
+            });
+        });
+    }
+
+    await loadAdminData();
 });
 
-
-///Need to implement edit button
+// SECONDARY PAGE INITIALIZER FOR PENDING USERS AND DASHBOARD
 
 document.addEventListener('DOMContentLoaded', function () {
     initializePage();
 });
 
 function initializePage() {
-    // Initialize a pending users table
+    // Pending users table
     if (document.getElementById('pending-users-table')) {
         loadPendingUsers();
     }
 
-    // Initialize pending requests card
+    // Pending requests card
     const pendingRequestsCard = document.getElementById('pending-requests-card');
     if (pendingRequestsCard) {
         pendingRequestsCard.addEventListener('click', () => {
             window.location.href = '/super-admin/admins/pending-approvals';
         });
 
-        // Start fetching pending requests count
         fetchPendingRequestsCount();
-        // Refresh count every minute
         setInterval(fetchPendingRequestsCount, 60000);
     }
 
-    // Initialize the back button
+    // Back button
     const backButton = document.getElementById('back-to-superAdmin-dashboard-btn');
     if (backButton) {
         backButton.addEventListener('click', (e) => {
@@ -177,9 +181,7 @@ async function loadPendingUsers() {
 
         if (users.length === 0) {
             const row = document.createElement('tr');
-            row.innerHTML = `
-                <td colspan="5" class="text-center">No pending approvals</td>
-            `;
+            row.innerHTML = `<td colspan="5" class="text-center">No pending approvals</td>`;
             tableBody.appendChild(row);
             return;
         }
@@ -213,7 +215,6 @@ async function loadPendingUsers() {
 function attachApprovalEventListeners() {
     document.querySelectorAll('.approve-btn, .reject-btn').forEach(button => {
         button.addEventListener('click', async (e) => {
-            // Get the button element
             const btn = e.target.closest('button');
             if (!btn) return;
 
@@ -233,9 +234,7 @@ async function approveUser(userId) {
             method: 'POST'
         });
 
-        if (!response.ok) {
-            throw new Error('Failed to approve user');
-        }
+        if (!response.ok) throw new Error('Failed to approve user');
 
         alert('User approved successfully');
         await loadPendingUsers();
@@ -251,9 +250,7 @@ async function rejectUser(userId) {
             method: 'POST'
         });
 
-        if (!response.ok) {
-            throw new Error('Failed to reject user');
-        }
+        if (!response.ok) throw new Error('Failed to reject user');
 
         alert('User rejected successfully');
         await loadPendingUsers();
@@ -266,9 +263,8 @@ async function rejectUser(userId) {
 async function fetchPendingRequestsCount() {
     try {
         const response = await fetch('/api/super-admin/admins/pending/count');
-        if (!response.ok) {
-            throw new Error('Failed to fetch pending requests count');
-        }
+        if (!response.ok) throw new Error('Failed to fetch pending requests count');
+
         const count = await response.json();
 
         const countElement = document.getElementById('new-requests');
