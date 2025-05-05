@@ -105,6 +105,6 @@ deploy_job:
     - cd $CI_PROJECT_DIR
   script:
     - echo "Deploying to Azure VM..."
-    - ssh team4@4.180.13.98 'bash -s' < setup_script.sh
+    - ssh team4@4.180.13.98 'bash -s' < scripts/setup_script.sh
   only:
     - main
