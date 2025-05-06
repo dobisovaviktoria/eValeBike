@@ -95,6 +95,14 @@ public class Bike {
         return Objects.hash(bikeQR);
     }
 
+    public double getAccuCapacity() {
+        return accuCapacity;
+    }
+
+    public void setAccuCapacity(double accuCapacity) {
+        this.accuCapacity = accuCapacity;
+    }
+
     public List<BikeOwnerBike> getBikeList() {
         return bikeList;
     }
@@ -111,46 +119,6 @@ public class Bike {
         this.bikeQR = bikeQR;
     }
 
-    public String getBrand() {
-        return brand;
-    }
-
-    public void setBrand(String brand) {
-        this.brand = brand;
-    }
-
-    public String getEngineType() {
-        return engineType;
-    }
-
-    public void setEngineType(String motorType) {
-        this.engineType = motorType;
-    }
-
-    public String getModel() {
-        return model;
-    }
-
-    public void setModel(String model) {
-        this.model = model;
-    }
-
-    public LocalDate getLastTestDate() {
-        return lastTestDate;
-    }
-
-    public void setLastTestDate(LocalDate lastTestDate) {
-        this.lastTestDate = lastTestDate;
-    }
-
-    public int getProductionYear() {
-        return productionYear;
-    }
-
-    public void setProductionYear(int productionYear) {
-        this.productionYear = productionYear;
-    }
-
     public BikeSize getBikeSize() {
         return bikeSize;
     }
@@ -159,12 +127,28 @@ public class Bike {
         this.bikeSize = bikeSize;
     }
 
-    public int getMileage() {
-        return mileage;
+    public String getBrand() {
+        return brand;
     }
 
-    public void setMileage(int mileage) {
-        this.mileage = mileage;
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public double getEngineTorque() {
+        return engineTorque;
+    }
+
+    public void setEngineTorque(double engineTorque) {
+        this.engineTorque = engineTorque;
+    }
+
+    public String getEngineType() {
+        return engineType;
+    }
+
+    public void setEngineType(String engineType) {
+        this.engineType = engineType;
     }
 
     public String getGearType() {
@@ -175,6 +159,54 @@ public class Bike {
         this.gearType = gearType;
     }
 
+    public LocalDate getLastTestDate() {
+        return lastTestDate;
+    }
+
+    public void setLastTestDate(LocalDate lastTestDate) {
+        this.lastTestDate = lastTestDate;
+    }
+
+    public double getMaxEnginePower() {
+        return maxEnginePower;
+    }
+
+    public void setMaxEnginePower(double maxEnginePower) {
+        this.maxEnginePower = maxEnginePower;
+    }
+
+    public double getMaxSupport() {
+        return maxSupport;
+    }
+
+    public void setMaxSupport(double maxSupport) {
+        this.maxSupport = maxSupport;
+    }
+
+    public int getMileage() {
+        return mileage;
+    }
+
+    public void setMileage(int mileage) {
+        this.mileage = mileage;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public double getNominalEnginePower() {
+        return nominalEnginePower;
+    }
+
+    public void setNominalEnginePower(double nominalEnginePower) {
+        this.nominalEnginePower = nominalEnginePower;
+    }
+
     public String getPowerTrain() {
         return powerTrain;
     }
@@ -183,44 +215,12 @@ public class Bike {
         this.powerTrain = powerTrain;
     }
 
-    public double getAccuCapacity() {
-        return accuCapacity;
+    public int getProductionYear() {
+        return productionYear;
     }
 
-    public void setAccuCapacity(float accuCapacity) {
-        this.accuCapacity = accuCapacity;
-    }
-
-    public double getMaxSupport() {
-        return maxSupport;
-    }
-
-    public void setMaxSupport(float maxSupport) {
-        this.maxSupport = maxSupport;
-    }
-
-    public double getMaxEnginePower() {
-        return maxEnginePower;
-    }
-
-    public void setMaxEnginePower(float maxEnginePower) {
-        this.maxEnginePower = maxEnginePower;
-    }
-
-    public double getNominalEnginePower() {
-        return nominalEnginePower;
-    }
-
-    public void setNominalEnginePower(float nominalEnginePower) {
-        this.nominalEnginePower = nominalEnginePower;
-    }
-
-    public double getEngineTorque() {
-        return engineTorque;
-    }
-
-    public void setEngineTorque(float engineTorque) {
-        this.engineTorque = engineTorque;
+    public void setProductionYear(int productionYear) {
+        this.productionYear = productionYear;
     }
 
     public String getQrCodeImage() {
@@ -229,6 +229,14 @@ public class Bike {
 
     public void setQrCodeImage(String qrCodeImage) {
         this.qrCodeImage = qrCodeImage;
+    }
+
+    public List<TestReport> getTestReports() {
+        return testReports;
+    }
+
+    public void setTestReports(List<TestReport> testReports) {
+        this.testReports = testReports;
     }
 
     @Override

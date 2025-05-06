@@ -158,7 +158,7 @@ function createChart(data, selectedFields) {
             plugins: {
                 legend: { display: true, position: 'bottom', labels: { boxWidth: 10 } }
             },
-            scales: scales // Use the scales defined above
+            scales: scales
         }
     });
 }
@@ -210,7 +210,7 @@ function averageBucket(bucket) {
 }
 
 
-// Update chart data when toggling normalization
+// Update chart  when toggling normalization
 async function updateChart() {
     const interval = parseInt(document.getElementById("intervalSelector").value);
     let data = await fetchData(isNormalized);

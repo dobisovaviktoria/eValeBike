@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -101,7 +102,7 @@ public class TechnicianAPIController {
         recentActivityService.save(new RecentActivity(Activity.INITIALIZED_TEST, "Test started successfully.", LocalDateTime.now(), userDetails.getUserId()));
         String technicianUsername = principal != null ? principal.getName() : "anonymous";
 
-        return Mono.fromCallable(() -> bikeService.findById(bikeQR)) // Convert Optional to Mono
+        return Mono.fromCallable(() -> bikeService.findById(bikeQR))
                 .flatMap(optionalBike -> optionalBike
                         .map(Mono::just)
                         .orElseGet(() -> Mono.error(new RuntimeException("Bike not found with QR: " + bikeQR))))
@@ -177,6 +178,17 @@ public class TechnicianAPIController {
     public List<NormalizedTestReportEntryDTO> getNormalizedTestReportEntries(@PathVariable String testId) {
         return testReportEntryService.getNormalizedEntriesByReportId(testId);
     }
+
+    @PatchMapping("/manual-test-form/{bikeQR}")
+    public ResponseEntity<String> manualInput(@PathVariable String bikeQR, @ModelAttribute Bike bike) {
+        try {
+            bikeService.updateManualTestFields(bikeQR, bike);
+            return ResponseEntity.ok("Bike updated successfully");
+        } catch (RuntimeException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Bike not found");
+        }
+    }
+
 
 
 }

@@ -57,4 +57,17 @@ public class BikeService {
     public long countAllBikes() {
         return bikeRepository.count();
     }
+
+    public Bike updateManualTestFields(String id, Bike partialUpdate) {
+        return bikeRepository.findById(id).map(bike -> {
+            // Only update the fields relevant to the manual test form
+            bike.setAccuCapacity(partialUpdate.getAccuCapacity());
+            bike.setMaxSupport(partialUpdate.getMaxSupport());
+            bike.setMaxEnginePower(partialUpdate.getMaxEnginePower());
+            bike.setNominalEnginePower(partialUpdate.getNominalEnginePower());
+            bike.setEngineTorque(partialUpdate.getEngineTorque());
+            return bikeRepository.save(bike);
+        }).orElseThrow(() -> new RuntimeException("Bike not found"));
+    }
+
 }

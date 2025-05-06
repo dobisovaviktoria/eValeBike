@@ -173,6 +173,17 @@ public class TechnicianController {
     }
 
 
+    @GetMapping("/manual-test-form/{bikeQR}")
+    public String showManualTestForm(@PathVariable String bikeQR, Model model) {
+        Bike bike = bikeService.getByQR(bikeQR);
+        model.addAttribute("bike", bike);
+        return "technician/manual-test";
+    }
+
+
+
+
+
 
 
 }
