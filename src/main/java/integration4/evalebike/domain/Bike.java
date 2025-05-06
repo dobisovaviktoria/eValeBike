@@ -44,7 +44,10 @@ public class Bike {
 
     }
 
-    public Bike(double accuCapacity, List<BikeOwnerBike> bikeList, String bikeQR, BikeSize bikeSize, String brand, String chassisNumber, double engineTorque, String engineType, String gearType, LocalDate lastTestDate, double maxEnginePower, double maxSupport, int mileage, String model, double nominalEnginePower, String powerTrain, int productionYear, String qrCodeImage) {
+    public Bike(double accuCapacity, List<BikeOwnerBike> bikeList, String bikeQR, BikeSize bikeSize,
+                String brand, String chassisNumber, double engineTorque, String engineType,
+                String gearType, LocalDate lastTestDate, double maxEnginePower, double maxSupport,
+                int mileage, String model, double nominalEnginePower, String powerTrain, int productionYear, String qrCodeImage) {
         this.accuCapacity = accuCapacity;
         this.bikeList = bikeList;
         this.bikeQR = bikeQR;
@@ -65,7 +68,8 @@ public class Bike {
         this.qrCodeImage = qrCodeImage;
     }
 
-    public Bike(String brand, String model, String chassisNumber, int productionYear, BikeSize bikeSize, int mileage, String gearType, String engineType,
+    public Bike(String brand, String model, String chassisNumber,
+                int productionYear, BikeSize bikeSize, int mileage, String gearType, String engineType,
                 String powerTrain,
                 double accuCapacity,
                 double maxSupport,
@@ -74,6 +78,9 @@ public class Bike {
                 double engineTorque,
                 LocalDate lastTestDate) {
     }
+
+
+
 
     @PrePersist
     public void generateQR() {

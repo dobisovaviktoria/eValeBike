@@ -184,14 +184,15 @@ public class TechnicianAPIController {
     }
 
     @PostMapping("/manual-test-form/{bikeQR}")
-    public ResponseEntity<String> manualInput(@PathVariable String bikeQR, @ModelAttribute Bike bike) {
+    public ResponseEntity<String> manualInput(@PathVariable String bikeQR, @Valid @ModelAttribute BikeDto bikeDto) {
         try {
-            bikeService.updateManualTestFields(bikeQR, bike);
+            bikeService.updateManualTestFields(bikeQR, bikeDto); // pass DTO directly
             return ResponseEntity.ok("Bike updated successfully");
         } catch (RuntimeException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Bike not found");
         }
     }
+
 
     @PostMapping("/save-visual-inspection/{testId}")
     public ResponseEntity<String> saveVisualInspection(@PathVariable String testId,@RequestBody VisualInspection visualInspection) {

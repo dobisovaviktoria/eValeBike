@@ -1,5 +1,6 @@
 package integration4.evalebike.service;
 
+import integration4.evalebike.controller.technician.dto.BikeDto;
 import integration4.evalebike.domain.Bike;
 import integration4.evalebike.domain.BikeSize;
 import integration4.evalebike.exception.NotFoundException;
@@ -58,14 +59,14 @@ public class BikeService {
         return bikeRepository.count();
     }
 
-    public Bike updateManualTestFields(String id, Bike partialUpdate) {
+    public Bike updateManualTestFields(String id, BikeDto partialUpdate) {
         return bikeRepository.findById(id).map(bike -> {
             // Only update the fields relevant to the manual test form
-            bike.setAccuCapacity(partialUpdate.getAccuCapacity());
-            bike.setMaxSupport(partialUpdate.getMaxSupport());
-            bike.setMaxEnginePower(partialUpdate.getMaxEnginePower());
-            bike.setNominalEnginePower(partialUpdate.getNominalEnginePower());
-            bike.setEngineTorque(partialUpdate.getEngineTorque());
+            bike.setAccuCapacity(partialUpdate.accuCapacity());
+            bike.setMaxSupport(partialUpdate.maxSupport());
+            bike.setMaxEnginePower(partialUpdate.maxEnginePower());
+            bike.setNominalEnginePower(partialUpdate.nominalEnginePower());
+            bike.setEngineTorque(partialUpdate.engineTorque());
             return bikeRepository.save(bike);
         }).orElseThrow(() -> new RuntimeException("Bike not found"));
     }

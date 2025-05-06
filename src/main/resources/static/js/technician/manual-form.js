@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const saveAndStartButton = document.querySelector('button[type="submit"].btn-primary');
     const manualTestForm = document.getElementById('manualTestForm');
     const maxLimit = 2000;
-    const minLimit = 1;
+    const minLimit = 0.01;
 
     saveAndStartButton.addEventListener('click', function (event) {
         event.preventDefault(); // Prevent the default form submission
