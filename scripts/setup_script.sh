@@ -25,6 +25,9 @@ log "Setting up Docker repository..."
 dnf install -y dnf-plugins-core
 dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 
+log "Removing podman-docker if present to avoid conflict..."
+dnf remove -y podman-docker || true
+
 log "Installing Docker from Docker's official repo..."
 dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
