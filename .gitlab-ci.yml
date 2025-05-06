@@ -107,7 +107,7 @@ deploy_job:
     - echo "$SSH_KNOWN_HOSTS"
     - echo "Deploying to Azure VM..."
     - echo "$SSH_PRIVATE_KEY" | grep "PRIVATE KEY"
-    - ssh -v team4@4.180.13.98 'bash -s' < scripts/setup_script.sh
+    - ssh -v team4@4.180.13.98 'sudo bash -s' < scripts/setup_script.sh
 
 
 
