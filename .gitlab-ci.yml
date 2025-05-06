@@ -100,14 +100,9 @@ deploy_job:
     - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
     - echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
-    - git clone https://gitlab-ci-token:$CI_JOB_TOKEN@$CI_SERVER_HOST/$CI_PROJECT_PATH.git
-    - cd $CI_PROJECT_DIR
+    - chmod 644 ~/.ssh/known_hosts
   script:
-    - echo "$SSH_PRIVATE_KEY" # This should print the private key.
-    - echo "$SSH_KNOWN_HOSTS"
-    - echo "Deploying to Azure VM..."
-    - echo "$SSH_PRIVATE_KEY" | grep "PRIVATE KEY"
-    - ssh -v team4@4.180.13.98 'sudo bash -s' < scripts/setup_script.sh
-
+    - echo "starting remote deploymnet via ssh"
+    - ssh team4@4.180.13.98 'bash -s' < scripts/deploy.sh
 
 
