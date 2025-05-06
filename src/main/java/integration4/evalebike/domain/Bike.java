@@ -39,8 +39,6 @@ public class Bike {
     @OneToMany(mappedBy = "bike", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<TestReport> testReports = new ArrayList<>();
 
-    @OneToMany(mappedBy = "bike", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<VisualInspection> visualInspections = new ArrayList<>();
 
     public Bike() {
 

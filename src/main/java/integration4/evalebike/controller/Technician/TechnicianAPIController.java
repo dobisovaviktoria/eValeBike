@@ -40,11 +40,13 @@ public class TechnicianAPIController {
     private static final Logger logger = LoggerFactory.getLogger(TechnicianAPIController.class);
     private final RecentActivityService recentActivityService;
     private final TestReportEntryService testReportEntryService;
+    private final VisualInspectionService visualInspectionService;
+    private final TestReportService testReportService;
 
 
     public TechnicianAPIController(BikeService bikeService, BikeOwnerService bikeOwnerService, BikeMapper bikeMapper,
                                    BikeOwnerMapper bikeOwnerMapper, TestBenchService testBenchService,
-                                   TestReportRepository testReportRepository, RecentActivityService recentActivityService, TestReportEntryService testReportEntryService) {
+                                   TestReportRepository testReportRepository, RecentActivityService recentActivityService, TestReportEntryService testReportEntryService, VisualInspectionService visualInspectionService, TestReportService testReportService) {
         this.bikeService = bikeService;
         this.bikeOwnerService = bikeOwnerService;
         this.bikeMapper = bikeMapper;
@@ -53,6 +55,8 @@ public class TechnicianAPIController {
         this.testReportRepository = testReportRepository;
         this.recentActivityService = recentActivityService;
         this.testReportEntryService = testReportEntryService;
+        this.visualInspectionService = visualInspectionService;
+        this.testReportService = testReportService;
     }
 
     @GetMapping("/bikeOwners")
@@ -189,6 +193,16 @@ public class TechnicianAPIController {
         }
     }
 
+    @PostMapping("/save-visual-inspection/{testId}")
+    public ResponseEntity<String> saveVisualInspection(@PathVariable String testId,@RequestBody VisualInspection visualInspection) {
+        try {
+            TestReport testReport = testReportService.getTestReportWithEntriesById(testId);
+            visualInspection.setTestReport(testReport);
+            visualInspectionService.saveInspection(visualInspection);
 
-
-}
+            return ResponseEntity.ok("Inspection submitted successfully!");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Failed to submit the inspection: " + e.getMessage());
+        }
+    }
+    }

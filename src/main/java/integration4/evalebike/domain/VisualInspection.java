@@ -31,9 +31,7 @@ public class VisualInspection {
     private String suspensionFront;
     private String saddle;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "bike_QR", referencedColumnName = "bikeqr")
-    private Bike bike;
+
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "test_report_id", referencedColumnName = "id", unique = true)
@@ -216,12 +214,12 @@ public class VisualInspection {
         this.saddle = saddle;
     }
 
-    public Bike getBike() {
-        return bike;
+    public TestReport getTestReport() {
+        return testReport;
     }
 
-    public void setBike(Bike bike) {
-        this.bike = bike;
+    public void setTestReport(TestReport testReport) {
+        this.testReport = testReport;
     }
 }
 

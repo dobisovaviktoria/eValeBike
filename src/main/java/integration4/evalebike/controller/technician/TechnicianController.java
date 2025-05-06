@@ -180,6 +180,15 @@ public class TechnicianController {
         return "technician/manual-test";
     }
 
+    @GetMapping("/visual-inspection/{testId}")
+    public ModelAndView showVisualInspection(@PathVariable String testId) {
+
+        ModelAndView modelAndView = new ModelAndView("technician/visual-inspection");
+        modelAndView.addObject("testId", testId);
+        return modelAndView;
+    }
+
+
 
 
 
