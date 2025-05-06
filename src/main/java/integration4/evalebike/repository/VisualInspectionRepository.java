@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface VisualInspectionRepository extends JpaRepository<VisualInspection, Integer> {
 
+    VisualInspection findVisualInspectionByTestReportId(String id);
 }

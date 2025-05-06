@@ -38,9 +38,7 @@ public class TestReport {
     @JoinColumn(name = "bike_QR", referencedColumnName = "bikeqr")
     private Bike bike;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "visual_inspection_id", referencedColumnName = "id")
-    private VisualInspection visualInspection;
+
 
     @Column(name = "technician_username")
     private  String technicianName;

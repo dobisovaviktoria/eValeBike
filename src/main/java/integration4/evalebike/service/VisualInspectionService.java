@@ -15,4 +15,8 @@ public class VisualInspectionService {
     public void saveInspection(VisualInspection inspection) {
         visualInspectionRepository.save(inspection);
     }
+
+    public VisualInspection getInspectionByReportID(String id) {
+       return visualInspectionRepository.findVisualInspectionByTestReportId(id);
+    }
 }

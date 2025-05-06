@@ -55,7 +55,6 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             if (response.ok) {
-                alert('Inspection submitted successfully!');
                 window.location.href = '/technician/report/' + testId;
             } else {
                 const errorText = await response.text();
