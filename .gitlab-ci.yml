@@ -99,8 +99,10 @@ deploy_job:
     - eval $(ssh-agent -s)
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
-    - ssh-add "$TEAM4_DEPLOY_KEY"
-    - ssh-keyscan -H 4.180.13.98 >> ~/.ssh/known_hosts
+    - cp "$TEAM4_DEPLOY_KEY" ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa          # <<== FIX: secure the key
+    - ssh-add ~/.ssh/id_rsa
+    - ssh-keyscan -H 4.180.13.98 >> ~/.ssh/known_host
   script:
     - echo "Starting remote deploy..."
     - ssh team4@4.180.13.98 'bash -s' < scripts/deploy.sh
