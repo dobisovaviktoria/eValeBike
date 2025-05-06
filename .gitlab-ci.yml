@@ -98,8 +98,8 @@ deploy_job:
     - apk add --no-cache openssh git
     - eval $(ssh-agent -s)
     - mkdir -p ~/.ssh
-    - echo "$TEAM4_DEPLOY_KEY" | tr -d '\r' | ssh-add -
     - chmod 700 ~/.ssh
+    - echo "$TEAM4_DEPLOY_KEY" | tr -d '\r' | ssh-add -
     - ssh-keyscan -H 4.180.13.98 >> ~/.ssh/known_hosts
   script:
     - ssh team4@4.180.13.98 'bash -s' < scripts/deploy.sh
