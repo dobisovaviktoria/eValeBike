@@ -95,20 +95,11 @@ deploy_job:
   stage: deploy
   image: alpine:latest
   before_script:
-    - apk add --no-cache openssh-client git bash
+    - apk add --no-cache openssh git
     - mkdir -p ~/.ssh
-    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
-    - chmod 600 ~/.ssh/id_rsa
-    - echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
-    - chmod 644 ~/.ssh/known_hosts
-    - echo "Host *" >> ~/.ssh/config
-    - echo "  StrictHostKeyChecking no" >> ~/.ssh/config
-    - echo "  UserKnownHostsFile /dev/null" >> ~/.ssh/config
-    - echo "Starting remote deployment via SSH"
-    - echo "Checking SSH configuration..."
-    - ls -al ~/.ssh
-    - cat ~/.ssh/known_hosts
-    - cat ~/.ssh/id_rsa
+    - echo "$TEAM4_DEPLOY_KEY" | tr -d '\r' | ssh-add -
+    - chmod 700 ~/.ssh
+    - ssh-keyscan -H 4.180.13.98 >> ~/.ssh/known_hosts
   script:
     - ssh team4@4.180.13.98 'bash -s' < scripts/deploy.sh
 
