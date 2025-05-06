@@ -97,16 +97,16 @@ deploy_job:
   before_script:
     - apk add --no-cache openssh-client git bash
     - mkdir -p ~/.ssh
-    - echo "$SSH_PRIVATE_KEY_DEPLOY" > ~/.ssh/id_rsa
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
     - echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
-    - echo "Cloning repository to get setup_script.sh"
     - git clone https://gitlab-ci-token:$CI_JOB_TOKEN@$CI_SERVER_HOST/$CI_PROJECT_PATH.git
     - cd $CI_PROJECT_DIR
   script:
-    - echo "$SSH_PRIVATE_KEY_DEPLOY" # This should print the private key.
+    - echo "$SSH_PRIVATE_KEY" # This should print the private key.
     - echo "$SSH_KNOWN_HOSTS"
     - echo "Deploying to Azure VM..."
+    - echo "$SSH_PRIVATE_KEY" | grep "PRIVATE KEY"
     - ssh -v team4@4.180.13.98 'bash -s' < scripts/setup_script.sh
 
 
