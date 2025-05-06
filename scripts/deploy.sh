@@ -17,19 +17,22 @@ cd "$PROJECT_ROOT" || {
 }
 
 # --- DEPLOY REMOTELY OVER SSH ---
-ssh "$AZURE_USER@$AZURE_HOST" << EOF
+export SSH_CONFIG_PATH=/home/team4/.ssh/config  # Update this line to use the correct config path
+
+ssh -F $SSH_CONFIG_PATH "$AZURE_USER@$AZURE_HOST" << EOF
   set -e
 
-  echo"" Pulling latest code..."
+  echo "Pulling latest code..."
   cd "$AZURE_APP_PATH"
   git pull origin main
 
   echo "Stopping existing containers..."
   docker-compose down || true
 
-  echo " Building and starting containers.."
+  echo "Building and starting containers..."
   docker-compose up --build -d
 
-  echo " Deployment successful."
+  echo "Deployment successful."
   docker ps
 EOF
+
