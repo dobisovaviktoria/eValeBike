@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bike Visual Inspection Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+
+    <script defer src="/js/technician/visualInspection.js"></script>
+</head>
+
+<body class="bg-light min-vh-100 d-flex align-items-center">
+<div class="container py-5">
+    <div class="card shadow-lg border-0">
+        <div class="card-header card-header-gradient d-flex align-items-center py-3">
+            <i class="bi bi-bicycle me-2 fs-4"></i>
+            <h5 class="mb-0 fw-bold">Bike Visual Inspection Form</h5>
+        </div>
+
+        <div class="card-body p-4">
+            <form id="visualForm">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead class="table-light">
+                        <tr>
+                            <th scope="col">Component</th>
+                            <th scope="col">--</th>
+                            <th scope="col">-</th>
+                            <th scope="col">0</th>
+                            <th scope="col">+</th>
+                            <th scope="col">++</th>
+                            <th scope="col">N/A</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Tires</td>
+                            <td><input type="radio" name="tires" value="--" /></td>
+                            <td><input type="radio" name="tires" value="-" /></td>
+                            <td><input type="radio" name="tires" value="0" /></td>
+                            <td><input type="radio" name="tires" value="+" /></td>
+                            <td><input type="radio" name="tires" value="++" /></td>
+                            <td><input type="radio" name="tires" value="n/a" checked /></td>
+                        </tr>
+                        <tr>
+                            <td>Bell</td>
+                            <td><input type="radio" name="bell" value="--" /></td>
+                            <td><input type="radio" name="bell" value="-" /></td>
+                            <td><input type="radio" name="bell" value="0" /></td>
+                            <td><input type="radio" name="bell" value="+" /></td>
+                            <td><input type="radio" name="bell" value="++" /></td>
+                            <td><input type="radio" name="bell" value="n/a" checked /></td>
+                        </tr>
+                        <tr>
+                            <td>Cranks</td>
+                            <td><input type="radio" name="cranks" value="--" /></td>
+                            <td><input type="radio" name="cranks" value="-" /></td>
+                            <td><input type="radio" name="cranks" value="0" /></td>
+                            <td><input type="radio" name="cranks" value="+" /></td>
+                            <td><input type="radio" name="cranks" value="++" /></td>
+                            <td><input type="radio" name="cranks" value="n/a" checked /></td>
+                        </tr>
+                        <tr>
+                            <td>Electric Wiring</td>
+                            <td><input type="radio" name="electricWiring" value="--" /></td>
+                            <td><input type="radio" name="electricWiring" value="-" /></td>
+                            <td><input type="radio" name="electricWiring" value="0" /></td>
+                            <td><input type="radio" name="electricWiring" value="+" /></td>
+                            <td><input type="radio" name="electricWiring" value="++" /></td>
+                            <td><input type="radio" name="electricWiring" value="n/a" checked /></td>
+                        </tr>
+                        <tr>
+                            <td>Frame/Front Fork</td>
+                            <td><input type="radio" name="frontFork" value="--" /></td>
+                            <td><input type="radio" name="frontFork" value="-" /></td>
+                            <td><input type="radio" name="frontFork" value="0" /></td>
+                            <td><input type="radio" name="frontFork" value="+" /></td>
+                            <td><input type="radio" name="frontFork" value="++" /></td>
+                            <td><input type="radio" name="frontFork" value="n/a" checked /></td>
+                        </tr>
+                        <tr>
+                            <td>Handles</td>
+                            <td><input type="radio" name="handles" value="--" /></td>
+                            <td><input type="radio" name="handles" value="-" /></td>
+                            <td><input type="radio" name="handles" value="0" /></td>
+                            <td><input type="radio" name="handles" value="+" /></td>
+                            <td><input type="radio" name="handles" value="++" /></td>
+                            <td><input type="radio" name="handles" value="n/a" checked /></td>
+                        </tr>
+                        <tr>
+                            <td>Chain Belt</td>
+                            <td><input type="radio" name="chainBelt" value="--" /></td>
+                            <td><input type="radio" name="chainBelt" value="-" /></td>
+                            <td><input type="radio" name="chainBelt" value="0" /></td>
+                            <td><input type="radio" name="chainBelt" value="+" /></td>
+                            <td><input type="radio" name="chainBelt" value="++" /></td>
+                            <td><input type="radio" name="chainBelt" value="n/a" checked /></td>
+                        </tr>
+                        <tr>
+                            <td>Pedals</td>
+                            <td><input type="radio" name="pedals" value="--" /></td>
+                            <td><input type="radio" name="pedals" value="-" /></td>
+                            <td><input type="radio" name="pedals" value="0" /></td>
+                            <td><input type="radio" name="pedals" value="+" /></td>
+                            <td><input type="radio" name="pedals" value="++" /></td>
+                            <td><input type="radio" name="pedals" value="n/a" checked /></td>
+                        </tr>
+                        <tr>
+                            <td>Reflectors</td>
+                            <td><input type="radio" name="reflectors" value="--" /></td>
+                            <td><input type="radio" name="reflectors" value="-" /></td>
+                            <td><input type="radio" name="reflectors" value="0" /></td>
+                            <td><input type="radio" name="reflectors" value="+" /></td>
+                            <td><input type="radio" name="reflectors" value="++" /></td>
+                            <td><input type="radio" name="reflectors" value="n/a" checked /></td>
+                        </tr>
+                        <tr>
+                            <td>Brake Pads</td>
+                            <td><input type="radio" name="brakePads" value="--" /></td>
+                            <td><input type="radio" name="brakePads" value="-" /></td>
+                            <td><input type="radio" name="brakePads" value="0" /></td>
+                            <td><input type="radio" name="brakePads" value="+" /></td>
+                            <td><input type="radio" name="brakePads" value="++" /></td>
+                            <td><input type="radio" name="brakePads" value="n/a" checked /></td>
+                        </tr>
+                        <tr>
+                            <td>Brake Handles</td>
+                            <td><input type="radio" name="brakeHandles" value="--" /></td>
+                            <td><input type="radio" name="brakeHandles" value="-" /></td>
+                            <td><input type="radio" name="brakeHandles" value="0" /></td>
+                            <td><input type="radio" name="brakeHandles" value="+" /></td>
+                            <td><input type="radio" name="brakeHandles" value="++" /></td>
+                            <td><input type="radio" name="brakeHandles" value="n/a" checked /></td>
+                        </tr>
+                        <tr>
+                            <td>Brake Cables</td>
+                            <td><input type="radio" name="brakeCables" value="--" /></td>
+                            <td><input type="radio" name="brakeCables" value="-" /></td>
+                            <td><input type="radio" name="brakeCables" value="0" /></td>
+                            <td><input type="radio" name="brakeCables" value="+" /></td>
+                            <td><input type="radio" name="brakeCables" value="++" /></td>
+                            <td><input type="radio" name="brakeCables" value="n/a" checked /></td>
+                        </tr>
+                        <tr>
+                            <td>Brake Discs</td>
+                            <td><input type="radio" name="brakeDiscs" value="--" /></td>
+                            <td><input type="radio" name="brakeDiscs" value="-" /></td>
+                            <td><input type="radio" name="brakeDiscs" value="0" /></td>
+                            <td><input type="radio" name="brakeDiscs" value="+" /></td>
+                            <td><input type="radio" name="brakeDiscs" value="++" /></td>
+                            <td><input type="radio" name="brakeDiscs" value="n/a" checked /></td>
+                        </tr>
+                        <tr>
+                            <td>Mudguards</td>
+                            <td><input type="radio" name="mudguards" value="--" /></td>
+                            <td><input type="radio" name="mudguards" value="-" /></td>
+                            <td><input type="radio" name="mudguards" value="0" /></td>
+                            <td><input type="radio" name="mudguards" value="+" /></td>
+                            <td><input type="radio" name="mudguards" value="++" /></td>
+                            <td><input type="radio" name="mudguards" value="n/a" checked /></td>
+                        </tr>
+                        <tr>
+                            <td>Handlebar/Stem</td>
+                            <td><input type="radio" name="handleBar" value="--" /></td>
+                            <td><input type="radio" name="handleBar" value="-" /></td>
+                            <td><input type="radio" name="handleBar" value="0" /></td>
+                            <td><input type="radio" name="handleBar" value="+" /></td>
+                            <td><input type="radio" name="handleBar" value="++" /></td>
+                            <td><input type="radio" name="handleBar" value="n/a" checked /></td>
+                        </tr>
+                        <tr>
+                            <td>Rear Sprocket</td>
+                            <td><input type="radio" name="rearSprocket" value="--" /></td>
+                            <td><input type="radio" name="rearSprocket" value="-" /></td>
+                            <td><input type="radio" name="rearSprocket" value="0" /></td>
+                            <td><input type="radio" name="rearSprocket" value="+" /></td>
+                            <td><input type="radio" name="rearSprocket" value="++" /></td>
+                            <td><input type="radio" name="rearSprocket" value="n/a" checked /></td>
+                        </tr>
+                        <tr>
+                            <td>Front Sprocket</td>
+                            <td><input type="radio" name="frontSprocket" value="--" /></td>
+                            <td><input type="radio" name="frontSprocket" value="-" /></td>
+                            <td><input type="radio" name="frontSprocket" value="0" /></td>
+                            <td><input type="radio" name="frontSprocket" value="+" /></td>
+                            <td><input type="radio" name="frontSprocket" value="++" /></td>
+                            <td><input type="radio" name="frontSprocket" value="n/a" checked /></td>
+                        </tr>
+                        <tr>
+                            <td>Rims, Spokes</td>
+                            <td><input type="radio" name="rimsSpokes" value="--" /></td>
+                            <td><input type="radio" name="rimsSpokes" value="-" /></td>
+                            <td><input type="radio" name="rimsSpokes" value="0" /></td>
+                            <td><input type="radio" name="rimsSpokes" value="+" /></td>
+                            <td><input type="radio" name="rimsSpokes" value="++" /></td>
+                            <td><input type="radio" name="rimsSpokes" value="n/a" checked /></td>
+                        </tr>
+                        <tr>
+                            <td>Rear Suspension</td>
+                            <td><input type="radio" name="rearSuspension" value="--" /></td>
+                            <td><input type="radio" name="rearSuspension" value="-" /></td>
+                            <td><input type="radio" name="rearSuspension" value="0" /></td>
+                            <td><input type="radio" name="rearSuspension" value="+" /></td>
+                            <td><input type="radio" name="rearSuspension" value="++" /></td>
+                            <td><input type="radio" name="rearSuspension" value="n/a" checked /></td>
+                        </tr>
+                        <tr>
+                            <td>Front Suspension</td>
+                            <td><input type="radio" name="suspensionFront" value="--" /></td>
+                            <td><input type="radio" name="suspensionFront" value="-" /></td>
+                            <td><input type="radio" name="suspensionFront" value="0" /></td>
+                            <td><input type="radio" name="suspensionFront" value="+" /></td>
+                            <td><input type="radio" name="suspensionFront" value="++" /></td>
+                            <td><input type="radio" name="suspensionFront" value="n/a" checked /></td>
+                        </tr>
+                        <tr>
+                            <td>Saddle</td>
+                            <td><input type="radio" name="saddle" value="--" /></td>
+                            <td><input type="radio" name="saddle" value="-" /></td>
+                            <td><input type="radio" name="saddle" value="0" /></td>
+                            <td><input type="radio" name="saddle" value="+" /></td>
+                            <td><input type="radio" name="saddle" value="++" /></td>
+                            <td><input type="radio" name="saddle" value="n/a" checked /></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="controls-row d-flex justify-content-between align-items-center mt-3 flex-wrap gap-2"
+                     th:href="@{/technician/pre-check/{bikeQR}(bikeQR=${bike.bikeQR})}">
+                    <button type="submit" class="btn btn-primary btn-md">
+                        <i class="bi bi-check-circle me-1"></i>Submit Inspection
+                    </button>
+                    <a th:href="@{/technician/pre-check/{bikeQR}(bikeQR=${bike.bikeQR})}" class="btn btn-outline-primary btn-md" data-bs-toggle="tooltip" data-bs-placement="top" title="Run pre-test checks">
+                        <i class="bi bi-list-check me-1"></i>Skip
+                    </a>
+                </div>
+            </form>
+
+            <div class="legend">
+                <strong>Legend:</strong><br />
+                -- = Very Poor, must be replaced<br />
+                - = Poor, replace soon<br />
+                0 = Neutral<br />
+                + = Good with signs of use<br />
+                ++ = Excellent, like new<br />
+                n/a = Not applicable
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS (for tooltips) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+<!-- Initialize Tooltips -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    });
+</script>
+</body>
+</html>
