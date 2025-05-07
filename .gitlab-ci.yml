@@ -137,7 +137,7 @@ deploy_job:
       ssh team4@$APP_SERVER "docker pull $IMAGE_NAME:$IMAGE_TAG && docker stop spring-app || true && docker rm spring-app || true"
       ssh team4@$APP_SERVER "docker run -d --name spring-app -p 80:8080 $IMAGE_NAME:$IMAGE_TAG"
   rules:
-    - if: $CI_COMMIT_BRANCH == "main"
+    - if: $CI_COMMIT_BRANCH
       needs:
         - test_job
 
