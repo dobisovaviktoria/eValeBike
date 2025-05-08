@@ -126,30 +126,6 @@ public class TechnicianController {
                 .doOnError(e -> logger.error("Error fetching status for testId {}: {}", testId, e.getMessage()));
     }
 
-//    @GetMapping("/report/{testId}")
-//    public Mono<String> showReportByTestId(@PathVariable("testId") String testId, Model model) {
-//        logger.info("Fetching report for testId: {}", testId);
-//
-//        return Mono.fromCallable(() -> testReportService.getTestReportWithEntriesById(testId))
-//                .flatMap(optionalReport -> Mono.justOrEmpty(optionalReport)
-//                        .map(report -> {
-//                            ReportViewModel reportVm = ReportViewModel.from(report);
-//                            List<TestReportEntry> entries = report.getReportEntries();
-//                            TestReportEntryViewModel summaryVm = entries != null && !entries.isEmpty()
-//                                    ? TestReportEntryViewModel.summarize(entries)
-//                                    : null;
-//                            VisualInspectionViewModel inspectionViewModel = VisualInspectionViewModel.toViewModel(visualInspectionService.getInspectionByReportID(testId));
-//                            model.addAttribute("inspection", inspectionViewModel);
-//                            model.addAttribute("report", reportVm);
-//                            model.addAttribute("summary", summaryVm);
-//                            return "technician/test-report-details";
-//                        })
-//                        .switchIfEmpty(Mono.error(new RuntimeException("TestReport not found for testId: " + testId))))
-//                .onErrorResume(e -> {
-//                    logger.error("Error fetching report for testId {}: {}", testId, e.getMessage(), e);
-//                    model.addAttribute("error", e.getMessage());
-//                    return Mono.just("technician/error");
-//                });
 
 
     @GetMapping("/report/{testId}")

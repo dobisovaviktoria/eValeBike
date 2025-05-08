@@ -7,8 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import lombok.Getter;
+import lombok.Setter;
+
+
 
 @Entity
+@Getter
+@Setter
 @Table(name = "bike")
 public class Bike {
     @Id
@@ -102,149 +108,7 @@ public class Bike {
         return Objects.hash(bikeQR);
     }
 
-    public double getAccuCapacity() {
-        return accuCapacity;
-    }
 
-    public void setAccuCapacity(double accuCapacity) {
-        this.accuCapacity = accuCapacity;
-    }
-
-    public List<BikeOwnerBike> getBikeList() {
-        return bikeList;
-    }
-
-    public void setBikeList(List<BikeOwnerBike> bikeList) {
-        this.bikeList = bikeList;
-    }
-
-    public String getBikeQR() {
-        return bikeQR;
-    }
-
-    public void setBikeQR(String bikeQR) {
-        this.bikeQR = bikeQR;
-    }
-
-    public BikeSize getBikeSize() {
-        return bikeSize;
-    }
-
-    public void setBikeSize(BikeSize bikeSize) {
-        this.bikeSize = bikeSize;
-    }
-
-    public String getBrand() {
-        return brand;
-    }
-
-    public void setBrand(String brand) {
-        this.brand = brand;
-    }
-
-    public double getEngineTorque() {
-        return engineTorque;
-    }
-
-    public void setEngineTorque(double engineTorque) {
-        this.engineTorque = engineTorque;
-    }
-
-    public String getEngineType() {
-        return engineType;
-    }
-
-    public void setEngineType(String engineType) {
-        this.engineType = engineType;
-    }
-
-    public String getGearType() {
-        return gearType;
-    }
-
-    public void setGearType(String gearType) {
-        this.gearType = gearType;
-    }
-
-    public LocalDate getLastTestDate() {
-        return lastTestDate;
-    }
-
-    public void setLastTestDate(LocalDate lastTestDate) {
-        this.lastTestDate = lastTestDate;
-    }
-
-    public double getMaxEnginePower() {
-        return maxEnginePower;
-    }
-
-    public void setMaxEnginePower(double maxEnginePower) {
-        this.maxEnginePower = maxEnginePower;
-    }
-
-    public double getMaxSupport() {
-        return maxSupport;
-    }
-
-    public void setMaxSupport(double maxSupport) {
-        this.maxSupport = maxSupport;
-    }
-
-    public int getMileage() {
-        return mileage;
-    }
-
-    public void setMileage(int mileage) {
-        this.mileage = mileage;
-    }
-
-    public String getModel() {
-        return model;
-    }
-
-    public void setModel(String model) {
-        this.model = model;
-    }
-
-    public double getNominalEnginePower() {
-        return nominalEnginePower;
-    }
-
-    public void setNominalEnginePower(double nominalEnginePower) {
-        this.nominalEnginePower = nominalEnginePower;
-    }
-
-    public String getPowerTrain() {
-        return powerTrain;
-    }
-
-    public void setPowerTrain(String powerTrain) {
-        this.powerTrain = powerTrain;
-    }
-
-    public int getProductionYear() {
-        return productionYear;
-    }
-
-    public void setProductionYear(int productionYear) {
-        this.productionYear = productionYear;
-    }
-
-    public String getQrCodeImage() {
-        return qrCodeImage;
-    }
-
-    public void setQrCodeImage(String qrCodeImage) {
-        this.qrCodeImage = qrCodeImage;
-    }
-
-    public List<TestReport> getTestReports() {
-        return testReports;
-    }
-
-    public void setTestReports(List<TestReport> testReports) {
-        this.testReports = testReports;
-    }
 
     @Override
     public String toString() {
@@ -255,11 +119,5 @@ public class Bike {
                 '}';
     }
 
-    public String getChassisNumber() {
-        return chassisNumber;
-    }
 
-    public void setChassisNumber(String chassisNumber) {
-        this.chassisNumber = chassisNumber;
-    }
 }
