@@ -167,13 +167,10 @@ deploy_job:
       ssh-add ~/.ssh/gitlabrunner
       ssh-keyscan -H $APP_SERVER >> ~/.ssh/known_hosts
   script:
-    - echo "🚀 Building Docker image for deploy..."
-    - docker build -t $IMAGE_NAME:$IMAGE_TAG .
-    - echo "📤 Pushing Docker image..."
-    - docker push $IMAGE_NAME:$IMAGE_TAG
     - echo "🔗 Connecting to remote server..."
     - |
-      ssh team4@$APP_SERVER <<EOF
+      ssh -o StrictHostKeyChecking=no team4@$APP_SERVER <<'EOF'
+        set -e
         docker stop spring-app || true
         docker rm spring-app || true
         docker pull $IMAGE_NAME:$IMAGE_TAG
