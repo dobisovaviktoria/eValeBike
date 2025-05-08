@@ -172,6 +172,7 @@ deploy_job:
         sudo docker rm spring-app || true
         sudo docker pull $IMAGE_NAME:$IMAGE_TAG
         sudo docker run -d --name spring-app -p 80:8080 $IMAGE_NAME:$IMAGE_TAG
+        exit
       EOF
 
 
