@@ -14,7 +14,7 @@ public class TestRequestDTO {
                           double enginePowerMax,
                           double enginePowerNominal,
                           double engineTorque
-                          ) {
+    ) {
         this.batteryCapacity = batteryCapacity;
         this.enginePowerMax = enginePowerMax;
         this.enginePowerNominal = enginePowerNominal;

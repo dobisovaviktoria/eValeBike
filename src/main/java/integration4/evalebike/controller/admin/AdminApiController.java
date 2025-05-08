@@ -1,6 +1,5 @@
 package integration4.evalebike.controller.admin;
 
-import integration4.evalebike.controller.admin.dto.TechnicianMapper;
 import integration4.evalebike.controller.admin.dto.TestBenchMapper;
 import integration4.evalebike.controller.admin.dto.request.TechnicianRequestDTO;
 import integration4.evalebike.controller.admin.dto.response.TechnicianResponseDTO;
@@ -26,14 +25,12 @@ import java.util.stream.Collectors;
 @RequestMapping("api/admin/technicians")
 public class AdminApiController {
     private final TechnicianService technicianService;
-    private final TechnicianMapper technicianMapper;
     private final TestBenchService testBenchService;
     private final TestBenchMapper testBenchMapper;
     private final RecentActivityService recentActivityService;
 
-    public AdminApiController(TechnicianService technicianService, TechnicianMapper technicianMapper, TestBenchService testBenchService, TestBenchMapper testBenchMapper, RecentActivityService recentActivityService) {
+    public AdminApiController(TechnicianService technicianService, TestBenchService testBenchService, TestBenchMapper testBenchMapper, RecentActivityService recentActivityService) {
         this.technicianService = technicianService;
-        this.technicianMapper = technicianMapper;
         this.testBenchService = testBenchService;
         this.testBenchMapper = testBenchMapper;
         this.recentActivityService = recentActivityService;
@@ -46,7 +43,7 @@ public class AdminApiController {
         recentActivityService.save(new RecentActivity(Activity.CREATED_USER, "Technician " + technicianDTO.name() + " created", LocalDateTime.now(), userDetails.getUserId()));
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(technicianMapper.toDto(savedTechnician));
+                .body(TechnicianResponseDTO.toDto(savedTechnician));
     }
 
     // Retrieve all technicians
@@ -54,7 +51,7 @@ public class AdminApiController {
     public ResponseEntity<List<TechnicianResponseDTO>> getAllTechnicians() {
         List<TechnicianResponseDTO> technicians = technicianService.getAll()
                 .stream()
-                .map(technicianMapper::toDto)
+                .map(TechnicianResponseDTO::toDto)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(technicians);
     }
@@ -63,7 +60,7 @@ public class AdminApiController {
     @GetMapping("/{id}")
     public ResponseEntity<TechnicianResponseDTO> getTechnicianById(@PathVariable Integer id) {
         Technician technician = technicianService.getTechnicianById(id);
-        return ResponseEntity.ok(technicianMapper.toDto(technician));
+        return ResponseEntity.ok(TechnicianResponseDTO.toDto(technician));
     }
 
     // Retrieve all test benches
@@ -80,10 +77,10 @@ public class AdminApiController {
     // Update an existing technician
     @PatchMapping("/{id}")
     public ResponseEntity<TechnicianResponseDTO> updateTechnician(@PathVariable Integer id, @RequestBody TechnicianRequestDTO technicianDTO, @AuthenticationPrincipal final CustomUserDetails userDetails) {
-        Technician updatedTechnician = technicianMapper.toEntity(technicianDTO);
+        Technician updatedTechnician = TechnicianRequestDTO.toEntity(technicianDTO);
         Technician savedTechnician = technicianService.updateTechnician(id, updatedTechnician);
         recentActivityService.save(new RecentActivity(Activity.UPDATED_USER, "Updated information about " + technicianDTO.name(), LocalDateTime.now(), userDetails.getUserId()));
-        return ResponseEntity.ok(technicianMapper.toDto(savedTechnician));
+        return ResponseEntity.ok(TechnicianResponseDTO.toDto(savedTechnician));
     }
 
     // Delete a technician

@@ -32,14 +32,9 @@ public class BikeService {
         return bikeRepository.findById(qrCode).orElseThrow(() -> NotFoundException.forBike(qrCode));
     }
 
-    public Bike add(String brand, String model, String chassisNumber, int productionYear, BikeSize bikeSize,
-                    int mileage, String gearType, String engineType,
-                    String powerTrain,
-                    double accuCapacity, double maxSupport,
-                    double maxEnginePower, double nominalEnginePower, double engineTorque, LocalDate lastTestDate) throws Exception {
+    public Bike add(String brand, String model, String chassisNumber, int productionYear, BikeSize bikeSize, int mileage, String gearType, String engineType, String powerTrain, double accuCapacity, double maxSupport, double maxEnginePower, double nominalEnginePower, double engineTorque, LocalDate lastTestDate) throws Exception {
 
-        Bike bike = new Bike(brand, model, chassisNumber, productionYear, bikeSize, mileage, gearType, engineType, powerTrain,
-                accuCapacity, maxSupport, maxEnginePower, nominalEnginePower, engineTorque, lastTestDate);
+        Bike bike = new Bike(brand, model, chassisNumber, productionYear, bikeSize, mileage, gearType, engineType, powerTrain, accuCapacity, maxSupport, maxEnginePower, nominalEnginePower, engineTorque, lastTestDate);
 
         return bikeRepository.save(bike);
     }
@@ -49,8 +44,7 @@ public class BikeService {
     }
 
     public void delete(String id) {
-        Bike bike = bikeRepository.findById(id)
-                .orElseThrow(() -> NotFoundException.forBike(id));
+        Bike bike = bikeRepository.findById(id).orElseThrow(() -> NotFoundException.forBike(id));
         bikeOwnerBikeRepository.deleteByBikeQr(id);
         bikeRepository.delete(bike);
     }
@@ -62,11 +56,11 @@ public class BikeService {
     public Bike updateManualTestFields(String id, BikeDto partialUpdate) {
         return bikeRepository.findById(id).map(bike -> {
             // Only update the fields relevant to the manual test form
-            bike.setAccuCapacity(partialUpdate.accuCapacity());
-            bike.setMaxSupport(partialUpdate.maxSupport());
-            bike.setMaxEnginePower(partialUpdate.maxEnginePower());
-            bike.setNominalEnginePower(partialUpdate.nominalEnginePower());
-            bike.setEngineTorque(partialUpdate.engineTorque());
+            bike.setAccuCapacity(partialUpdate.getAccuCapacity());
+            bike.setMaxSupport(partialUpdate.getMaxSupport());
+            bike.setMaxEnginePower(partialUpdate.getMaxEnginePower());
+            bike.setNominalEnginePower(partialUpdate.getNominalEnginePower());
+            bike.setEngineTorque(partialUpdate.getEngineTorque());
             return bikeRepository.save(bike);
         }).orElseThrow(() -> new RuntimeException("Bike not found"));
     }
