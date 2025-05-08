@@ -44,7 +44,8 @@ build_job:
     - gradle
     - java
   script:
-    - gradle --no-daemon clean build --exclude-task test
+    - echo "Building app with Docker..."
+    - docker build -t $IMAGE_NAME:$IMAGE_TAG .
   artifacts:
     paths:
       - build/libs/*.jar

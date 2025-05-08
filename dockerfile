@@ -2,7 +2,8 @@ FROM gradle:8.2.1-jdk17 AS builder
 USER root
 WORKDIR /app
 COPY . .
-RUN gradle bootJar --no-daemon
+RUN rm -rf /home/gradle/.gradle/caches \
+     && gradle clean bootJar --no-daemon
 
 #runtime stage
 FROM eclipse-temurin:17-jre-alpine
