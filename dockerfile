@@ -3,7 +3,7 @@ USER root
 WORKDIR /app
 COPY . .
 RUN rm -rf /home/gradle/.gradle/caches \
-     && gradle clean bootJar --no-daemon --refresh-dependencies clean build
+     && gradle clean bootJar --no-daemon --refresh-dependencies --stacktrace
 
 #runtime stage
 FROM eclipse-temurin:17-jre-alpine

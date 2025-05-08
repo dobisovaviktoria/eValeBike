@@ -44,7 +44,7 @@ build_job:
     - gradle
     - java
   script:
-    - gradle clean build --exclude-task test
+    - gradle clean build --exclude-task test --stacktrace
   artifacts:
     paths:
       - build/libs/*.jar
