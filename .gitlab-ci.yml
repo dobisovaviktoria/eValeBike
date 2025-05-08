@@ -136,7 +136,7 @@ deploy_job:
     - |
       docker build -t $IMAGE_NAME:$IMAGE_TAG .
       docker push $IMAGE_NAME:$IMAGE_TAG
-      ssh -v team4@$APP_SERVER "sudo docker pull $IMAGE_NAME:$IMAGE_TAG && docker stop spring-app || true && docker rm spring-app || true"
+      ssh -v team4@$APP_SERVER "sudo docker stop spring-app || true && sudo docker rm spring-app || true"
       ssh -v team4@$APP_SERVER "sudo docker run -d --name spring-app -p 80:8080 $IMAGE_NAME:$IMAGE_TAG"
     - echo "Checking Docker status..."
     - docker info
