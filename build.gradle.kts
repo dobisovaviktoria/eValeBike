@@ -54,6 +54,7 @@ dependencies {
     // Spring Boot Test Starter
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation ("org.testcontainers:junit-jupiter:1.19.7")
+    testImplementation ("org.apache.commons:commons-lang3:3.12.0")
 }
 
 tasks.withType<Test> {

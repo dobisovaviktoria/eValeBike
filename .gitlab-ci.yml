@@ -66,6 +66,8 @@ test_job:
   before_script:
     - echo "Installing Docker client..."
     - apt-get update && apt-get install -y docker.io || echo "Docker install failed, continuing..."
+    - echo "Pulling MSSQL image to avoid timeout..."
+    - docker pull mcr.microsoft.com/mssql/server:2022-CU12-ubuntu-20.04
   script:
     - echo "Checking Docker service..."
     - docker info || echo "Docker info failed, continuing..." #true
