@@ -1,0 +1,255 @@
+-- -- Insert into app_user table (maps to User entity)
+-- INSERT INTO app_user (id, name, email, password, role, user_status)
+-- SELECT 1, 'John Doe', 'john.doe@example.com', '$2a$10$kU6clDpBtcQAiul4xa9GP.Liy2GmP3QCPXHeZNjBSLj240YukGx7K', 'BIKE_OWNER', 'APPROVED'
+-- WHERE NOT EXISTS (SELECT 1 FROM app_user WHERE id = 1);
+--
+-- INSERT INTO app_user (id, name, email, password, role, user_status)
+-- SELECT 2, 'Jane Smith', 'jane.smith@example.com', '$2a$10$kU6clDpBtcQAiul4xa9GP.Liy2GmP3QCPXHeZNjBSLj240YukGx7K', 'TECHNICIAN', 'APPROVED'
+-- WHERE NOT EXISTS (SELECT 1 FROM app_user WHERE id = 2);
+--
+-- INSERT INTO app_user (id, name, email, password, role, user_status)
+-- SELECT 3, 'Alice Johnson', 'alice.johnson@example.com', '$2a$10$kU6clDpBtcQAiul4xa9GP.Liy2GmP3QCPXHeZNjBSLj240YukGx7K', 'ADMIN', 'APPROVED'
+-- WHERE NOT EXISTS (SELECT 1 FROM app_user WHERE id = 3);
+--
+-- INSERT INTO app_user (id, name, email, password, role, user_status)
+-- SELECT 4, 'Bob Brown', 'bob.brown@example.com', '$2a$10$kU6clDpBtcQAiul4xa9GP.Liy2GmP3QCPXHeZNjBSLj240YukGx7K', 'SUPER_ADMIN', 'APPROVED'
+-- WHERE NOT EXISTS (SELECT 1 FROM app_user WHERE id = 4);
+--
+-- INSERT INTO app_user (id, name, email, password, role, user_status)
+-- SELECT 5, 'Michael Green', 'michael.green@example.com', '$2a$10$kU6clDpBtcQAiul4xa9GP.Liy2GmP3QCPXHeZNjBSLj240YukGx7K', 'BIKE_OWNER', 'APPROVED'
+-- WHERE NOT EXISTS (SELECT 1 FROM app_user WHERE id = 5);
+--
+-- INSERT INTO app_user (id, name, email, password, role, user_status)
+-- SELECT 6, 'Sarah White', 'sarah.white@example.com', '$2a$10$kU6clDpBtcQAiul4xa9GP.Liy2GmP3QCPXHeZNjBSLj240YukGx7K', 'BIKE_OWNER', 'APPROVED'
+-- WHERE NOT EXISTS (SELECT 1 FROM app_user WHERE id = 6);
+--
+-- INSERT INTO app_user (id, name, email, password, role, user_status)
+-- SELECT 7, 'Nathan', 'nathan@example.com', '$2a$10$kU6clDpBtcQAiul4xa9GP.Liy2GmP3QCPXHeZNjBSLj240YukGx7K', 'TECHNICIAN', 'APPROVED'
+-- WHERE NOT EXISTS (SELECT 1 FROM app_user WHERE id = 7);
+--
+-- INSERT INTO app_user (id, name, email, password, role, user_status)
+-- SELECT 8, 'Nathaniel', 'nathaniel@example.com', '$2a$10$kU6clDpBtcQAiul4xa9GP.Liy2GmP3QCPXHeZNjBSLj240YukGx7K', 'BIKE_OWNER', 'APPROVED'
+-- WHERE NOT EXISTS (SELECT 1 FROM app_user WHERE id = 8);
+--
+-- INSERT INTO app_user (id, name, email, password, role, user_status)
+-- SELECT 9, 'Jean', 'jean@example.com', '$2a$10$kU6clDpBtcQAiul4xa9GP.Liy2GmP3QCPXHeZNjBSLj240YukGx7K', 'BIKE_OWNER', 'APPROVED'
+-- WHERE NOT EXISTS (SELECT 1 FROM app_user WHERE id = 9);
+--
+-- INSERT INTO app_user (id, name, email, password, role, user_status)
+-- SELECT 10, 'Jeremy', 'jeremy@example.com', '$2a$10$kU6clDpBtcQAiul4xa9GP.Liy2GmP3QCPXHeZNjBSLj240YukGx7K', 'BIKE_OWNER', 'APPROVED'
+-- WHERE NOT EXISTS (SELECT 1 FROM app_user WHERE id = 10);
+--
+-- INSERT INTO app_user (id, name, email, password, role, user_status)
+-- SELECT 11, 'Kevin', 'kevine@example.com', '$2a$10$kU6clDpBtcQAiul4xa9GP.Liy2GmP3QCPXHeZNjBSLj240YukGx7K', 'BIKE_OWNER', 'APPROVED'
+-- WHERE NOT EXISTS (SELECT 1 FROM app_user WHERE id = 11);
+--
+-- INSERT INTO app_user (id, name, email, password, role, user_status)
+-- SELECT 12, 'Andrew', 'andrew@example.com', '$2a$10$kU6clDpBtcQAiul4xa9GP.Liy2GmP3QCPXHeZNjBSLj240YukGx7K', 'TECHNICIAN', 'APPROVED'
+-- WHERE NOT EXISTS (SELECT 1 FROM app_user WHERE id = 12);
+--
+-- INSERT INTO app_user (id, name, email, password, role, user_status)
+-- SELECT 13, 'Nicky', 'nicky@example.com', '$2a$10$kU6clDpBtcQAiul4xa9GP.Liy2GmP3QCPXHeZNjBSLj240YukGx7K', 'TECHNICIAN', 'APPROVED'
+-- WHERE NOT EXISTS (SELECT 1 FROM app_user WHERE id = 13);
+--
+-- INSERT INTO app_user (id, name, email, password, role, user_status)
+-- SELECT 14, 'Aaron', 'aaron@example.com', '$2a$10$kU6clDpBtcQAiul4xa9GP.Liy2GmP3QCPXHeZNjBSLj240YukGx7K', 'TECHNICIAN', 'APPROVED'
+-- WHERE NOT EXISTS (SELECT 1 FROM app_user WHERE id = 14);
+--
+-- INSERT INTO app_user (id, name, email, password, role, user_status)
+-- SELECT 15, 'Riko', 'riko@example.com', '$2a$10$kU6clDpBtcQAiul4xa9GP.Liy2GmP3QCPXHeZNjBSLj240YukGx7K', 'TECHNICIAN', 'APPROVED'
+-- WHERE NOT EXISTS (SELECT 1 FROM app_user WHERE id = 15);
+--
+-- INSERT INTO app_user (id, name, email, password, role, user_status)
+-- SELECT 16, 'Nora', 'nora@example.com', '$2a$10$kU6clDpBtcQAiul4xa9GP.Liy2GmP3QCPXHeZNjBSLj240YukGx7K', 'ADMIN', 'APPROVED'
+-- WHERE NOT EXISTS (SELECT 1 FROM app_user WHERE id = 16);
+--
+-- INSERT INTO app_user (id, name, email, password, role, user_status)
+-- SELECT 17, 'Waymack', 'waymack@example.com', '$2a$10$kU6clDpBtcQAiul4xa9GP.Liy2GmP3QCPXHeZNjBSLj240YukGx7K', 'TECHNICIAN', 'APPROVED'
+-- WHERE NOT EXISTS (SELECT 1 FROM app_user WHERE id = 17);
+--
+-- INSERT INTO app_user (id, name, email, password, role, user_status)
+-- SELECT 18, 'Sara', 'sara@example.com', '$2a$10$kU6clDpBtcQAiul4xa9GP.Liy2GmP3QCPXHeZNjBSLj240YukGx7K', 'BIKE_OWNER', 'APPROVED'
+-- WHERE NOT EXISTS (SELECT 1 FROM app_user WHERE id = 18);
+--
+-- INSERT INTO app_user (id, name, email, password, role, user_status)
+-- SELECT 19, 'Abby', 'abby@example.com', '$2a$10$kU6clDpBtcQAiul4xa9GP.Liy2GmP3QCPXHeZNjBSLj240YukGx7K', 'TECHNICIAN', 'APPROVED'
+-- WHERE NOT EXISTS (SELECT 1 FROM app_user WHERE id = 19);
+--
+-- INSERT INTO app_user (id, name, email, password, role, user_status)
+-- SELECT 20, 'Lila', 'lila@example.com', '$2a$10$kU6clDpBtcQAiul4xa9GP.Liy2GmP3QCPXHeZNjBSLj240YukGx7K', 'BIKE_OWNER', 'APPROVED'
+-- WHERE NOT EXISTS (SELECT 1 FROM app_user WHERE id = 20);
+--
+-- -- Insert into bike_owner table
+-- INSERT INTO bike_owner (id, phone_number, birth_date)
+-- SELECT 1, '555-1234', '1990-05-20'
+-- WHERE NOT EXISTS (SELECT 1 FROM bike_owner WHERE id = 1);
+--
+-- INSERT INTO bike_owner (id, phone_number, birth_date)
+-- SELECT 6, '555-7890', '1992-07-22'
+-- WHERE NOT EXISTS (SELECT 1 FROM bike_owner WHERE id = 6);
+--
+-- INSERT INTO bike_owner (id, phone_number, birth_date)
+-- SELECT 8, '555-1234', '1990-05-20'
+-- WHERE NOT EXISTS (SELECT 1 FROM bike_owner WHERE id = 8);
+--
+-- INSERT INTO bike_owner (id, phone_number, birth_date)
+-- SELECT 9, '555-1234', '1990-05-20'
+-- WHERE NOT EXISTS (SELECT 1 FROM bike_owner WHERE id = 9);
+--
+-- INSERT INTO bike_owner (id, phone_number, birth_date)
+-- SELECT 10, '555-1234', '1990-05-20'
+-- WHERE NOT EXISTS (SELECT 1 FROM bike_owner WHERE id = 10);
+--
+-- INSERT INTO bike_owner (id, phone_number, birth_date)
+-- SELECT 11, '555-1234', '1990-05-20'
+-- WHERE NOT EXISTS (SELECT 1 FROM bike_owner WHERE id = 11);
+--
+-- INSERT INTO bike_owner (id, phone_number, birth_date)
+-- SELECT 18, '555-1234', '1990-05-20'
+-- WHERE NOT EXISTS (SELECT 1 FROM bike_owner WHERE id = 18);
+--
+-- INSERT INTO bike_owner (id, phone_number, birth_date)
+-- SELECT 20, '555-1234', '1990-05-20'
+-- WHERE NOT EXISTS (SELECT 1 FROM bike_owner WHERE id = 20);
+--
+-- -- Insert into bike table
+-- INSERT INTO bike (bikeqr, brand, model, production_year, bike_size, mileage, gear_type, engine_type, power_train, accu_capacity, max_support, max_engine_power, nominal_engine_power, engine_torque, last_test_date)
+-- SELECT '123e4567-e89b-12d3-a456-426614174001', 'Giant', 'Talon', 2022, 'M', 1000, 'Shimano', 'Electric', 'Chain Drive', 500.0, 25.0, 750.0, 500.0, 85.0, '2024-01-01'
+-- WHERE NOT EXISTS (SELECT 1 FROM bike WHERE bikeqr = '123e4567-e89b-12d3-a456-426614174001');
+--
+-- INSERT INTO bike (bikeqr, brand, model, production_year, bike_size, mileage, gear_type, engine_type, power_train, accu_capacity, max_support, max_engine_power, nominal_engine_power, engine_torque, last_test_date)
+-- SELECT '223e4567-e89b-12d3-a456-426614174002', 'Trek', 'Marlin', 2023, 'L', 500, 'SRAM', 'Electric', 'Belt Drive', 600.0, 28.0, 800.0, 600.0, 90.0, '2024-02-01'
+-- WHERE NOT EXISTS (SELECT 1 FROM bike WHERE bikeqr = '223e4567-e89b-12d3-a456-426614174002');
+--
+-- -- Insert into bike_owner_bike table
+-- INSERT INTO bike_owner_bike (bike_owner_id, bike_qr)
+-- SELECT 1, '123e4567-e89b-12d3-a456-426614174001'
+-- WHERE NOT EXISTS (SELECT 1 FROM bike_owner_bike WHERE bike_owner_id = 1 AND bike_qr = '123e4567-e89b-12d3-a456-426614174001');
+--
+-- INSERT INTO bike_owner_bike (bike_owner_id, bike_qr)
+-- SELECT 1, '223e4567-e89b-12d3-a456-426614174002'
+-- WHERE NOT EXISTS (SELECT 1 FROM bike_owner_bike WHERE bike_owner_id = 1 AND bike_qr = '223e4567-e89b-12d3-a456-426614174002');
+--
+-- -- Insert into technician table
+-- INSERT INTO technician (id)
+-- SELECT 2
+-- WHERE NOT EXISTS (SELECT 1 FROM technician WHERE id = 2);
+--
+-- INSERT INTO technician (id)
+-- SELECT 7
+-- WHERE NOT EXISTS (SELECT 1 FROM technician WHERE id = 7);
+--
+-- INSERT INTO technician (id)
+-- SELECT 12
+-- WHERE NOT EXISTS (SELECT 1 FROM technician WHERE id = 12);
+--
+-- INSERT INTO technician (id)
+-- SELECT 13
+-- WHERE NOT EXISTS (SELECT 1 FROM technician WHERE id = 13);
+--
+-- INSERT INTO technician (id)
+-- SELECT 14
+-- WHERE NOT EXISTS (SELECT 1 FROM technician WHERE id = 14);
+--
+-- INSERT INTO technician (id)
+-- SELECT 15
+-- WHERE NOT EXISTS (SELECT 1 FROM technician WHERE id = 15);
+--
+-- INSERT INTO technician (id)
+-- SELECT 17
+-- WHERE NOT EXISTS (SELECT 1 FROM technician WHERE id = 17);
+--
+-- INSERT INTO technician (id)
+-- SELECT 19
+-- WHERE NOT EXISTS (SELECT 1 FROM technician WHERE id = 19);
+--
+-- -- Insert into administrator table
+-- INSERT INTO administrator (id, company_name)
+-- SELECT 3, 'E-Bike Corp'
+-- WHERE NOT EXISTS (SELECT 1 FROM administrator WHERE id = 3);
+--
+-- INSERT INTO administrator (id, company_name)
+-- SELECT 16, 'E-Nursing'
+-- WHERE NOT EXISTS (SELECT 1 FROM administrator WHERE id = 16);
+--
+-- -- Insert into super_admin table
+-- INSERT INTO super_admin (id)
+-- SELECT 4
+-- WHERE NOT EXISTS (SELECT 1 FROM super_admin WHERE id = 4);
+--
+-- -- Insert into test_bench table
+-- INSERT INTO test_bench (last_calibration_date, location, status, test_bench_name, technician_id)
+-- SELECT CAST(GETDATE() AS DATE), 'Zone A', 'INACTIVE', 'Test Bench 1', NULL
+-- WHERE NOT EXISTS (SELECT 1 FROM test_bench WHERE test_bench_name = 'Test Bench 1');
+--
+-- INSERT INTO test_bench (last_calibration_date, location, status, test_bench_name, technician_id)
+-- SELECT CAST(GETDATE() AS DATE), 'Zone A', 'INACTIVE', 'Test Bench 2', NULL
+-- WHERE NOT EXISTS (SELECT 1 FROM test_bench WHERE test_bench_name = 'Test Bench 2');
+--
+-- INSERT INTO test_bench (last_calibration_date, location, status, test_bench_name, technician_id)
+-- SELECT CAST(GETDATE() AS DATE), 'Zone B', 'INACTIVE', 'Test Bench 3', NULL
+-- WHERE NOT EXISTS (SELECT 1 FROM test_bench WHERE test_bench_name = 'Test Bench 3');
+--
+-- INSERT INTO test_bench (last_calibration_date, location, status, test_bench_name, technician_id)
+-- SELECT CAST(GETDATE() AS DATE), 'Zone B', 'INACTIVE', 'Test Bench 4', NULL
+-- WHERE NOT EXISTS (SELECT 1 FROM test_bench WHERE test_bench_name = 'Test Bench 4');
+--
+-- INSERT INTO test_bench (last_calibration_date, location, status, test_bench_name, technician_id)
+-- SELECT CAST(GETDATE() AS DATE), 'Zone C', 'INACTIVE', 'Test Bench 5', NULL
+-- WHERE NOT EXISTS (SELECT 1 FROM test_bench WHERE test_bench_name = 'Test Bench 5');
+--
+-- -- Insert into recent_activity table
+-- INSERT INTO recent_activity (activity, description, date, user_id)
+-- SELECT 'CREATED_USER', 'Created technician Mike', '2025-04-26', 4
+-- WHERE NOT EXISTS (SELECT 1 FROM recent_activity WHERE activity = 'CREATED_USER' AND description = 'Created technician Mike' AND user_id = 4);
+--
+-- INSERT INTO recent_activity (activity, description, date, user_id)
+-- SELECT 'UPDATED_USER', 'Updated information about Mike', '2025-04-28', 4
+-- WHERE NOT EXISTS (SELECT 1 FROM recent_activity WHERE activity = 'UPDATED_USER' AND description = 'Updated information about Mike' AND user_id = 4);
+--
+-- INSERT INTO recent_activity (activity, description, date, user_id)
+-- SELECT 'INITIALIZED_TEST', 'All tests started successfully', '2025-04-28 14:45:00', 4
+-- WHERE NOT EXISTS (SELECT 1 FROM recent_activity WHERE activity = 'INITIALIZED_TEST' AND description = 'All tests started successfully' AND date = '2025-04-28 14:45:00' AND user_id = 4);
+--
+-- INSERT INTO recent_activity (activity, description, date, user_id)
+-- SELECT 'INITIALIZED_TEST', 'All tests started successfully', '2025-04-23 15:09:00', 4
+-- WHERE NOT EXISTS (SELECT 1 FROM recent_activity WHERE activity = 'INITIALIZED_TEST' AND description = 'All tests started successfully' AND date = '2025-04-23 15:09:00' AND user_id = 4);
+--
+-- -- Insert into test_report table (sample data)
+-- INSERT INTO test_report (bike_qr, test_bench_id, test_date, result, technician_id)
+-- SELECT '123e4567-e89b-12d3-a456-426614174001', 1, '2025-05-10 10:00:00', 'PASS', 2
+-- WHERE NOT EXISTS (SELECT 1 FROM test_report WHERE bike_qr = '123e4567-e89b-12d3-a456-426614174001' AND test_bench_id = 1 AND test_date = '2025-05-10 10:00:00');
+--
+-- INSERT INTO test_report (bike_qr, test_bench_id, test_date, result, technician_id)
+-- SELECT '223e4567-e89b-12d3-a456-426614174002', 2, '2025-05-10 11:00:00', 'FAIL', 7
+-- WHERE NOT EXISTS (SELECT 1 FROM test_report WHERE bike_qr = '223e4567-e89b-12d3-a456-426614174002' AND test_bench_id = 2 AND test_date = '2025-05-10 11:00:00');
+--
+-- -- Insert into visual_inspection table (sample data linked to test_report)
+-- INSERT INTO visual_inspection (
+--     tires, bell, cranks, electric_wiring, front_fork, handles, chain_belt, pedals, reflectors,
+--     brake_pads, brake_handles, brake_cables, brake_discs, mudguards, handle_bar, rear_sprocket,
+--     front_sprocket, rims_spokes, rear_suspension, suspension_front, saddle, test_report_id
+-- )
+-- SELECT
+--     'Good', 'Good', 'Good', 'Good', 'Good', 'Good', 'Good', 'Good', 'Good',
+--     'Good', 'Good', 'Good', 'Good', 'Good', 'Good', 'Good',
+--     'Good', 'Good', 'Good', 'Good', 'Good', 1
+-- WHERE NOT EXISTS (SELECT 1 FROM visual_inspection WHERE test_report_id = 1);
+--
+-- INSERT INTO visual_inspection (
+--     tires, bell, cranks, electric_wiring, front_fork, handles, chain_belt, pedals, reflectors,
+--     brake_pads, brake_handles, brake_cables, brake_discs, mudguards, handle_bar, rear_sprocket,
+--     front_sprocket, rims_spokes, rear_suspension, suspension_front, saddle, test_report_id
+-- )
+-- SELECT
+--     'Worn', 'Missing', 'Good', 'Faulty', 'Good', 'Good', 'Worn', 'Good', 'Missing',
+--     'Worn', 'Good', 'Faulty', 'Good', 'Good', 'Good', 'Good',
+--     'Good', 'Good', 'Good', 'Good', 'Good', 2
+-- WHERE NOT EXISTS (SELECT 1 FROM visual_inspection WHERE test_report_id = 2);
+--
+--
+-- DECLARE @maxAppUserId INT
+-- SET @maxAppUserId = ISNULL((SELECT MAX(id) FROM app_user), 0)
+-- INSERT INTO app_user (id, name, email, password, role, user_status)
+-- SELECT @maxAppUserId + 1, 'New User', 'newuser@example.com', '$2a$10$kU6clDpBtcQAiul4xa9GP.Liy2GmP3QCPXHeZNjBSLj240YukGx7K', 'BIKE_OWNER', 'APPROVED'
+-- WHERE NOT EXISTS (SELECT 1 FROM app_user WHERE email = 'newuser@example.com');

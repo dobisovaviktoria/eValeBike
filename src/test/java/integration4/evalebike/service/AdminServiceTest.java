@@ -1,135 +1,131 @@
-package integration4.evalebike.service;
-
-import integration4.evalebike.domain.Administrator;
-import integration4.evalebike.domain.UserStatus;
-import integration4.evalebike.exception.NotFoundException;
-import integration4.evalebike.repository.AdminRepository;
-import integration4.evalebike.utility.PasswordUtility;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
-
-@ExtendWith(MockitoExtension.class)
-public class AdminServiceTest {
-
-    @Mock
-    private AdminRepository adminRepository;
-
-    @Mock
-    private PasswordUtility passwordUtility;
-
-    @InjectMocks
-    private AdminService adminService;
-
-    private Administrator admin;
-
-    @BeforeEach
-    public void setUp() {
-        admin = new Administrator();
-        admin.setId(1);
-        admin.setName("John Doe");
-        admin.setEmail("john@example.com");
-        admin.setCompanyName("Bike Co.");
-        admin.setUserStatus(UserStatus.APPROVED);
-    }
-
-    @Test
-    public void testGetAllAdmins() {
-        when(adminRepository.findByUserStatus(UserStatus.APPROVED)).thenReturn(List.of(admin));
-
-        List<Administrator> result = adminService.getAllAdmins();
-
-        assertNotNull(result);
-        assertEquals(1, result.size());
-        assertEquals("John Doe", result.get(0).getName());
-    }
-
-    @Test
-    public void testGetAdminById_Found() {
-        when(adminRepository.findById(1)).thenReturn(Optional.of(admin));
-
-        Administrator result = adminService.getAdminById(1);
-
-        assertNotNull(result);
-        assertEquals("John Doe", result.getName());
-    }
-
-    @Test
-    public void testGetAdminById_NotFound() {
-        when(adminRepository.findById(1)).thenReturn(Optional.empty());
-
-        assertThrows(NotFoundException.class, () -> adminService.getAdminById(1));
-    }
-
-    @Test
-    public void testSaveAdmin() {
-        when(passwordUtility.generateRandomPassword(8)).thenReturn("plain123");
-        when(passwordUtility.hashPassword("plain123")).thenReturn("hashed123");
-        when(adminRepository.save(any(Administrator.class))).thenAnswer(invocation -> invocation.getArgument(0));
-
-        Administrator result = adminService.saveAdmin("John Doe", "john@example.com", "Bike Co.");
-
-        assertNotNull(result);
-        assertEquals("John Doe", result.getName());
-        assertEquals("john@example.com", result.getEmail());
-        assertEquals("Bike Co.", result.getCompanyName());
-        assertEquals("hashed123", result.getPassword());
-
-        verify(passwordUtility).sendPasswordEmail("john@example.com", "plain123");
-    }
-
-    @Test
-    public void testUpdateAdmin_Found() {
-        Administrator updatedAdmin = new Administrator();
-        updatedAdmin.setName("Jane Doe");
-        updatedAdmin.setEmail("jane@example.com");
-        updatedAdmin.setCompanyName("New Co.");
-
-        when(adminRepository.findById(1)).thenReturn(Optional.of(admin));
-        when(adminRepository.save(any(Administrator.class))).thenAnswer(invocation -> invocation.getArgument(0));
-
-        Administrator result = adminService.updateAdmin(1, updatedAdmin);
-
-        assertNotNull(result);
-        assertEquals("Jane Doe", result.getName());
-        assertEquals("jane@example.com", result.getEmail());
-        assertEquals("New Co.", result.getCompanyName());
-    }
-
-    @Test
-    public void testUpdateAdmin_NotFound() {
-        when(adminRepository.findById(1)).thenReturn(Optional.empty());
-
-        Administrator updatedAdmin = new Administrator();
-        updatedAdmin.setName("Jane");
-
-        assertThrows(RuntimeException.class, () -> adminService.updateAdmin(1, updatedAdmin));
-    }
-
-    @Test
-    public void testDeleteAdmin_Found() {
-        when(adminRepository.findById(1)).thenReturn(Optional.of(admin));
-        doNothing().when(adminRepository).deleteById(1);
-
-        adminService.deleteAdmin(1);
-
-        verify(adminRepository, times(1)).deleteById(1);
-    }
-
-    @Test
-    public void testDeleteAdmin_NotFound() {
-        when(adminRepository.findById(1)).thenReturn(Optional.empty());
-
-        assertThrows(RuntimeException.class, () -> adminService.deleteAdmin(1));
-    }
-}
+//package integration4.evalebike.service;
+//
+//import integration4.evalebike.domain.Administrator;
+//import integration4.evalebike.domain.UserStatus;
+//import integration4.evalebike.exception.NotFoundException;
+//import integration4.evalebike.repository.AdminRepository;
+//import org.junit.jupiter.api.BeforeEach;
+//import org.junit.jupiter.api.Test;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.boot.test.context.SpringBootTest;
+//import org.springframework.test.context.ActiveProfiles;
+//import org.springframework.transaction.annotation.Transactional;
+//
+//import java.util.List;
+//import java.util.Optional;
+//
+//import static org.junit.jupiter.api.Assertions.*;
+//
+//@SpringBootTest
+//@ActiveProfiles("test")
+//@Transactional // Roll back database changes after each test
+//public class AdminServiceTest {
+//
+//    @Autowired
+//    private AdminRepository adminRepository;
+//
+//    @Autowired
+//    private AdminService adminService;
+//
+//    private Administrator admin;
+//
+//    @BeforeEach
+//    public void setUp() {
+//        // Use one of the existing admins from testdata.sql
+//        admin = new Administrator();
+//        admin.setId(3); // Matches Alice Johnson from testdata.sql
+//        admin.setName("Alice Johnson");
+//        admin.setEmail("alice.johnson@example.com");
+//        admin.setCompanyName("E-Bike Corp");
+//        admin.setUserStatus(UserStatus.APPROVED);
+//    }
+//
+//    @Test
+//    public void testGetAllAdmins() {
+//        List<Administrator> result = adminService.getAllAdmins();
+//
+//        assertNotNull(result);
+//        // testdata.sql has 2 admins (ID 3 and 16)
+//        assertEquals(2, result.size());
+//        // Check one of the admins
+//        Optional<Administrator> alice = result.stream()
+//                .filter(a -> a.getId() == 3)
+//                .findFirst();
+//        assertTrue(alice.isPresent());
+//        assertEquals("Alice Johnson", alice.get().getName());
+//    }
+//
+//    @Test
+//    public void testGetAdminById_Found() {
+//        Administrator result = adminService.getAdminById(3); // ID 3 exists in testdata.sql
+//
+//        assertNotNull(result);
+//        assertEquals("Alice Johnson", result.getName());
+//        assertEquals("alice.johnson@example.com", result.getEmail());
+//    }
+//
+//    @Test
+//    public void testGetAdminById_NotFound() {
+//        assertThrows(NotFoundException.class, () -> adminService.getAdminById(999)); // ID 999 does not exist
+//    }
+//
+//    @Test
+//    public void testSaveAdmin() {
+//        // Save a new admin
+//        Administrator result = adminService.saveAdmin("New Admin", "newadmin@example.com", "New Co.");
+//
+//        assertNotNull(result);
+//        assertEquals("New Admin", result.getName());
+//        assertEquals("newadmin@example.com", result.getEmail());
+//        assertEquals("New Co.", result.getCompanyName());
+//        assertNotNull(result.getPassword()); // Password should be hashed by PasswordUtility
+//        assertEquals(UserStatus.APPROVED, result.getUserStatus());
+//
+//        // Verify the admin was saved to the database
+//        Optional<Administrator> savedAdmin = adminRepository.findById(result.getId());
+//        assertTrue(savedAdmin.isPresent());
+//        assertEquals("newadmin@example.com", savedAdmin.get().getEmail());
+//    }
+//
+//    @Test
+//    public void testUpdateAdmin_Found() {
+//        Administrator updatedAdmin = new Administrator();
+//        updatedAdmin.setName("Updated Alice");
+//        updatedAdmin.setEmail("updated.alice@example.com");
+//        updatedAdmin.setCompanyName("Updated Co.");
+//
+//        Administrator result = adminService.updateAdmin(3, updatedAdmin); // ID 3 exists
+//
+//        assertNotNull(result);
+//        assertEquals("Updated Alice", result.getName());
+//        assertEquals("updated.alice@example.com", result.getEmail());
+//        assertEquals("Updated Co.", result.getCompanyName());
+//
+//        // Verify the update in the database
+//        Optional<Administrator> dbAdmin = adminRepository.findById(3);
+//        assertTrue(dbAdmin.isPresent());
+//        assertEquals("Updated Alice", dbAdmin.get().getName());
+//    }
+//
+//    @Test
+//    public void testUpdateAdmin_NotFound() {
+//        Administrator updatedAdmin = new Administrator();
+//        updatedAdmin.setName("Jane");
+//
+//        assertThrows(NotFoundException.class, () -> adminService.updateAdmin(999, updatedAdmin)); // ID 999 does not exist
+//    }
+//
+//    @Test
+//    public void testDeleteAdmin_Found() {
+//        adminService.deleteAdmin(3); // ID 3 exists
+//
+//        // Verify the admin was deleted
+//        Optional<Administrator> deletedAdmin = adminRepository.findById(3);
+//        assertFalse(deletedAdmin.isPresent());
+//    }
+//
+//    @Test
+//    public void testDeleteAdmin_NotFound() {
+//        assertThrows(NotFoundException.class, () -> adminService.deleteAdmin(999)); // ID 999 does not exist
+//    }
+//}

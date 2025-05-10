@@ -1,0 +1,138 @@
+-- DROP TABLE IF EXISTS visual_inspection;
+-- DROP TABLE IF EXISTS test_report;
+-- DROP TABLE IF EXISTS bike_owner_bike;
+-- DROP TABLE IF EXISTS recent_activity;
+-- DROP TABLE IF EXISTS test_bench;
+-- DROP TABLE IF EXISTS technician;
+-- DROP TABLE IF EXISTS administrator;
+-- DROP TABLE IF EXISTS super_admin;
+-- DROP TABLE IF EXISTS bike_owner;
+-- DROP TABLE IF EXISTS bike;
+-- DROP TABLE IF EXISTS app_user;
+--
+-- DROP TABLE IF EXISTS app_user;
+-- CREATE TABLE app_user (
+--                           id BIGINT PRIMARY KEY,
+--                           name NVARCHAR(255) NOT NULL,
+--                           email NVARCHAR(255) NOT NULL UNIQUE,
+--                           password NVARCHAR(255) NOT NULL,
+--                           role NVARCHAR(50) NOT NULL,
+--                           user_status NVARCHAR(50) NOT NULL
+-- );
+--
+-- DROP TABLE IF EXISTS technician;
+-- CREATE TABLE technician (
+--                             id BIGINT PRIMARY KEY,
+--                             FOREIGN KEY (id) REFERENCES app_user(id)
+-- );
+--
+-- DROP TABLE IF EXISTS test_bench;
+-- CREATE TABLE test_bench (
+--                             id BIGINT IDENTITY(1,1) PRIMARY KEY,
+--                             last_calibration_date DATE,
+--                             location NVARCHAR(255),
+--                             status NVARCHAR(50),
+--                             test_bench_name NVARCHAR(255) UNIQUE,
+--                             technician_id BIGINT,
+--                             FOREIGN KEY (technician_id) REFERENCES technician(id)
+-- );
+--
+-- DROP TABLE IF EXISTS test_report;
+-- CREATE TABLE test_report (
+--                              id BIGINT IDENTITY(1,1) PRIMARY KEY,
+--                              bike_qr NVARCHAR(255) NOT NULL,
+--                              test_bench_id BIGINT,
+--                              test_date DATETIME,
+--                              result NVARCHAR(50),
+--                              technician_id BIGINT,
+--                              FOREIGN KEY (test_bench_id) REFERENCES test_bench(id),
+--                              FOREIGN KEY (technician_id) REFERENCES technician(id)
+-- );
+--
+-- DROP TABLE IF EXISTS visual_inspection;
+-- CREATE TABLE visual_inspection (
+--                                    id BIGINT IDENTITY(1,1) PRIMARY KEY,
+--                                    tires NVARCHAR(50),
+--                                    bell NVARCHAR(50),
+--                                    cranks NVARCHAR(50),
+--                                    electric_wiring NVARCHAR(50),
+--                                    front_fork NVARCHAR(50),
+--                                    handles NVARCHAR(50),
+--                                    chain_belt NVARCHAR(50),
+--                                    pedals NVARCHAR(50),
+--                                    reflectors NVARCHAR(50),
+--                                    brake_pads NVARCHAR(50),
+--                                    brake_handles NVARCHAR(50),
+--                                    brake_cables NVARCHAR(50),
+--                                    brake_discs NVARCHAR(50),
+--                                    mudguards NVARCHAR(50),
+--                                    handle_bar NVARCHAR(50),
+--                                    rear_sprocket NVARCHAR(50),
+--                                    front_sprocket NVARCHAR(50),
+--                                    rims_spokes NVARCHAR(50),
+--                                    rear_suspension NVARCHAR(50),
+--                                    suspension_front NVARCHAR(50),
+--                                    saddle NVARCHAR(50),
+--                                    test_report_id BIGINT,
+--                                    FOREIGN KEY (test_report_id) REFERENCES test_report(id)
+-- );
+--
+-- DROP TABLE IF EXISTS bike_owner_bike;
+-- CREATE TABLE bike_owner_bike (
+--                                  bike_owner_id BIGINT,
+--                                  bike_qr NVARCHAR(255),
+--                                  PRIMARY KEY (bike_owner_id, bike_qr),
+--                                  FOREIGN KEY (bike_owner_id) REFERENCES bike_owner(id),
+--                                  FOREIGN KEY (bike_qr) REFERENCES bike(bikeqr)
+-- );
+--
+-- DROP TABLE IF EXISTS recent_activity;
+-- CREATE TABLE recent_activity (
+--                                  id BIGINT IDENTITY(1,1) PRIMARY KEY,
+--                                  activity NVARCHAR(255),
+--                                  description NVARCHAR(255),
+--                                  date DATETIME,
+--                                  user_id BIGINT,
+--                                  FOREIGN KEY (user_id) REFERENCES app_user(id)
+-- );
+--
+-- DROP TABLE IF EXISTS administrator;
+-- CREATE TABLE administrator (
+--                                id BIGINT PRIMARY KEY,
+--                                company_name NVARCHAR(255),
+--                                FOREIGN KEY (id) REFERENCES app_user(id)
+-- );
+--
+-- DROP TABLE IF EXISTS super_admin;
+-- CREATE TABLE super_admin (
+--                              id BIGINT PRIMARY KEY,
+--                              FOREIGN KEY (id) REFERENCES app_user(id)
+-- );
+--
+-- DROP TABLE IF EXISTS bike_owner;
+-- CREATE TABLE bike_owner (
+--                             id BIGINT PRIMARY KEY,
+--                             phone_number NVARCHAR(20),
+--                             birth_date DATE,
+--                             FOREIGN KEY (id) REFERENCES app_user(id)
+-- );
+--
+-- DROP TABLE IF EXISTS bike;
+-- CREATE TABLE bike (
+--                       bikeqr NVARCHAR(255) PRIMARY KEY,
+--                       brand NVARCHAR(255),
+--                       model NVARCHAR(255),
+--                       production_year INT,
+--                       bike_size NVARCHAR(10),
+--                       mileage INT,
+--                       gear_type NVARCHAR(255),
+--                       engine_type NVARCHAR(255),
+--                       power_train NVARCHAR(255),
+--                       accu_capacity DECIMAL(10,1),
+--                       max_support DECIMAL(10,1),
+--                       max_engine_power DECIMAL(10,1),
+--                       nominal_engine_power DECIMAL(10,1),
+--                       engine_torque DECIMAL(10,1),
+--                       last_test_date DATE
+-- );
+--
