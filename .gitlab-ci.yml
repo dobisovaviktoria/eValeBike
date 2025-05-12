@@ -89,7 +89,7 @@ test_job:
       fi
       echo "Java installation complete, verifying..."
       java -version || { echo "Java installation failed"; exit 1; }
-    EOF
+      EOF
     - echo "Copying project to app server..."
     - scp -r build.gradle.kts settings.gradle.kts src/ gradle/ gradlew gradlew.bat team4@$APP_SERVER:/home/team4/evalbike/ || { echo "Failed to copy project files"; exit 1; }
     - echo "Verifying Java and Gradle on app server..."
