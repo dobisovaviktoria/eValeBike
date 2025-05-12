@@ -24,7 +24,7 @@ stages:
 before_script:
   - echo "Starting CI/CD pipeline..."
 
-uild_job:
+build_job:
   stage: build
   image: gradle:8.4.0-jdk21
   tags:
@@ -32,7 +32,11 @@ uild_job:
     - gradle
     - java
   script:
+    - echo "Listing files before build..."
+    - ls -la
     - gradle build -x test
+    - echo "Listing artifacts after build..."
+    - ls -la build.gradle settings.gradle src/ gradle/ gradlew gradlew.bat build/libs/
   artifacts:
     paths:
       - build/libs/*.jar
@@ -60,6 +64,8 @@ test_job:
     - ssh-add ~/.ssh/gitlabrunner
     - ssh-keyscan -H $APP_SERVER >> ~/.ssh/known_hosts
   script:
+    - echo "Verifying artifacts in working directory..."
+    - ls -la build.gradle settings.gradle src/ gradle/ gradlew gradlew.bat || { echo "Artifacts missing"; exit 1; }
     - echo "Creating directory on app server..."
     - ssh team4@$APP_SERVER "mkdir -p /home/team4/evalbike && chmod 755 /home/team4/evalbike" || { echo "Failed to create directory"; exit 1; }
     - echo "Copying project to app server..."
