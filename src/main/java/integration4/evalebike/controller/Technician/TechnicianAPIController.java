@@ -30,24 +30,24 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/technician")
 public class TechnicianAPIController {
 
-    private static final Logger logger = LoggerFactory.getLogger(TechnicianAPIController.class);
     private final BikeService bikeService;
     private final BikeOwnerService bikeOwnerService;
     private final BikeOwnerMapper bikeOwnerMapper;
     private final TestBenchService testBenchService;
-    private final TestReportRepository testReportRepository;
     private final RecentActivityService recentActivityService;
     private final TestReportEntryService testReportEntryService;
     private final VisualInspectionService visualInspectionService;
     private final TestReportService testReportService;
 
 
-    public TechnicianAPIController(BikeService bikeService, BikeOwnerService bikeOwnerService, BikeOwnerMapper bikeOwnerMapper, TestBenchService testBenchService, TestReportRepository testReportRepository, RecentActivityService recentActivityService, TestReportEntryService testReportEntryService, VisualInspectionService visualInspectionService, TestReportService testReportService) {
+    public TechnicianAPIController(BikeService bikeService, BikeOwnerService bikeOwnerService, BikeOwnerMapper bikeOwnerMapper,
+                                   TestBenchService testBenchService, RecentActivityService recentActivityService,
+                                   TestReportEntryService testReportEntryService, VisualInspectionService visualInspectionService,
+                                   TestReportService testReportService) {
         this.bikeService = bikeService;
         this.bikeOwnerService = bikeOwnerService;
         this.testBenchService = testBenchService;
         this.bikeOwnerMapper = bikeOwnerMapper;
-        this.testReportRepository = testReportRepository;
         this.recentActivityService = recentActivityService;
         this.testReportEntryService = testReportEntryService;
         this.visualInspectionService = visualInspectionService;
@@ -89,13 +89,26 @@ public class TechnicianAPIController {
     }
 
     @PostMapping("/start/{bikeQR}")
-    public Mono<String> startTest(@PathVariable String bikeQR, @RequestParam("testType") String testType, Principal principal, @AuthenticationPrincipal final CustomUserDetails userDetails) {
+    public Mono<String> startTest(@PathVariable String bikeQR,
+                                  @RequestParam("testType") String testType,
+                                  Principal principal,
+                                  @AuthenticationPrincipal final CustomUserDetails userDetails) {
 
-        recentActivityService.save(new RecentActivity(Activity.INITIALIZED_TEST, "Test started successfully.", LocalDateTime.now(), userDetails.getUserId()));
         String technicianUsername = principal != null ? principal.getName() : "anonymous";
 
-        return Mono.fromCallable(() -> bikeService.findById(bikeQR)).flatMap(optionalBike -> optionalBike.map(Mono::just).orElseGet(() -> Mono.error(new RuntimeException("Bike not found with QR: " + bikeQR)))).flatMap(bike -> {
-            TestRequestDTO testRequestDTO = new TestRequestDTO(testType.toUpperCase(), bike.getAccuCapacity(), bike.getMaxSupport(), bike.getMaxEnginePower(), bike.getNominalEnginePower(), bike.getEngineTorque());
+        recentActivityService.save(new RecentActivity(Activity.INITIALIZED_TEST, "Test started successfully.", LocalDateTime.now(), userDetails.getUserId()));
+
+        return Mono.fromCallable(() -> bikeService.findById(bikeQR))
+                    .flatMap(optionalBike -> optionalBike
+                            .map(Mono::just)
+                            .orElseGet(() -> Mono.error(new RuntimeException("Bike not found with QR: " + bikeQR))))
+                .flatMap(bike -> {
+            TestRequestDTO testRequestDTO = new TestRequestDTO(testType.toUpperCase(),
+                                                                bike.getAccuCapacity(),
+                                                                bike.getMaxSupport(),
+                                                                bike.getMaxEnginePower(),
+                                                                bike.getNominalEnginePower(),
+                                                                bike.getEngineTorque());
             return testBenchService.processTest(testRequestDTO, technicianUsername, bikeQR).flatMap(response -> {
                 // Save partial TestReport
                 TestReport partialReport = new TestReport();
@@ -103,7 +116,7 @@ public class TechnicianAPIController {
                 partialReport.setBike(bike); // Set the Bike entity
                 partialReport.setTechnicianName(technicianUsername);
                 try {
-                    testReportRepository.save(partialReport);
+                    testReportService.saveTestReport(partialReport);
                 } catch (Exception e) {
                     return Mono.error(new RuntimeException("Failed to save partial TestReport", e));
                 }
@@ -152,7 +165,6 @@ public class TechnicianAPIController {
             TestReport testReport = testReportService.getTestReportWithEntriesById(testId);
             visualInspection.setTestReport(testReport);
             visualInspectionService.saveInspection(visualInspection);
-
             return ResponseEntity.ok("Inspection submitted successfully!");
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Failed to submit the inspection: " + e.getMessage());
