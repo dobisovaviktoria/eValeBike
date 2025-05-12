@@ -7,10 +7,8 @@ include:
 variables:
   POSTGRES_DB: eValeBike
   POSTGRES_USER: user
-  POSTGRES_PASSWORD: password
-  SPRING_DATASOURCE_URL: jdbc:postgresql://db:5436/eValeBike
-  SPRING_DATASOURCE_USERNAME: user
-  SPRING_DATASOURCE_PASSWORD: password
+  POSTGRES_PASSWORD: Password!1
+
 #  SPRING_PROFILES_ACTIVE: prod
   DOCKER_HOST: tcp://docker:2375  #for docker in docker
   DOCKER_TLS_CERTDIR: ""
@@ -38,8 +36,12 @@ build_job:
     - docker
     - gradle
     - java
+  variables:
+    SPRING_DATASOURCE_URL: jdbc:sqlserver://evalebike.database.windows.net:1433;database=eValeBike;user=user@evalebike;password=password!1;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30
+    SPRING_DATASOURCE_USERNAME: user
+    SPRING_DATASOURCE_PASSWORD: password!1
   script:
-    - gradle build
+    - gradle build -x test
   artifacts:
     paths:
       - build/libs/*.jar
@@ -53,6 +55,10 @@ test_job:
     - docker
     - gradle
     - java
+  variables:
+    SPRING_DATASOURCE_URL: jdbc:sqlserver://evalebike.database.windows.net:1433;database=eValeBikeTest;user=user@evalebike;password=password!1;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30
+    SPRING_DATASOURCE_USERNAME: user
+    SPRING_DATASOURCE_PASSWORD: password!1
   services:
     - name: docker:20.10.24-dind
       alias: docker  # Matches DOCKER_HOST
