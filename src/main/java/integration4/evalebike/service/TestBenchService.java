@@ -1,5 +1,6 @@
 package integration4.evalebike.service;
 
+import integration4.evalebike.controller.TestBenchConfig;
 import integration4.evalebike.controller.technician.dto.TestReportDTO;
 import integration4.evalebike.controller.technician.dto.TestReportEntryDTO;
 import integration4.evalebike.controller.technician.dto.TestRequestDTO;
@@ -24,7 +25,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import org.springframework.http.HttpStatusCode;
-
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -41,12 +41,11 @@ public class TestBenchService {
     private final BikeRepository bikeRepository;
     private final TestBenchRepository testBenchRepository;
     private final TechnicianRepository technicianRepository;
-    private final String apiKey = "9e8dffd7-f6e1-45b4-b4aa-69fd257ca200";
 
-    public TestBenchService(WebClient.Builder webClientBuilder, TestReportRepository testReportRepository, TestBenchRepository testBenchRepository, TechnicianRepository technicianRepository, BikeRepository bikeRepository) {
+    public TestBenchService(WebClient.Builder webClientBuilder, TestBenchConfig testBenchConfig, TestReportRepository testReportRepository, TestBenchRepository testBenchRepository, TechnicianRepository technicianRepository, BikeRepository bikeRepository) {
         this.testBenchClient = webClientBuilder
-                .baseUrl("https://testbench.raoul.dev")
-                .defaultHeader("X-Api-Key", apiKey)
+                .baseUrl(testBenchConfig.getBaseUrl())
+                .defaultHeader("X-Api-Key", testBenchConfig.getApiKey())
                 .build();
         this.testReportRepository = testReportRepository;
         this.bikeRepository = bikeRepository;
@@ -120,7 +119,6 @@ public class TestBenchService {
 
 
     //to get the whole test report (including test entries)
-
     public Mono<TestReportDTO> getTestReportById(String testId) {
         logger.info("Fetching report for testId: {}", testId);
 

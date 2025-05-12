@@ -30,24 +30,24 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/technician")
 public class TechnicianAPIController {
 
-    private static final Logger logger = LoggerFactory.getLogger(TechnicianAPIController.class);
     private final BikeService bikeService;
     private final BikeOwnerService bikeOwnerService;
     private final BikeOwnerMapper bikeOwnerMapper;
     private final TestBenchService testBenchService;
-    private final TestReportRepository testReportRepository;
     private final RecentActivityService recentActivityService;
     private final TestReportEntryService testReportEntryService;
     private final VisualInspectionService visualInspectionService;
     private final TestReportService testReportService;
 
 
-    public TechnicianAPIController(BikeService bikeService, BikeOwnerService bikeOwnerService, BikeOwnerMapper bikeOwnerMapper, TestBenchService testBenchService, TestReportRepository testReportRepository, RecentActivityService recentActivityService, TestReportEntryService testReportEntryService, VisualInspectionService visualInspectionService, TestReportService testReportService) {
+    public TechnicianAPIController(BikeService bikeService, BikeOwnerService bikeOwnerService, BikeOwnerMapper bikeOwnerMapper,
+                                   TestBenchService testBenchService, RecentActivityService recentActivityService,
+                                   TestReportEntryService testReportEntryService, VisualInspectionService visualInspectionService,
+                                   TestReportService testReportService) {
         this.bikeService = bikeService;
         this.bikeOwnerService = bikeOwnerService;
         this.testBenchService = testBenchService;
         this.bikeOwnerMapper = bikeOwnerMapper;
-        this.testReportRepository = testReportRepository;
         this.recentActivityService = recentActivityService;
         this.testReportEntryService = testReportEntryService;
         this.visualInspectionService = visualInspectionService;
