@@ -40,9 +40,10 @@ public class TechnicianAPIController {
     private final TestReportEntryService testReportEntryService;
     private final VisualInspectionService visualInspectionService;
     private final TestReportService testReportService;
+    private final TechnicianService technicianService;
 
 
-    public TechnicianAPIController(BikeService bikeService, BikeOwnerService bikeOwnerService, BikeOwnerMapper bikeOwnerMapper, TestBenchService testBenchService, TestReportRepository testReportRepository, RecentActivityService recentActivityService, TestReportEntryService testReportEntryService, VisualInspectionService visualInspectionService, TestReportService testReportService) {
+    public TechnicianAPIController(BikeService bikeService, BikeOwnerService bikeOwnerService, BikeOwnerMapper bikeOwnerMapper, TestBenchService testBenchService, TestReportRepository testReportRepository, RecentActivityService recentActivityService, TestReportEntryService testReportEntryService, VisualInspectionService visualInspectionService, TestReportService testReportService, TechnicianService technicianService) {
         this.bikeService = bikeService;
         this.bikeOwnerService = bikeOwnerService;
         this.testBenchService = testBenchService;
@@ -52,6 +53,19 @@ public class TechnicianAPIController {
         this.testReportEntryService = testReportEntryService;
         this.visualInspectionService = visualInspectionService;
         this.testReportService = testReportService;
+        this.technicianService = technicianService;
+    }
+
+    @GetMapping("/filteredBikeOwners")
+    public ResponseEntity<List<BikeOwnerDto>> getFilteredBikeOwners(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String email
+    ) {
+        List<BikeOwnerDto> filteredOwners = bikeOwnerService.getFiltered(name, email)
+                .stream()
+                .map(BikeOwnerDto::fromBikeOwner)
+                .toList();
+        return ResponseEntity.ok(filteredOwners);
     }
 
     @GetMapping("/bikeOwners")
@@ -59,6 +73,30 @@ public class TechnicianAPIController {
         final List<BikeOwnerDto> bikeOwners = bikeOwnerService.getAll().stream().map(bikeOwnerMapper::toBikeOwnerDto).toList();
         return ResponseEntity.ok(bikeOwners);
     }
+
+    @GetMapping("/technicians/filter")
+    public List<Technician> filterTechnicians(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String email) {
+
+        return technicianService.getFilteredTechnicians(name, email);
+    }
+
+
+    @GetMapping("/filteredReports")
+    public ResponseEntity<List<TestRequestDTO>> getFilteredReports(
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) String state,
+            @RequestParam(required = false) String type
+    ) {
+        List<TestRequestDTO> filteredReports = testReportService.getFilteredReports(email, state, type)
+                .stream()
+                .map(TestRequestDTO::fromTestReport)
+                .toList();
+
+        return ResponseEntity.ok(filteredReports);
+    }
+
 
     @PostMapping("/bikes")
     public ResponseEntity<BikeDto> createBike(@RequestBody @Valid final AddBikeDto addBikeDto, @AuthenticationPrincipal final CustomUserDetails userDetails) throws Exception {
