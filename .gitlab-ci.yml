@@ -24,7 +24,7 @@ stages:
 before_script:
   - echo "Starting CI/CD pipeline..."
 
-build_job:
+uild_job:
   stage: build
   image: gradle:8.4.0-jdk21
   tags:
@@ -40,6 +40,9 @@ build_job:
       - build.gradle
       - settings.gradle
       - src/
+      - gradle/
+      - gradlew
+      - gradlew.bat
     expire_in: 1 week
 
 test_job:
@@ -58,9 +61,11 @@ test_job:
     - ssh-keyscan -H $APP_SERVER >> ~/.ssh/known_hosts
   script:
     - echo "Creating directory on app server..."
-    - ssh team4@$APP_SERVER "mkdir -p /home/team4/evalbike"
+    - ssh team4@$APP_SERVER "mkdir -p /home/team4/evalbike && chmod 755 /home/team4/evalbike" || { echo "Failed to create directory"; exit 1; }
     - echo "Copying project to app server..."
-    - scp -r build.gradle settings.gradle src/ team4@$APP_SERVER:/home/team4/evalbike/ || { echo "Failed to copy project files"; exit 1; }
+    - scp -r build.gradle settings.gradle src/ gradle/ gradlew gradlew.bat team4@$APP_SERVER:/home/team4/evalbike/ || { echo "Failed to copy project files"; exit 1; }
+    - echo "Verifying Java and Gradle on app server..."
+    - ssh team4@$APP_SERVER "java -version && /home/team4/evalbike/gradlew -v" || { echo "Java or Gradle not installed"; exit 1; }
     - echo "Running tests on app server..."
     - |
       ssh -tt team4@$APP_SERVER << EOF
@@ -70,11 +75,15 @@ test_job:
         export SPRING_DATASOURCE_URL="jdbc:sqlserver://evalebike.database.windows.net:1433;database=eValeBikeTest;user=user@evalebike;password=password!1;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30"
         export SPRING_DATASOURCE_USERNAME=user
         export SPRING_DATASOURCE_PASSWORD=password!1
-        gradle test --info || { echo "Tests failed"; exit 1; }
+        chmod +x gradlew
+        ./gradlew clean test --info --stacktrace || { echo "Tests failed"; exit 1; }
+        echo "Listing test results..."
+        ls -la /home/team4/evalbike/build/test-results/test/ || echo "No test results found"
         exit
       EOF
     - echo "Copying test results back..."
-    - scp -r team4@$APP_SERVER:/home/team4/evalbike/build/test-results/test/ build/test-results/test/ || { echo "Failed to copy test results"; exit 1; }
+    - mkdir -p build/test-results/test
+    - scp -r team4@$APP_SERVER:/home/team4/evalbike/build/test-results/test/*.xml build/test-results/test/ || { echo "Failed to copy test results, checking if files exist..."; ssh team4@$APP_SERVER "ls -la /home/team4/evalbike/build/test-results/test/"; exit 1; }
   artifacts:
     when: always
     reports:
