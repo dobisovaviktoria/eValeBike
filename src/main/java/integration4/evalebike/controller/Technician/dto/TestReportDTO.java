@@ -153,6 +153,43 @@ public class TestReportDTO {
     public void setType(String type) {
         this.type = type;
     }
+
+
+    public static TestReportDTO convertToTestReportDTO(TestReportDTO testReportDTO, List<TestReportEntryDTO> entries, String bikeQR) {
+        return new TestReportDTO(
+                testReportDTO.getId(),
+                testReportDTO.getExpiryDate(),
+                testReportDTO.getState(),
+                testReportDTO.getType(),
+                testReportDTO.getBatteryCapacity(),
+                testReportDTO.getMaxSupport(),
+                testReportDTO.getEnginePowerMax(),
+                testReportDTO.getEnginePowerNominal(),
+                testReportDTO.getEngineTorque(),
+                entries,
+                bikeQR,
+                testReportDTO.getTechnicianName()
+        );
+    }
+
+    public static TestReport convertToTestReportWithNoEntries(TestResponseDTO testResponseDTO, Bike bike, String technicianUsername) {
+        TestReport testReport = new TestReport(
+                testResponseDTO.getId(),
+                testResponseDTO.getExpiryDate(),
+                testResponseDTO.getState(),
+                testResponseDTO.getType(),
+                testResponseDTO.getBatteryCapacity(),
+                testResponseDTO.getMaxSupport(),
+                testResponseDTO.getEnginePowerMax(),
+                testResponseDTO.getEnginePowerNominal(),
+                testResponseDTO.getEngineTorque()
+        );
+        testReport.setBike(bike);
+        testReport.setTechnicianName(technicianUsername);
+        return testReport;
+    }
+
+
 }
 
 
