@@ -20,16 +20,8 @@ public class EValeBikeApplicationTests {
 
     @Test
     void contextLoads() {
-//        // Load the SQL script from src/test/resources/testdata.sql
-//        try {
-//            ClassPathResource script = new ClassPathResource("testdata.sql");
-//            ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator();
-//            databasePopulator.addScript(script);
-//
-//            // Execute the script against the connected Azure SQL Database
-//            databasePopulator.populate(jdbcTemplate.getDataSource().getConnection());
-//        } catch (Exception e) {
-//            e.printStackTrace();  // In case of errors during script execution
-//        }
+        Integer userCount = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM app_user", Integer.class);
+        assert userCount > 0 : "No users inserted in the database!";
+        System.out.println("User count: " + userCount);
     }
 }
