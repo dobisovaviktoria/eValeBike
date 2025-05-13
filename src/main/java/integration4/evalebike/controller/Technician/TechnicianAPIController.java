@@ -176,38 +176,5 @@ public class TechnicianAPIController {
         }
     }
 
-//    @GetMapping("/compare/{id1}/{id2}")
-//    public ResponseEntity<Map<String, Object>> compare(@PathVariable String id1, @PathVariable String id2) {
-//        try {
-//            List<ReportViewModel> reportViewModels = new ArrayList<>();
-//            List<TestReportEntryViewModel> summaries = new ArrayList<>();
-//
-//            for (String id : new String[]{id1, id2}) {
-//                TestReport report = testReportService.getTestReportWithEntriesById(id);
-//                if (report == null) {
-//                    Map<String, Object> errorResponse = new HashMap<>();
-//                    errorResponse.put("error", "Test report not found for ID: " + id);
-//                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
-//                }
-//                ReportViewModel reportVm = ReportViewModel.from(report);
-//                reportViewModels.add(reportVm);
-//
-//                List<TestReportEntry> entries = report.getReportEntries();
-//                TestReportEntryViewModel summaryVm = (entries != null && !entries.isEmpty())
-//                        ? TestReportEntryViewModel.summarize(entries)
-//                        : null;
-//                summaries.add(summaryVm);
-//            }
-//
-//            Map<String, Object> response = new HashMap<>();
-//            response.put("reports", reportViewModels);
-//            response.put("summaries", summaries);
-//
-//            return ResponseEntity.ok(response);
-//        } catch (Exception e) {
-//            Map<String, Object> errorResponse = new HashMap<>();
-//            errorResponse.put("error", "Failed to compare reports: " + e.getMessage());
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
-//        }
-//    }
+
 }

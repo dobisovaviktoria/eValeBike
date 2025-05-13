@@ -13,9 +13,8 @@
     <div th:insert="~{fragments/menu.html}"></div>
 
     <div class="dashboard-container">
-        <!-- Dashboard Header -->
-        <div class="dashboard-header">
-            <h2 class="dashboard-title">Reports for Bike QR: <strong th:text="${bikeQr}">QR</strong></h2>
+        <div >
+            <h5>Reports for Bike QR: <strong th:text="${bikeQr}">QR</strong></h5>
         </div>
 
         <!-- Table Container -->
@@ -24,7 +23,7 @@
                 <table class="table table-borderless">
                     <thead>
                     <tr>
-                        <th>Select</th>
+                        <th></th>
                         <th>Test Run By</th>
                         <th>State</th>
                         <th>Type</th>
@@ -34,7 +33,7 @@
                     </thead>
                     <tbody>
                     <tr th:each="report : ${reports}">
-                        <td><input type="checkbox" class="form-check-input" name="selectedReports" th:value="${report.id}"></td>
+                        <td><input type="checkbox" class="form-check-input  border-primary" name="selectedReports" th:value="${report.id}"></td>
                         <td th:text="${report.technicianName()}">Technician</td>
                         <td th:text="${report.state}">State</td>
                         <td th:text="${report.type}">Type</td>
@@ -55,22 +54,7 @@
     <div th:insert="~{fragments/footer.html}" class="footer"></div>
 
 </div>
-<script>
-    document.getElementById('compareButton').addEventListener('click', function () {
-        const selected = Array.from(document.querySelectorAll('input[name="selectedReports"]:checked'))
-            .map(cb => cb.value);
-
-        if (selected.length < 2) {
-            alert("Please select at least two reports to compare.");
-            return;
-        }
-
-        // Ensure the URL is correctly formatted
-        const url = "/technician/compare/" + selected[0] + "/" + selected[1];  // Only take the first two selected reports
-
-        window.location.href = url;
-    });
-</script>
+<script src="/js/technician/compare.js"></script>
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
