@@ -2,6 +2,8 @@ package integration4.evalebike.controller.technician;
 
 import integration4.evalebike.controller.technician.dto.*;
 import integration4.evalebike.controller.technician.dto.TestRequestDTO;
+import integration4.evalebike.controller.viewModel.ReportViewModel;
+import integration4.evalebike.controller.viewModel.TestReportEntryViewModel;
 import integration4.evalebike.domain.Bike;
 import integration4.evalebike.domain.BikeOwner;
 import integration4.evalebike.domain.TestReport;
@@ -20,7 +22,10 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
@@ -208,6 +213,8 @@ public class TechnicianAPIController {
         List<BikeDto> dtos = filtered.stream().map(BikeDto::toBikeDto).toList();
         return ResponseEntity.ok(dtos);
     }
+
+
 
 
 
