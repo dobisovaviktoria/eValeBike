@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             row.innerHTML = `
             <td>${admin.name}</td>
             <td>${admin.email}</td>
-            <td>${admin.companyName || ''}</td>
+            <td>${admin.company.name || ''}</td>
         `;
 
             tableBody.appendChild(row);
@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             row.innerHTML = `
                 <td>${admin.name}</td>
                 <td>${admin.email}</td>
-                <td>${admin.companyName}</td>
+                <td>${admin.company.name}</td>
                 <td>
                     <button class="btn btn-sm btn-outline-primary edit-btn me-2" data-id="${admin.id}">
                         <i class="fa-solid fa-pen"></i>
