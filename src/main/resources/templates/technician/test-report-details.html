@@ -150,7 +150,12 @@
     </div>
     <div class="text-center mt-4">
         <a th:href="@{/technician/test-report-dashboard}" class="btn btn-primary">Back to Test Report Dashboard</a>
+        
         <button id="downloadPdfBtn" class="btn btn-success">Save as PDF</button>
+
+        <button id="sendEmailBtn" class="btn btn-info"><i class="fas fa-paper-plane"></i> Send to Email</button>
+
+
     </div>
     <div th:insert="~{fragments/footer.html}"></div>
 </div>

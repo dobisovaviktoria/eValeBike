@@ -38,7 +38,7 @@ public class WebSecurityConfig {
 
                         .anyRequest().authenticated()
                 )
-                .csrf(csrf -> csrf.disable())
+//                .csrf(csrf -> csrf.disable())
                 .formLogin(login -> {
                     login.loginPage("/login").failureUrl("/login").defaultSuccessUrl("/technician/bike-owners").permitAll();
                 })
