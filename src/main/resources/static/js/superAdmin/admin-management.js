@@ -1,3 +1,5 @@
+const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
 
 document.addEventListener("DOMContentLoaded", async () => {
     const addAdminBtn = document.querySelector("#add-admin-btn");
@@ -165,7 +167,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 try {
                     const response = await fetch(`/api/super-admin/admins/${adminId}`, {
-                        method: "DELETE", headers: {"Accept": "application/json"}
+                        method: "DELETE", headers: {[csrfHeader]: csrfToken, "Accept": "application/json"}
                     });
 
                     if (response.ok) {

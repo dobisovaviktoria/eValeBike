@@ -1,3 +1,5 @@
+const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
 
 document.addEventListener("DOMContentLoaded", () => {
     const addTechnicianBtn = document.getElementById("add-technician-btn");
@@ -76,7 +78,6 @@ document.addEventListener("DOMContentLoaded", () => {
         renderPagination();
     }
 
-
     function renderTable() {
         technicianTableBody.innerHTML = "";
         const start = (currentPage - 1) * techniciansPerPage;
@@ -153,9 +154,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 try {
                     // Send a DELETE request to the backend
                     const response = await fetch(`/api/admin/technicians/${technicianId}`, {
-                        method: "DELETE",
-                        headers: {
-                            "Accept": "application/json",
+                        method: "DELETE", headers: {
+                            [csrfHeader]: csrfToken, 'Content-Type': 'application/json'
                         },
                     });
 
@@ -190,20 +190,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Create a JSON body for the request
             const jsonBody = JSON.stringify({
-                name: name,
-                email: email,
-                password: password,
+                name: name, email: email, password: password,
             });
 
             try {
                 // Send POST request to add a new technician
                 const response = await fetch("/api/admin/technicians", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Accept": "application/json",
-                    },
-                    body: jsonBody,
+                    method: "POST", headers: {
+                        "Content-Type": "application/json", "Accept": "application/json",
+                    }, body: jsonBody,
                 });
 
                 if (response.status === 201) {
