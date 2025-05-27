@@ -94,7 +94,7 @@ public class TechnicianAPIController {
 
     @PostMapping("/bikeOwners")
     public ResponseEntity<BikeOwnerDto> createBikeOwner(@RequestBody @Valid final AddBikeOwnerDto addBikeOwnerDto, @AuthenticationPrincipal final CustomUserDetails userDetails) throws Exception {
-        final BikeOwner bikeOwner = bikeOwnerService.add(addBikeOwnerDto.name(), addBikeOwnerDto.email(), addBikeOwnerDto.phoneNumber(), addBikeOwnerDto.birthDate(), userDetails.getUserId());
+        final BikeOwner bikeOwner = bikeOwnerService.add(addBikeOwnerDto.name(), addBikeOwnerDto.email(), addBikeOwnerDto.phoneNumber(), addBikeOwnerDto.birthDate(), userDetails.getUserId(), addBikeOwnerDto.companyId());
         recentActivityService.save(new RecentActivity(Activity.CREATED_USER, "Created bike owner " + addBikeOwnerDto.name(), LocalDateTime.now(), userDetails.getUserId()));
         return ResponseEntity.status(HttpStatus.CREATED).body(bikeOwnerMapper.toBikeOwnerDto(bikeOwner));
     }

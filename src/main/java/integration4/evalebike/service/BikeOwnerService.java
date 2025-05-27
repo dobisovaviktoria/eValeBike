@@ -4,13 +4,9 @@ import integration4.evalebike.controller.technician.dto.BikeDto;
 import integration4.evalebike.domain.*;
 
 import integration4.evalebike.exception.NotFoundException;
-import integration4.evalebike.repository.BikeOwnerBikeRepository;
-import integration4.evalebike.repository.BikeOwnerRepository;
-import integration4.evalebike.repository.BikeRepository;
-import integration4.evalebike.repository.UserRepository;
+import integration4.evalebike.repository.*;
 import integration4.evalebike.security.CustomUserDetails;
 import integration4.evalebike.utility.PasswordUtility;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,14 +23,16 @@ public class BikeOwnerService {
     private final QrCodeService qrCodeService;
     private final PasswordUtility passwordUtility;
     private final UserRepository userRepository;
+    private final CompanyRepository companyRepository;
 
-    public BikeOwnerService(BikeOwnerRepository bikeOwnerRepository, BikeOwnerBikeRepository bikeOwnerBikeRepository, BikeRepository bikeRepository, QrCodeService qrCodeService, PasswordUtility passwordUtility, UserRepository userRepository) {
+    public BikeOwnerService(BikeOwnerRepository bikeOwnerRepository, BikeOwnerBikeRepository bikeOwnerBikeRepository, BikeRepository bikeRepository, QrCodeService qrCodeService, PasswordUtility passwordUtility, UserRepository userRepository, CompanyRepository companyRepository) {
         this.bikeOwnerRepository = bikeOwnerRepository;
         this.bikeOwnerBikeRepository = bikeOwnerBikeRepository;
         this.bikeRepository = bikeRepository;
         this.qrCodeService = qrCodeService;
         this.passwordUtility = passwordUtility;
         this.userRepository = userRepository;
+        this.companyRepository = companyRepository;
     }
 
     public List<BikeOwner> getAll(CustomUserDetails currentUser) {
@@ -48,14 +46,20 @@ public class BikeOwnerService {
         }
     }
 
-    public BikeOwner add(String name, String email, String phoneNumber, LocalDate birthDate, int createdBy) {
+    public BikeOwner add(String name, String email, String phoneNumber, LocalDate birthDate, int createdBy, Integer companyId) {
         String rawPassword = passwordUtility.generateRandomPassword(8);
         String hashedPassword = passwordUtility.hashPassword(rawPassword);
         BikeOwner bikeOwner = new BikeOwner(name, email, phoneNumber, birthDate);
         bikeOwner.setPassword(hashedPassword);
         bikeOwner.setUserStatus(UserStatus.APPROVED);
         bikeOwner.setCreatedBy(userRepository.findById(createdBy).orElseThrow((() -> NotFoundException.forTechnician(createdBy))));
-        bikeOwner.setCompany(userRepository.findById(createdBy).orElseThrow((() -> NotFoundException.forTechnician(createdBy))).getCompany());
+        if (companyId != null) {
+            Company company = companyRepository.findById(companyId).orElse(null);
+            bikeOwner.setCompany(company);
+        }
+        else{
+            bikeOwner.setCompany(userRepository.findById(createdBy).orElseThrow((() -> NotFoundException.forTechnician(createdBy))).getCompany());
+        }
         passwordUtility.sendPasswordEmail(email, rawPassword);
         return bikeOwnerRepository.save(bikeOwner);
     }

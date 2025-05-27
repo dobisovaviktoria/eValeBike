@@ -10,8 +10,8 @@ import org.springframework.security.core.GrantedAuthority;
 
 public class CustomUserDetails extends User {
     private final int userId;
-    private transient final Role role;
-    private transient final Company company;
+    private final Role role;
+    private final Company company;
 
     public CustomUserDetails(final String username, final String password, final Collection<? extends GrantedAuthority> authorities, final int userId, final Role role, final Company company) {
         super(username, password, authorities);

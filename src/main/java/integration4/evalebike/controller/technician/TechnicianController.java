@@ -33,9 +33,10 @@ public class TechnicianController {
     private final TestReportService testReportService;
     private final TestReportEntryService testReportEntryService;
     private final VisualInspectionService visualInspectionService;
+    private final CompanyService companyService;
     private static final Logger logger = LoggerFactory.getLogger(TechnicianController.class);
 
-    public TechnicianController(BikeOwnerService bikeOwnerService, BikeService bikeService, QrCodeService qrCodeService, TestBenchService testBenchService, TestReportService testReportService, TestReportEntryService testReportEntryService, VisualInspectionService visualInspectionService) {
+    public TechnicianController(BikeOwnerService bikeOwnerService, BikeService bikeService, QrCodeService qrCodeService, TestBenchService testBenchService, TestReportService testReportService, TestReportEntryService testReportEntryService, VisualInspectionService visualInspectionService, CompanyService companyService) {
         this.bikeOwnerService = bikeOwnerService;
         this.bikeService = bikeService;
         this.qrCodeService = qrCodeService;
@@ -43,6 +44,7 @@ public class TechnicianController {
         this.testReportService = testReportService;
         this.testReportEntryService = testReportEntryService;
         this.visualInspectionService = visualInspectionService;
+        this.companyService = companyService;
     }
 
     // Show all bikes owned by a specific bike owner
@@ -89,6 +91,7 @@ public class TechnicianController {
     @GetMapping("/bike-owners/add")
     public String showAddBikeOwnerForm(Model model) {
         model.addAttribute("bikeOwner", new BikeOwner());
+        model.addAttribute("companies", companyService.getAll());
         return "technician/add-bike-owner";
     }
 
@@ -161,9 +164,9 @@ public class TechnicianController {
 
     // This shows a list of a test report
     @GetMapping("/test-report-dashboard")
-    public ModelAndView showReportDashboard() {
+    public ModelAndView showReportDashboard(@AuthenticationPrincipal CustomUserDetails userDetails) {
         // Get all data from services
-        List<TestReport> reports = testReportService.getAllReports();
+        List<TestReport> reports = testReportService.getAllReports(userDetails);
         long totalTests = testReportService.getTotalTestCount();
         long completedTests = testReportService.getCompletedTestCount();
         long incompleteTests = testReportService.getIncompleteTestCount();
