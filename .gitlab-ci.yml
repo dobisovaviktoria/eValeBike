@@ -70,7 +70,6 @@ test_job:
   needs:
     - build_job
 
-
 sast:
   stage: sast
   script:
