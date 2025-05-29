@@ -5,7 +5,6 @@ import integration4.evalebike.domain.Company;
 import integration4.evalebike.domain.UserStatus;
 import integration4.evalebike.exception.NotFoundException;
 import integration4.evalebike.repository.AdminRepository;
-import integration4.evalebike.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,9 +25,6 @@ class AdminServiceTest {
 
     @Mock
     private AdminRepository adminRepository;
-
-    @Mock
-    private UserRepository userRepository;
 
     @InjectMocks
     private AdminService adminService;
@@ -54,6 +50,7 @@ class AdminServiceTest {
         Administrator another = new Administrator();
         another.setName("Bob Brown");
         another.setEmail("bob.brown@example.com");
+
         Company company = new Company();
         company.setName("E-Nursing");
         another.setCompany(company);
@@ -103,6 +100,7 @@ class AdminServiceTest {
         Administrator updatedDetails = new Administrator();
         updatedDetails.setName("Nora Updated");
         updatedDetails.setEmail("nora.updated@example.com");
+
         Company updatedCompany = new Company();
         updatedCompany.setName("E-Nursing Updated");
         updatedDetails.setCompany(updatedCompany);
