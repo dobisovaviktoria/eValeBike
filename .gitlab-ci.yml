@@ -162,4 +162,3 @@ destroy_job:
         exit
       EOF
       
-      

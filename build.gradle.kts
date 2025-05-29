@@ -50,6 +50,7 @@ dependencies {
     // Testcontainers Core & SQL Server
     testImplementation("org.testcontainers:testcontainers:1.19.3")
     testImplementation("org.testcontainers:mssqlserver:1.19.3")
+    runtimeOnly("com.h2database:h2")
 
     // Spring Boot Test Starter
     testImplementation("org.springframework.boot:spring-boot-starter-test")
