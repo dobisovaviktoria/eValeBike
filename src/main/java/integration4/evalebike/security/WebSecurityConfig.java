@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 import static org.springframework.security.web.util.matcher.RegexRequestMatcher.regexMatcher;
@@ -14,6 +15,12 @@ import static org.springframework.security.web.util.matcher.RegexRequestMatcher.
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
+
+    private final AuthenticationSuccessHandler customLoginSuccessHandler;
+    public WebSecurityConfig(AuthenticationSuccessHandler customLoginSuccessHandler) {
+        this.customLoginSuccessHandler = customLoginSuccessHandler;
+    }
+
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity security) throws Exception{
         return security
@@ -40,7 +47,11 @@ public class WebSecurityConfig {
                 )
                 .csrf(csrf -> csrf.disable())
                 .formLogin(login -> {
-                    login.loginPage("/login").failureUrl("/login").defaultSuccessUrl("/technician/bike-owners").permitAll();
+                    login
+                            .loginPage("/login")
+                            .successHandler(customLoginSuccessHandler)
+                            .failureUrl("/login")
+                            .permitAll();
                 })
                 .logout(logout -> logout
                         .logoutUrl("/logout")

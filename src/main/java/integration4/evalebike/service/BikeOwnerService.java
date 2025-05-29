@@ -1,17 +1,16 @@
 package integration4.evalebike.service;
 
+import integration4.evalebike.controller.bikeOwner.dto.BikeOwnerProfileDto;
 import integration4.evalebike.controller.technician.dto.BikeDto;
-import integration4.evalebike.domain.Bike;
-import integration4.evalebike.domain.BikeOwner;
-import integration4.evalebike.domain.BikeOwnerBike;
+import integration4.evalebike.domain.*;
 
-import integration4.evalebike.domain.UserStatus;
 import integration4.evalebike.exception.NotFoundException;
 import integration4.evalebike.repository.BikeOwnerBikeRepository;
 import integration4.evalebike.repository.BikeOwnerRepository;
 import integration4.evalebike.repository.BikeRepository;
 import integration4.evalebike.repository.UserRepository;
 import integration4.evalebike.utility.PasswordUtility;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -85,4 +84,52 @@ public class BikeOwnerService {
         LocalDate today = LocalDate.now();
         return bikeOwnerRepository.countByBirthdayToday(today.getMonthValue(), today.getDayOfMonth());
     }
+
+    public BikeOwnerProfileDto getProfile(int userId) {
+        User user = userRepository.findById(userId).orElseThrow();
+        BikeOwner owner = bikeOwnerRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("BikeOwner not found for userId: " + userId));
+
+        BikeOwnerProfileDto dto = new BikeOwnerProfileDto();
+        dto.setEmail(user.getEmail());
+        dto.setName(user.getName());
+        dto.setBirthDate(owner.getBirthDate());
+        dto.setPhoneNumber(owner.getPhoneNumber());
+        return dto;
+    }
+//
+//    public void updateProfile(int userId, BikeOwnerProfileDto dto) {
+//        User user = userRepository.findById(userId).orElseThrow();
+//        BikeOwner owner = bikeOwnerRepository.findById(userId)
+//                .orElseThrow(() -> new EntityNotFoundException("BikeOwner not found for userId: " + userId));
+//
+//        user.setEmail(dto.getEmail());
+//        user.setName(dto.getName());
+//        owner.setPhoneNumber(dto.getPhoneNumber());
+//        owner.setBirthDate(dto.getBirthDate());
+//
+//        userRepository.save(user);
+//        bikeOwnerRepository.save(owner);
+//    }
+
+    public void updateProfile(Integer bikeOwnerId, BikeOwnerProfileDto dto) {
+        BikeOwner bikeOwner = bikeOwnerRepository.findById(bikeOwnerId)
+                .orElseThrow(() -> new EntityNotFoundException("BikeOwner not found"));
+
+        if (dto.getName() != null) {
+            bikeOwner.setName(dto.getName());
+        }
+        if (dto.getEmail() != null) {
+            bikeOwner.setEmail(dto.getEmail());
+        }
+        if (dto.getPhoneNumber() != null) {
+            bikeOwner.setPhoneNumber(dto.getPhoneNumber());
+        }
+        if (dto.getBirthDate() != null) {
+            bikeOwner.setBirthDate(dto.getBirthDate());
+        }
+
+        bikeOwnerRepository.save(bikeOwner);
+    }
+
 }

@@ -106,9 +106,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <td>${admin.email}</td>
                 <td>${admin.companyName}</td>
                 <td>
-                    <button class="btn btn-sm btn-outline-primary edit-btn me-2" data-id="${admin.id}">
-                        <i class="fa-solid fa-pen"></i>
-                    </button>
                     <button class="btn btn-sm btn-outline-danger delete-btn" data-id="${admin.id}">
                         <i class="fa-solid fa-trash"></i>
                     </button>
@@ -118,7 +115,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
 
         attachDeleteEventListeners();
-        attachEditEventListeners();
     }
 
     function renderPagination() {
@@ -178,18 +174,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                     console.error("Delete error:", error);
                     alert("An error occurred while deleting.");
                 }
-            });
-        });
-    }
-
-    function attachEditEventListeners() {
-        document.querySelectorAll(".edit-btn").forEach(button => {
-            button.addEventListener("click", (e) => {
-                e.preventDefault();
-                const btn = e.currentTarget;
-                const adminId = btn.dataset.id;
-                if (!adminId) return alert("No admin ID found.");
-                window.location.href = `/super-admin/admins/edit/${adminId}`;
             });
         });
     }
