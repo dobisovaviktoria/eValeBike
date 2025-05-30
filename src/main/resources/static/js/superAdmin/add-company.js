@@ -1,4 +1,4 @@
-import {csrfHeader, csrfToken} from "../util/csrf";
+import {csrfHeader, csrfToken} from "../util/csrf.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("add-company-form");
@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 method: "POST",
                 headers: {
                     [csrfHeader]: csrfToken,
-                    'Accept': 'application/json'
+                    'Content-type': 'application/json'
                 },
                 body: JSON.stringify(companyData)
             });
