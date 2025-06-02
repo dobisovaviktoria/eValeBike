@@ -3,23 +3,21 @@ package integration4.evalebike.controller.bikeOwner;
 import integration4.evalebike.controller.bikeOwner.dto.BikeOwnerProfileDto;
 import integration4.evalebike.security.CustomUserDetails;
 import integration4.evalebike.service.BikeOwnerService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class BikeOwnerController {
     private final BikeOwnerService bikeOwnerService;
 
-    @Autowired
     public BikeOwnerController(BikeOwnerService bikeOwnerService) {
         this.bikeOwnerService = bikeOwnerService;
     }
+
     @GetMapping({"/bikeOwner/page", "/edit"})
     public String showEditForm(Model model, Authentication auth) {
         CustomUserDetails userDetails = (CustomUserDetails) auth.getPrincipal();
@@ -27,7 +25,6 @@ public class BikeOwnerController {
         model.addAttribute("profile", dto);
         return "bikeOwner/bikeOwner";
     }
-
 
     @PostMapping("/bikeOwner/edit")
     public String submitEditForm(@ModelAttribute("profile") BikeOwnerProfileDto dto,
@@ -39,6 +36,4 @@ public class BikeOwnerController {
         model.addAttribute("modified", true);
         return "bikeOwner/bikeOwner";
     }
-
 }
-
