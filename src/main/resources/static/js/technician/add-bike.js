@@ -153,7 +153,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const backToDashboardBtn = document.getElementById("back-to-dashboard-btn");
     if (backToDashboardBtn) {
         backToDashboardBtn.addEventListener("click", () => {
-            window.location.href = "/technician/bikes"; // or window.history.back() later
+            window.history.back();
         });
     }
 });
