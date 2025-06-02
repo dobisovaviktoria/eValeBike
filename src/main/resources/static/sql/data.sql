@@ -56,9 +56,10 @@ WHERE NOT EXISTS (SELECT 1 FROM bike WHERE bikeqr = '123e4567-e89b-12d3-a456-426
 -- Assign bikes to owners
 --------------------------------------
 INSERT INTO bike_owner_bike (bike_owner_id, bike_qr)
-SELECT 1, '123e4567-e89b-12d3-a456-426614174001'
+SELECT (SELECT id FROM app_user WHERE email = 'john.doe@example.com'), '123e4567-e89b-12d3-a456-426614174001'
 WHERE NOT EXISTS (
-    SELECT 1 FROM bike_owner_bike WHERE bike_owner_id = 1 AND bike_qr = '123e4567-e89b-12d3-a456-426614174001'
+    SELECT 1 FROM bike_owner_bike WHERE bike_owner_id = (SELECT id FROM app_user WHERE email = 'john.doe@example.com')
+                                    AND bike_qr = '123e4567-e89b-12d3-a456-426614174001'
 );
 
 --------------------------------------
