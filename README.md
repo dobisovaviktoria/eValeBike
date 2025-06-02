@@ -129,7 +129,6 @@ To stop the database
 ```sh
   docker-compose down
 ```
-## 🌍 Deploying to Azure VM (Production) ##
 
 ## 🔧 Configuration & Environment Profiles
 
