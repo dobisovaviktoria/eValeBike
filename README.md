@@ -1,10 +1,10 @@
 # eValeBike Project
 
-## 📌 Project Overview
+## Project Overview
 **eValeBike** is a Spring Boot application using Gradle and PostgreSQL. It supports both local development and **cloud deployment to Azure** using Docker and Spring profiles.
 
 ---
-## 👥 Team 4 Members
+## Team 4 Members
 - **Abir Belhadj**
 - **Viktória Dobišová**
 - **Nang Cherry Naw**
@@ -12,10 +12,10 @@
 - **Lilit Tsugunyan**
 ---
 
-## 🚀 CI/CD Pipeline Overview
+## CI/CD Pipeline Overview
 This project uses a GitLab CI/CD pipeline that is triggered by pushing code to the repository. The pipeline handles automated steps like building, testing, SAST analysis, and deployment. Destruction (teardown) is handled manually.
 
-### 🧰 Prerequisites
+### Prerequisites
 Before using the pipeline, ensure you have:
 - A virtual machine (VM) with:
     - Git installed
@@ -23,16 +23,16 @@ Before using the pipeline, ensure you have:
 - Permissions to push to the GitLab repository
 - Required environment variables or configuration files
 
-### 🔄 Pipeline Stages
+### Pipeline Stages
 Once triggered, the pipeline proceeds through these stages:
 1. **Build** - Compiles or prepares your application
 2. **Test** - Runs automated tests to validate functionality
 3. **SAST** - Static Application Security Testing (scans for vulnerabilities)
 4. **Deploy** - Deploys to the target environment
 
-⚠️ Note: The destroy (teardown) step is manual and not part of the automatic pipeline.
+Note: The destroy (teardown) step is manual and not part of the automatic pipeline.
 
-### 🚀 Getting Started with CI/CD
+### Getting Started with CI/CD
 1. **Clone the Project**
    ```sh
    git clone https://gitlab.com/your-org/your-project.git
@@ -48,7 +48,7 @@ Once triggered, the pipeline proceeds through these stages:
     git commit -m "Your commit message"
     git push origin main
     ```
-### 🛠️ Manual Destruction ###
+### Manual Destruction ###
 
 To manually destroy the deployed environment:
 
@@ -63,13 +63,13 @@ terraform destroy
 
 Be sure to confirm destruction to avoid unintentional deletions.
 
-### 📋 Pipeline Tips ###
+### Pipeline Tips ###
 
 - Monitor progress in GitLab under CI/CD > Pipelines
 - Review logs for each stage by clicking on the job name
 - Only users with sufficient GitLab permissions can trigger the full pipeline
 
-## 🔧 Requirements ##
+## Requirements ##
 
 To build and run the application, you need:
 
@@ -78,7 +78,7 @@ To build and run the application, you need:
 - Docker → Required for running PostgreSQL in a container on the local machine
 - Git 
 
-## 📦 Dependencies
+## Dependencies
 The following dependencies are included in the project:
 - **Spring Boot**
 - **Spring Web**
@@ -86,9 +86,9 @@ The following dependencies are included in the project:
 - **PostgreSQL Driver**
 - **Spring Boot DevTools**
 
-## 🚀 Build & Run Instructions Locally
+## Build & Run Instructions Locally
 
-### 📦 Local Docker Configuration Note ###
+### Local Docker Configuration Note ###
 
 - The PostgreSQL database service configuration for local development is included but commented out in the docker-compose.yml file.
   If you're running the application locally and need a PostgreSQL container:
@@ -110,12 +110,12 @@ The following dependencies are included in the project:
       postgres_data:
 ```
 
-### **🔨 Build the Project**
+### **Build the Project**
 Before running the application, ensure all dependencies are installed and the project is built.
 ```sh
   ./gradlew build
 ```
-### **▶️ Run the Application**
+### **Run the Application**
 ```sh
   ./gradlew bootRun
 ```
@@ -130,11 +130,11 @@ To stop the database
   docker-compose down
 ```
 
-## 🔧 Configuration & Environment Profiles
+## Configuration & Environment Profiles
 
 This project includes two Spring profiles:
 
-### 🛠 Development Locally (`application-dev.properties`)
+### Development Locally (`application-dev.properties`)
 - Uses a **PostgreSQL database** running in a **Docker container**.
 
 ```properties
@@ -154,7 +154,7 @@ logging.level.org.springframework.jdbc=DEBUG
 logging.level.org.springframework.sql=DEBUG
 ```
 
-### 🚀 Production on Azure (`application-prod.properties`)
+### Production on Azure (`application-prod.properties`)
 
 ```properties
 spring.application.name=eValeBike
@@ -178,29 +178,4 @@ spring.jpa.open-in-view=false
 
 logging.level.org.springframework.security=debug
 logging.level.org.springframework.mail=debug
-```
-
-### **📂 Project Structure**
-
-```
-📦 project-root
- ┣ 📂 src
- ┃ ┣ 📂 main
- ┃ ┃ ┣ 📂 java
- ┃ ┃ ┃ ┗ 📂 integration4
- ┃ ┃ ┃    ┗ 📂 evalebike
- ┃ ┃ ┃       ┗ 📜 MainApplication.java
- ┃ ┃ ┣ 📂 resources
- ┃ ┃ ┃ ┣ 📜 application.properties
- ┃ ┃ ┃ ┣ 📜 application-dev.properties
- ┃ ┃ ┃ ┗ 📜 application-prod.properties
- ┣ 📜 build.gradle.kts
- ┣ 📜 docker-compose.yml
- ┣ 📜 Dockerfile
- ┣ 📜 README.md
- ┣ 📂 scripts
- ┃ ┣ 📜 setup.sh
- ┃ ┗ 📜 deploy.sh
- ┗ 📜 .gitignore
-
 ```
